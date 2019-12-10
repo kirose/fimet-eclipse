@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+       point="com.fimet.manager">
+       <manager
+			extension="com.fimet.core.IParserManager"
+			class="com.fimet.parser.ParserManager" />
+       <manager
+			extension="com.fimet.core.IFieldParserManager"
+			class="com.fimet.parser.FieldParserManager" />
+       <manager
+			extension="com.fimet.core.IFieldFormatManager"
+			class="com.fimet.parser.FieldFormatManager" />
+   </extension>
+
+</plugin>

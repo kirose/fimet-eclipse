@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<!--
+	https://github.com/boothen/Json-Eclipse-Plugin
+	-->
+   <extension point="org.eclipse.core.runtime.preferences">
+      <initializer class="com.fimet.editor.json.core.preferences.JsonPreferenceInitializer"/>
+   </extension>
+    <extension point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+            class="com.fimet.editor.json.DocumentSetup"
+            contentTypeId="com.fimet.json"
+            extensions="json">
+      </participant>
+   </extension>
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="json"
+            id="com.fimet.json"
+            name="Json Source"
+            priority="high"/>
+   </extension>
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="com.fimet.json.editor"
+            class="com.fimet.editor.json.JsonTextEditor"
+            contributorClass="com.fimet.editor.json.JsonEditorContributor"
+            default="true"
+            extensions="json"
+            icon="icons/json.png"
+            name="Json Editor"
+            symbolicFontName="com.fimet.uc.fonts.textfont">
+         	<contentTypeBinding contentTypeId="com.fimet.json"></contentTypeBinding>
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.ui.category.edit"
+            id="com.fimet.usecase.format"
+            name="Format Transaction">
+      </command>
+      <command
+            categoryId="org.eclipse.ui.category.navigate"
+            name="Quick Outline"
+            id="com.fimet.usecase.quickOutline">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:#JsonTextEditorContext?after=additions">
+         <command
+               commandId="com.fimet.usecase.format"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeEditorId">
+                  <equals
+                        value="com.fimet.uc.core.editors.JsonTextEditor">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:edit?after=additions">
+         <command
+               commandId="com.fimet.usecase.format"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeEditorId">
+                  <equals
+                        value="com.fimet.uc.core.editors.JsonTextEditor">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         id="com.fimet.uc.validation.marker"
+         name="Transaction Validation"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+        <key
+              commandId="com.fimet.usecase.format"
+              contextId="com.fimet.context.jsonEditorScope"
+              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+              sequence="M1+M2+F"/>
+        <key
+              sequence="M1+O"
+              contextId="com.fimet.context.jsonEditorScope"
+              commandId="com.fimet.usecase.quickOutline"
+              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+    </extension>
+    <extension point="org.eclipse.ui.contexts">
+        <context
+            name="Json editor"
+            parentId="org.eclipse.ui.textEditorScope"
+            id="com.fimet.context.jsonEditorScope">
+        </context>
+    </extension>
+</plugin>

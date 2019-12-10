@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="uc"
+            id="com.fimet.usecase"
+            name="Use Case Source"
+            priority="high"/>
+   </extension>
+   <extension point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+            class="com.fimet.editor.usecase.DocumentSetup"
+            contentTypeId="com.fimet.usecase"
+            extensions="uc">
+      </participant>
+   </extension>
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="com.fimet.editor.UseCaseEditor"
+            class="com.fimet.editor.usecase.UseCaseEditor"
+            contributorClass="com.fimet.editor.usecase.UseCaseEditorContributor"
+            default="true"
+            extensions="uc"
+            icon="icons/usecase2.png"
+            name="Use Case Editor"
+            symbolicFontName="com.fimet.uc.fonts.textfont">
+         	<contentTypeBinding contentTypeId="com.fimet.usecase"></contentTypeBinding>
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="com.fimet.editor.usecase.command.RunFimetReportCmd"
+            id="com.fimet.commands.RunFimetReportCmd"
+            name="Run FIMET Report">
+      </command>
+      <command
+            defaultHandler="com.fimet.editor.usecase.command.UseCaseEditorPageGUIUndoCmd"
+            id="com.fimet.commands.UseCaseEditorPageGUIUndoCmd"
+            name="Undo Use case Editor GUI">
+      </command>
+      <command
+            defaultHandler="com.fimet.editor.usecase.command.VarUseCaseCmd"
+            id="com.fimet.commands.VarUseCaseCmd"
+            name="Variate Use Case">
+      </command>
+      <command
+            defaultHandler="com.fimet.editor.usecase.command.CopyUseCaseCmd"
+            id="com.fimet.commands.CopyUseCaseCmd"
+            name="Copy Use Case">
+      </command>
+      <command
+            defaultHandler="com.fimet.editor.usecase.command.RunFimetCmd"
+            id="com.fimet.commands.RunFimetCmd"
+            name="Run FIMET">
+      </command>
+      <command
+            defaultHandler="com.fimet.editor.usecase.command.RunUseCaseCmd"
+            id="com.fimet.commands.RunUseCaseCmd"
+            name="Run Use Case">
+      </command>
+      <command
+            defaultHandler="com.fimet.editor.usecase.command.SaveUseCaseCmd"
+            id="com.fimet.commands.SaveUseCaseCmd"
+            name="Save Message">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+        <key
+              commandId="com.fimet.commands.UseCaseEditorPageGUIUndoCmd"
+              contextId="com.fimet.context.useCaseEditorPageGui"
+              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+              sequence="M1+Z">
+        </key>
+       <key
+             commandId="com.fimet.commands.RunFimetReportCmd"
+             contextId="org.eclipse.ui.contexts.window"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+M2+F R">
+       </key>
+       <key
+             commandId="com.fimet.commands.RunFimetCmd"
+             contextId="org.eclipse.ui.contexts.window"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+M2+F X">
+       </key>
+       <key
+             commandId="com.fimet.commands.RunUseCaseCmd"
+             contextId="org.eclipse.ui.contexts.window"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+M2+X U">
+       </key>
+       <key
+             commandId="com.fimet.commands.RunUseCaseCmd"
+             contextId="org.eclipse.ui.contexts.window"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+M2+C X">
+       </key>
+       <key
+             commandId="com.fimet.commands.SaveUseCaseCmd"
+             contextId="org.eclipse.ui.contexts.window"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+M2+C S">
+       </key>
+       <key
+             commandId="com.fimet.commands.VarUseCaseCmd"
+             contextId="org.eclipse.ui.contexts.window"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+M2+C V">
+       </key>
+       <key
+             commandId="com.fimet.commands.CopyUseCaseCmd"
+             contextId="org.eclipse.ui.contexts.window"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+M2+C C">
+       </key>
+    </extension>
+    <extension point="org.eclipse.ui.contexts">
+        <context
+            name="Use Case editor"
+            parentId="org.eclipse.ui.textEditorScope"
+            id="com.fimet.context.useCaseEditorScope">
+        </context>
+        <context
+            id="com.fimet.context.useCaseEditorPageGui"
+            name="Context Use Case GUI"
+            parentId="org.eclipse.ui.contexts.window">
+        </context>
+    </extension>
+   <extension
+          point="org.eclipse.ui.newWizards">
+       <category
+             id="com.fimet.wizard.new"
+             name="FIMET">
+       </category>
+       <wizard
+             category="com.fimet.wizard.new"
+             icon="icons/types.png"
+             id="com.fimet.wizard.NewValidatorClassCreationWizard"
+             name="Use Case Validator">
+          <class class="com.fimet.editor.usecase.validator.NewValidatorClassCreationWizard">
+          	<parameter name="javatype" value="true"/>
+          </class>
+          <description>
+             Wizard new class Validator 
+          </description>
+          <selection class="org.eclipse.core.resources.IFile" />
+          <selection class="org.eclipse.core.resources.IProject" />
+          <selection class="org.eclipse.core.resources.IResource" />
+       </wizard>
+    </extension>
+    
+    <extension
+          point="org.eclipse.ui.exportWizards">
+       <category
+             id="com.fimet.wizard.export"
+             name="FIMET">
+       </category>
+       <wizard
+             category="com.fimet.wizard.export"
+             class="com.fimet.editor.usecase.wizard.export.TransactionExportWizard"
+             icon="icons/usecase.png"
+             id="com.fimet.trn.editor.export.sim_queue"
+             name="Export to sim_queue">
+          <description>
+             Export Transaction File to SimQueue
+          </description>
+          <selection
+                class="org.eclipse.core.resources.IFile">
+          </selection>
+          <selection
+                class="org.eclipse.core.resources.IProject">
+          </selection>
+       </wizard>
+    </extension>
+    
+    <extension point="org.eclipse.ui.newWizards">
+        <wizard
+            name="FIMET Project"
+            icon="icons/usecase.png"
+            category="com.fimet.wizard.new"
+            class="com.fimet.editor.usecase.wizard.newproject.FimetProjectWizard"
+            preferredPerspectives="com.fimet.perspective"
+            project="true"
+            finalPerspective="com.fimet.perspective"
+            id="com.fimet.wizard.new.FimetProject">
+           <description>
+              Create a FIMET Project
+           </description>
+        </wizard>
+        <wizard
+              category="com.fimet.wizard.new"
+              class="com.fimet.editor.usecase.wizard.newuc.NewUseCaseWizard"
+              icon="icons/usecase.png"
+              id="com.fimet.wizard.newusecase.NewUseCaseWizard"
+              name="Use Case">
+              <selection class="org.eclipse.core.resources.IResource" />
+        </wizard>
+        <wizard
+              category="com.fimet.wizard.new"
+              class="com.fimet.editor.usecase.wizard.copy.CopyUseCaseWizard"
+              icon="icons/usecase.png"
+              id="com.fimet.wizard.copyusecase.CopyUseCaseWizard"
+              name="Copy Use Case">
+              <selection class="org.eclipse.core.resources.IResource" />
+        </wizard>
+        <wizard
+              category="com.fimet.wizard.new"
+              class="com.fimet.editor.usecase.wizard.vary.VaryUseCaseWizard"
+              icon="icons/usecase.png"
+              id="com.fimet.wizard.varusecase.VarUseCaseWizard"
+              name="Vary Use Case">
+              <selection class="org.eclipse.core.resources.IResource" />
+        </wizard>
+    </extension>
+    <extension
+          point="org.eclipse.ui.popupMenus">
+	      <objectContribution
+	            objectClass="org.eclipse.ui.IEditorInput"
+	            nameFilter="*.uc"
+	            id="com.fimet.menu.popup.editor.TestEnvironmentContribution">
+	         <menu
+	         	   icon="icons/run_exc.png"
+	               label="FIMET Options"
+	               path="additions"
+	               id="com.fimet.menu.popup.editor.TestEnvironment">
+	            <separator
+	                  name="group1">
+	            </separator>
+	         </menu>
+	         <action
+	         	   definitionId="com.fimet.commands.SaveUseCaseCmd"
+	         	   icon="icons/usecase.png"
+	               label="Save Message"
+	               class="com.fimet.editor.usecase.popup.action.RunUseCaseAction"
+	               menubarPath="com.fimet.menu.popup.editor.TestEnvironment/group1"
+	               enablesFor="1"
+	               id="com.fimet.action.SaveUseCase">
+	         </action>
+	         <action
+	         	   definitionId="com.fimet.commands.RunUseCaseCmd"
+	         	   icon="icons/usecase.png"
+	               label="Run Use Case"
+	               class="com.fimet.editor.usecase.popup.action.RunUseCaseAction"
+	               menubarPath="com.fimet.menu.popup.editor.TestEnvironment/group1"
+	               id="com.fimet.action.RunUseCase">
+	         </action>
+          </objectContribution>
+	      <objectContribution
+	            objectClass="org.eclipse.core.resources.IProject"
+	            adaptable="true"
+	            id="com.fimet.menu.popup.project.FimetOptionsContribution">
+	         <menu
+	         	   icon="icons/run_exc.png"
+	               label="FIMET Options"
+	               path="additions"
+	               id="com.fimet.menu.popup.project.FimetOptions">
+	            <separator
+	                  name="group1">
+	            </separator>
+	         </menu>
+	         <visibility>
+	          <and>
+	            <objectState 
+	              name="projectNature" 
+	              value="com.fimet.nature.FimetProject"/>
+	          <objectState
+	            name="open"
+	            value="true"/>
+	            </and>
+	         </visibility>
+			 <action
+	         	definitionId="com.fimet.commands.RunFimetReportCmd"
+	            icon="icons/excel.png"
+	            label="Create FIMET Report"
+	            class="com.fimet.editor.usecase.command.RunFimeteReportAction"
+	            menubarPath="com.fimet.menu.popup.project.FimetOptions/additions"
+	            enablesFor="1"
+	            id="com.fimet.action.RunFimetReport">
+	            <selection
+                   class="org.eclipse.core.resources.IProject">
+	            </selection>
+	         </action>
+	         <action
+	         	definitionId="com.fimet.commands.RunFimetCmd"
+	            icon="icons/run_exc.png"
+	            label="Run FIMET"
+	            class="com.fimet.editor.usecase.popup.action.RunFimetAction"
+	            menubarPath="com.fimet.menu.popup.project.FimetOptions/additions"
+	            enablesFor="1"
+	            id="com.fimet.action.RunFimet">
+	            <selection
+                   class="org.eclipse.core.resources.IProject">
+	            </selection>
+	        </action>
+	      </objectContribution>
+	    <objectContribution
+	            objectClass="org.eclipse.core.resources.IResource"
+	            nameFilter="*.uc"
+	            id="com.fimet.menu.popup.resource.UseCaseOptionsContribution">
+	         <menu
+	         	   icon="icons/run_exc.png"
+	               label="Use Case Options"
+	               path="additions"
+	               id="com.fimet.menu.popup.resource.UseCaseOptions">
+	            <separator
+	                  name="group1">
+	            </separator>
+	         </menu>
+ 	         <action
+	         	   definitionId="com.fimet.commands.SaveUseCaseCmd"
+	         	   icon="icons/run_exc.png"
+	               label="Save Message"
+	               class="com.fimet.editor.usecase.popup.action.SaveUseCaseAction"
+	               menubarPath="com.fimet.menu.popup.resource.UseCaseOptions/additions"
+	               enablesFor="1"
+	               id="com.fimet.action.SaveUseCase">
+	         </action>
+	         <action
+	         	   definitionId="com.fimet.commands.VarUseCaseCmd"
+	         	   icon="icons/types.png"
+	               label="Variate Use Case"
+	               class="com.fimet.editor.usecase.popup.action.RunVaryUseCaseAction"
+	               menubarPath="com.fimet.menu.popup.resource.UseCaseOptions/additions"
+	               enablesFor="1"
+	               id="com.fimet.action.RunVarUseCase">
+	         </action>
+	         <action
+	         	   definitionId="com.fimet.commands.CopyUseCaseCmd"
+	         	   icon="icons/types.png"
+	               label="Copy Use Case"
+	               class="com.fimet.editor.usecase.popup.action.RunCopyUseCaseAction"
+	               menubarPath="com.fimet.menu.popup.resource.UseCaseOptions/additions"
+	               id="com.fimet.action.RunCopyUseCase">
+	         </action>
+ 	         <action
+	         	   definitionId="com.fimet.commands.RunUseCaseCmd"
+	         	   icon="icons/run_exc.png"
+	               label="Run Use Case"
+	               class="com.fimet.editor.usecase.popup.action.RunUseCaseAction"
+	               menubarPath="com.fimet.menu.popup.resource.UseCaseOptions/additions"
+	               enablesFor="1"
+	               id="com.fimet.action.RunUseCase">
+	         </action>
+	    </objectContribution>
+	</extension>
+</plugin>

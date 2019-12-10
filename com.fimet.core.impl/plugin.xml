@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="com.fimet.view.Socket" name="Socket View Extension" schema="schema/com.fimet.view.Socket.exsd"/>
+   <extension-point id="com.fimet.report.UseCase" name="Use Case Report Extension" schema="schema/com.fimet.report.UseCase.exsd"/>
+   <extension-point id="com.fimet.view.Enviroment" name="Enviroment Extension" schema="schema/com.fimet.view.Enviroment.exsd"/>
+   <extension-point id="com.fimet.import.DataBase" name="Import Data Base Connections" schema="schema/com.fimet.import.DataBase.exsd"/>
+	<extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+      		icon="icons/fimet_perspective.png"
+            name="FIMET Perspective"
+            class="com.fimet.core.impl.FimetPerspective"
+            id="com.fimet.perspective">
+      </perspective>
+   </extension>
+	<extension
+ 		point="org.eclipse.ui.editors.documentProviders">
+    	<provider
+          	class="org.eclipse.ui.editors.text.TextFileDocumentProvider"
+          	inputTypes="org.eclipse.ui.IStorageEditorInput"
+        	id="org.eclipse.ui.editors.text.StorageDocumentProvider">
+    	</provider>
+ 	</extension>
+
+   <extension
+         point="org.eclipse.ui.commands">
+
+      <command
+            defaultHandler="com.fimet.core.impl.commands.KusunokiModeCmd"
+            id="com.fimet.commands.KusunokiModeCmd"
+            name="Kusunoki Mode">
+      </command>
+      <command
+            defaultHandler="com.fimet.core.impl.commands.sim_queue.RunSimQueueCmd"
+            id="com.fimet.commands.RunSimQueueCmd"
+            name="Run Sim Queue">
+      </command>
+      <command
+            defaultHandler="com.fimet.core.impl.commands.converter.UpdateLastDigitCmd"
+            id="com.fimet.commands.UpdateLastDigitCmd"
+            name="Update las digit Pan">
+      </command>
+      <category
+            id="com.fimet.converter" name="Converter">
+      </category>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertHexToDecCmd"
+            id="com.fimet.commands.ConvertHexToDecCmd"
+            name="Convert Hex To Integer">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertDecToHexCmd"
+            id="com.fimet.commands.ConvertDecToHexCmd"
+            name="Convert Dec To Hex">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertHexToBinaryCmd"
+            id="com.fimet.commands.ConvertHexToBinaryCmd"
+            name="Convert Hex To Binary">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertHexToEbcdicCmd"
+            id="com.fimet.commands.ConvertHexToEbcdicCmd"
+            name="Convert Hex To Ebcdic">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertHexToAsciiCmd"
+            id="com.fimet.commands.ConvertHexToAsciiCmd"
+            name="Convert Hex To Ascii">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertAsciiToBinaryCmd"
+            id="com.fimet.commands.ConvertAsciiToBinaryCmd"
+            name="Convert Ascii To Binary">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertAsciiToHexCmd"
+            id="com.fimet.commands.ConvertAsciiToHexCmd"
+            name="Convert Ascii To Hex">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertAsciiToEbcdicCmd"
+            id="com.fimet.commands.ConvertAsciiToEbcdicCmd"
+            name="Convert Ascii To Ebcdic">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertEbcdicToAsciiCmd"
+            id="com.fimet.commands.ConvertEbcdicToAsciiCmd"
+            name="Convert Ebcdic To Ascii">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertEbcdicToHexCmd"
+            id="com.fimet.commands.ConvertEbcdicToHexCmd"
+            name="Convert Ebcdic To Hex">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertEbcdicToBinaryCmd"
+            id="com.fimet.commands.ConvertEbcdicToBinaryCmd"
+            name="Convert Ebcdic To Binary">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertBinaryToHexCmd"
+            id="com.fimet.commands.ConvertBinaryToHexCmd"
+            name="Convert Binary To Hex">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertBinaryToAsciiCmd"
+            id="com.fimet.commands.ConvertBinaryToAsciiCmd"
+            name="Convert Binary To Ascii">
+      </command>
+      <command
+            categoryId="com.fimet.converter"
+            defaultHandler="com.fimet.core.impl.commands.converter.ConvertBinaryToEbcdicCmd"
+            id="com.fimet.commands.ConvertBinaryToEbcdicCmd"
+            name="Convert Binary To Ebcdic">
+      </command>
+      <command
+            defaultHandler="com.fimet.core.impl.commands.format.FormatJsonToIsoCmd"
+            id="com.fimet.commands.FormatJsonToIsoCmd"
+            name="Format Json to Iso">
+      </command>
+      <!-- Field Tree Commands -->
+      <command
+            defaultHandler="com.fimet.core.impl.swt.msg.cmd.FieldNodeClipboardCmd"
+            id="com.fimet.commands.CopyFieldNode"
+            name="Copy Field Node">
+      </command>
+      <!-- Socket View Commands -->
+      <command
+            defaultHandler="com.fimet.core.impl.view.socket.cmd.SocketConnectCmd"
+            id="com.fimet.commands.ConnectSocket"
+            name="Connect Socket">
+      </command>
+      <command
+            defaultHandler="com.fimet.core.impl.view.socket.cmd.SocketDisconnectCmd"
+            id="com.fimet.commands.DisconnectSocket"
+            name="Disconnect Socket">
+      </command>
+      <command
+            defaultHandler="com.fimet.core.impl.view.socket.cmd.SocketDisconnectAllCmd"
+            id="com.fimet.commands.DisconnectAllSocket"
+            name="Disconnect All Sockets">
+      </command>
+            <command
+            defaultHandler="com.fimet.core.impl.view.socket.cmd.SocketClipboardCmd"
+            id="com.fimet.commands.SocketClipboardCmd"
+            name="Copy Socket">
+      </command>
+      
+   </extension>
+
+	<extension
+			point="org.eclipse.ui.navigator.navigatorContent">
+	  <commonWizard
+	        menuGroupId="com.fimet"
+	        type="new"
+	        wizardId="com.fimet.wizard.new.FimetProject">
+	     <enablement>
+	        <or>
+	           <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+	           <instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+	           <instanceof value="org.eclipse.jdt.core.ICompilationUnit"/>
+	           <instanceof value="org.eclipse.core.resources.IFolder"/>
+	           <adapt type="org.eclipse.core.resources.IProject">
+	              <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.jdt.core.javanature"/>
+	           </adapt>
+			   <adapt type="java.util.Collection">
+			      <count value="0" />
+			   </adapt>
+	        </or>
+	     </enablement>
+	  </commonWizard>
+	  <commonWizard
+	        menuGroupId="com.fimet"
+	        type="new"
+	        wizardId="com.fimet.wizard.newusecase.NewUseCaseWizard">
+	     <enablement>
+	        <or>
+	           <instanceof value="org.eclipse.core.resources.IFolder"/>
+	           <adapt type="org.eclipse.core.resources.IProject">
+	              <test property="org.eclipse.core.resources.projectNature" value="com.fimet.nature.FimetProject"/>
+	           </adapt>
+	        </or>
+	     </enablement>
+	  </commonWizard>
+	  <commonWizard
+	        menuGroupId="com.fimet"
+	        type="new"
+	        wizardId="com.fimet.wizard.NewValidatorClassCreationWizard">
+	     <enablement>
+	        <or>
+	           <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+	           <instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+	           <instanceof value="org.eclipse.jdt.core.ICompilationUnit"/>
+	           <adapt type="org.eclipse.core.resources.IProject">
+	              <test property="org.eclipse.core.resources.projectNature" value="com.fimet.nature.FimetProject"/>
+	           </adapt>
+	        </or>
+	     </enablement>
+	  </commonWizard>
+   </extension>
+
+   <extension
+         id="com.fimet.nature.FimetProject"
+         name="FIMET Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="com.fimet.core.impl.nature.FimetProject">
+         </run>
+      </runtime>
+      <requires-nature
+              id="org.eclipse.jdt.core.javanature">
+      </requires-nature>
+   </extension>
+    <extension
+          point="org.eclipse.ui.menus">
+          <menuContribution
+                locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+                <dynamic
+                      id="com.fimet.popup.menu.parsers" class="com.fimet.core.impl.popup.parsers.ParsersMenu">
+		           <visibleWhen>
+		              <with variable="activeContexts">
+		                 <iterate operator="or">
+		                    <equals value="org.eclipse.ui.textEditorScope"></equals>
+		                 </iterate>
+		              </with>
+		           </visibleWhen>
+                </dynamic>
+          </menuContribution>
+   </extension>
+    <extension
+          point="org.eclipse.ui.popupMenus">
+	    <objectContribution
+	            objectClass="org.eclipse.ui.IEditorInput"
+	            nameFilter="*.*"
+	            id="com.fimet.menu.popup.editor.ConvertToContribution">
+	         <menu
+	         	   icon="icons/types.png"
+	               label="Convert ..."
+	               path="additions"
+	               id="com.fimet.menu.popup.editor.ConvertTo">
+	            <separator
+	                  name="group1">
+	            </separator>
+	         </menu>
+	         <action
+         	   definitionId="com.fimet.commands.UpdateLastDigitCmd"
+               label="Pan verify"
+               class="com.fimet.core.impl.popup.action.converter.UpdateLastDigitAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.UpdateLastDigitHex">
+	         </action>
+	         <action
+         	   definitionId="com.fimet.commands.ConvertEbcdicToHexCmd"
+               label="Ebcdic to Hex"
+               class="com.fimet.core.impl.popup.action.converter.ConvertEbcdicToHexAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertEbcdicToHex">
+	         </action>
+	         <action
+         	   definitionId="com.fimet.commands.ConvertEbcdicToAsciiCmd"
+               label="Ebcdic to Ascii"
+               class="com.fimet.core.impl.popup.action.converter.ConvertEbcdicToAsciiAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertEbcdicToAscii">
+	         </action>
+ 	         <action
+         	   definitionId="com.fimet.commands.ConvertEbcdicToBinaryCmd"
+               label="Ebcdic To Binary"
+               class="com.fimet.core.impl.popup.action.converter.ConvertEbcdicToBinaryAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertEbcdicToBinary">
+	         </action>
+	         <action
+         	   definitionId="com.fimet.commands.ConvertBinaryToHexCmd"
+               label="Binary to Hex"
+               class="com.fimet.core.impl.popup.action.converter.ConvertBinaryToHexAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertBinaryToHex">
+	         </action>
+	         <action
+         	   definitionId="com.fimet.commands.ConvertBinaryToAsciiCmd"
+               label="Binary to Ascii"
+               class="com.fimet.core.impl.popup.action.converter.ConvertBinaryToAsciiAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertBinaryToAscii">
+	         </action>
+ 	         <action
+         	   definitionId="com.fimet.commands.ConvertBinaryToEbcdicCmd"
+               label="Binary to Ebcdic"
+               class="com.fimet.core.impl.popup.action.converter.ConvertBinaryToEbcdicAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertBinaryToEbcdic">
+	         </action>
+	         <action
+         	   definitionId="com.fimet.commands.ConvertDecToHexCmd"
+               label="Dec to Hex"
+               class="com.fimet.core.impl.popup.action.converter.ConvertDecToHexAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertIntegerToHex">
+	         </action>
+	         <action
+         	   definitionId="com.fimet.commands.ConvertHexToDecCmd"
+               label="Hex to Dec"
+               class="com.fimet.core.impl.popup.action.converter.ConvertHexToDecAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertHexToInteger">
+	         </action>
+	         <action
+         	   definitionId="com.fimet.commands.ConvertHexToAsciiCmd"
+               label="Hex to Ascii"
+               class="com.fimet.core.impl.popup.action.converter.ConvertHexToAsciiAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertHexToAscii">
+	         </action>
+	         <action
+         	   definitionId="com.fimet.commands.ConvertHexToBinaryCmd"
+               label="Hex to Binary"
+               class="com.fimet.core.impl.popup.action.converter.ConvertHexToBinaryAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertHexToBinary">
+	         </action>
+	         <action
+         	   definitionId="com.fimet.commands.ConvertHexToEbcdicCmd"
+               label="Hex to Ebcdic"
+               class="com.fimet.core.impl.popup.action.converter.ConvertHexToEbcdicAction"
+               menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1"
+               enablesFor="1"
+               id="com.fimet.action.ConvertHexToBinary">
+	         </action>
+	         <action
+                class="com.fimet.core.impl.popup.action.converter.ConvertAsciiToHexAction"
+                definitionId="com.fimet.commands.ConvertAsciiToHexCmd"
+                enablesFor="1"
+                id="com.fimet.action.ConvertToHex"
+                label="Ascii to Hex"
+                menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1">
+	         </action>
+	         <action
+                class="com.fimet.core.impl.popup.action.converter.ConvertAsciiToBinaryAction"
+                definitionId="com.fimet.commands.ConvertAsciiToBinaryCmd"
+                enablesFor="1"
+                id="com.fimet.action.ConvertAsciiToBinary"
+                label="Ascii to Binary"
+                menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1">
+	         </action>
+	         <action
+                class="com.fimet.core.impl.popup.action.converter.ConvertAsciiToEbcdicAction"
+                definitionId="com.fimet.commands.ConvertAsciiToEbcdicCmd"
+                enablesFor="1"
+                id="com.fimet.action.ConvertAsciiToBinary"
+                label="Ascii to Ebcdic"
+                menubarPath="com.fimet.menu.popup.editor.ConvertTo/group1">
+	         </action>
+	    </objectContribution>
+	      <objectContribution
+	            objectClass="org.eclipse.ui.IEditorInput"
+	            nameFilter="*.*"
+	            id="com.fimet.menu.popup.editor.FormatToContribution">
+	         <menu
+	         	   icon="icons/types.png"
+	               label="Format ..."
+	               path="additions"
+	               id="com.fimet.menu.popup.editor.FormatTo">
+	            <separator
+	                  name="group1">
+	            </separator>
+	         </menu>
+	         <action
+                class="com.fimet.core.impl.popup.action.FormatJsonToIsoAction"
+                definitionId="com.fimet.commands.FormatJsonToIsoCmd"
+                enablesFor="1"
+                id="com.fimet.action.FormatJsonToIsoAction"
+                label="Json to ISO"
+                menubarPath="com.fimet.menu.popup.editor.FormatTo/group1"
+                tooltip="Format Json Msg to ISO">
+	         </action>
+	    </objectContribution>
+    </extension>
+    <extension
+          point="org.eclipse.ui.bindings">
+	   <key
+             commandId="com.fimet.commands.ConnectSocket"
+             contextId="com.fimet.context.SocketView"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+C">
+       </key>
+       <key
+             commandId="com.fimet.commands.DisconnectSocket"
+             contextId="com.fimet.context.SocketView"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+D">
+       </key>
+       <key
+             commandId="com.fimet.commands.DisconnectAllSocket"
+             contextId="com.fimet.context.SocketView"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+A">
+       </key>
+       <key
+             commandId="com.fimet.commands.SocketClipboardCmd"
+             contextId="com.fimet.context.SocketTableView"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M1+C">
+       </key>
+
+       <key
+             commandId="com.fimet.commands.CopyFieldNode"
+             contextId="com.fimet.context.FieldTree"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M1+C">
+       </key>
+
+       <key
+             commandId="com.fimet.commands.RunSimQueueCmd"
+             contextId="org.eclipse.ui.contexts.window"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+M2+Q A">
+       </key>
+       <key
+             commandId="com.fimet.commands.KusunokiModeCmd"
+             contextId="org.eclipse.ui.contexts.window"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+M2+K">
+       </key>
+       <key
+             commandId="com.fimet.commands.UpdateLastDigitCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+L">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertAsciiToBinaryCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+A B">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertAsciiToHexCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+A H">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertAsciiToEbcdicCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+A E">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertEbcdicToBinaryCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+E B">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertEbcdicToHexCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+E H">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertEbcdicToAsciiCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+E A">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertDecToHexCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+D H">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertHexToDecCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+H D">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertHexToEbcdicCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+H E">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertHexToAsciiCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+H A">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertHexToBinaryCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+H B">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertBinaryToHexCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+B H">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertBinaryToAsciiCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+B A">
+       </key>
+       <key
+             commandId="com.fimet.commands.ConvertBinaryToEbcdicCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+B E">
+       </key>
+       <key
+             commandId="com.fimet.commands.FormatJsonToIsoCmd"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="M3+F">
+       </key>
+    </extension>
+    <extension
+          point="org.eclipse.ui.contexts">
+       <context
+             id="com.fimet.context.SocketTableView"
+             name="ContextSocketTableView"
+             parentId="org.eclipse.ui.contexts.window">
+       </context>
+       <context
+             id="com.fimet.context.SocketView"
+             name="ContextSocketView"
+             parentId="org.eclipse.ui.contexts.window">
+       </context>
+       <context
+       		 description="Context field tree"
+             id="com.fimet.context.FieldTree"
+             name="ContextFieldTree"
+             parentId="org.eclipse.ui.contexts.window">
+       </context>
+    </extension>
+    
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.fimet.core.impl.preferences.FimetPreferencePage"
+            id="com.fimet.preferences.FimetPreferences"
+            name="FIMET">
+      </page>
+      <page
+      		category="com.fimet.preferences.FimetPreferences"
+            class="com.fimet.core.impl.preferences.ISO8583.CatISO8583Page"
+            id="com.fimet.preferences.CatISO8583Page"
+            name="Catalog ISO8583">
+      </page>
+      <page
+            category="com.fimet.preferences.FimetPreferences"
+            class="com.fimet.core.impl.preferences.simulator.SimulatorPage"
+            id="com.fimet.preferences.SimulatorsPage"
+            name="Simulators">
+      </page>
+      <page
+            category="com.fimet.preferences.FimetPreferences"
+            class="com.fimet.core.impl.preferences.field.FieldDefinitionPage"
+            id="com.fimet.preferences.FieldDefinitionPage"
+            name="Fields Definition">
+      </page>
+      <page
+            category="com.fimet.preferences.FimetPreferences"
+            class="com.fimet.core.impl.preferences.parser.ParserPage"
+            id="com.fimet.preferences.ParsersPage"
+            name="Parsers">
+      </page>
+	  <page
+            category="com.fimet.preferences.FimetPreferences"
+            class="com.fimet.core.impl.preferences.enviroment.EnviromentPage"
+            id="com.fimet.preferences.EnviromentPage"
+            name="Enviroments">
+      </page>
+      <page
+            category="com.fimet.preferences.EnviromentPage"
+            class="com.fimet.core.impl.preferences.database.DataBasePage"
+            id="com.fimet.preferences.DataBasePage"
+            name="Data Bases">
+      </page>
+      <page
+            category="com.fimet.preferences.EnviromentPage"
+            class="com.fimet.core.impl.preferences.ftp.FtpPage"
+            id="com.fimet.preferences.FtpPage"
+            name="FTP Connections">
+      </page>
+      <page
+      		category="com.fimet.preferences.FimetPreferences"
+            class="com.fimet.core.impl.preferences.socket.SocketPage"
+            id="com.fimet.preferences.SocketPage"
+            name="Sockets">
+      </page>
+      <page
+      		category="com.fimet.preferences.SocketPage"
+            class="com.fimet.core.impl.preferences.rule.RulePage"
+            id="com.fimet.preferences.RulesPage"
+            name="Rules">
+      </page>
+   </extension>
+   <extension point="org.eclipse.ui.views">
+      <category
+     	   name="FIMET Views"
+           id="com.fimet.views">
+      </category>
+      <view
+			allowMultiple="false"
+      		category="com.fimet.views"
+      		icon="icons/photos.png"
+            name="Enviroments"
+            class="com.fimet.core.impl.view.enviroment.EnviromentView"
+            id="com.fimet.view.EnviromentsView">
+      </view>
+	  <view
+			allowMultiple="false"
+	  		category="com.fimet.views"
+      		icon="icons/thunderbolt.png"
+            name="SimQueue Injection"
+            class="com.fimet.core.impl.view.sim_queue.SimQueueView"
+            id="com.fimet.view.SimQueueView">
+      </view>
+      <view
+			allowMultiple="false"
+      		category="com.fimet.views"
+      		icon="icons/database_view.gif"
+            name="Data Bases"
+            class="com.fimet.core.impl.view.database.DataBaseView"
+            id="com.fimet.view.DataBaseView">
+      </view>
+      <view
+			allowMultiple="false"
+      		category="com.fimet.views"
+      		icon="icons/ftp.png"
+            name="FTP Connections"
+            class="com.fimet.core.impl.view.ftp.FTPView"
+            id="com.fimet.view.FTPConnectionsView">
+      </view>
+      <view
+			allowMultiple="false"
+      		category="com.fimet.views"
+      		icon="icons/plug.png"
+            name="Sockets"
+            class="com.fimet.core.impl.view.socket.SocketView"
+            id="com.fimet.view.SocketView">
+      </view>
+      <view
+			allowMultiple="false"
+      		category="com.fimet.views"
+      		icon="icons/types.png"
+            name="Fields"
+            class="com.fimet.core.impl.view.field.FieldDefinitionView"
+            id="com.fimet.view.FieldDefinitionView">
+      </view>
+	</extension>
+    <extension
+          point="org.eclipse.ui.popupMenus">
+		<objectContribution
+	            objectClass="org.eclipse.ui.IEditorInput"
+	            nameFilter="*.sim_queue"
+	            id="com.fimet.menu.popup.sim_queue.SimQueueContribution">
+	         <menu
+	         	   icon="icons/run_exc.png"
+	               label="Sim Queue Options"
+	               path="additions"
+	               id="com.fimet.menu.popup.sim_queue">
+	            <separator
+	                  name="group1">
+	            </separator>
+	         </menu>
+	         <action
+	         	   definitionId="com.fimet.commands.RunSimQueueCmd"
+	         	   icon="icons/types.png"
+	               label="Run Sim Queue"
+	               class="com.fimet.core.impl.popup.action.sim_queue.RunSimQueueAction"
+	               menubarPath="com.fimet.menu.popup.sim_queue/group1"
+	               id="com.fimet.action.RunSimQueue">
+	         </action>
+		</objectContribution>
+		<objectContribution
+	            objectClass="org.eclipse.core.resources.IResource"
+	            nameFilter="*.sim_queue"
+	            id="com.fimet.menu.popup.sim_queue.SimQueueContribution">
+	         <menu
+	         	   icon="icons/run_exc.png"
+	               label="Sim Queue Options"
+	               path="additions"
+	               id="com.fimet.menu.popup.resource.SimQueueOptions">
+	            <separator
+	                  name="group1">
+	            </separator>
+	         </menu>
+	         <action
+	         	   definitionId="com.fimet.commands.RunSimQueueCmd"
+	         	   icon="icons/types.png"
+	               label="Run Sim Queue"
+	               class="com.fimet.core.impl.popup.action.sim_queue.RunSimQueueAction"
+	               menubarPath="com.fimet.menu.popup.resource.SimQueueOptions/additions"
+	               id="com.fimet.action.RunSimQueue">
+	         </action>
+		</objectContribution>
+	</extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="com.fimet.perspective">
+          <view
+          	    closeable="true"
+                minimized="false"
+                relative="org.eclipse.ui.editorss"
+                relationship="left"
+                id="org.eclipse.ui.navigator.ProjectExplorer">
+          </view>
+		  <view
+         	    closeable="true"
+                minimized="false"
+                relative="org.eclipse.ui.navigator.ProjectExplorer"
+                relationship="bottom"
+        	    id="org.eclipse.ui.console.ConsoleView">
+		  </view>
+          <view
+          		visible="true"
+          	    closeable="true"
+                minimized="false"
+                relative="org.eclipse.ui.editorss"
+                relationship="bottom"
+                id="com.fimet.view.SocketView">
+          </view>
+          <view
+          	    closeable="true"
+                minimized="true"
+                relative="com.fimet.view.SocketView"
+                relationship="stack"
+                id="com.fimet.view.EnviromentsView">
+          </view>
+  		  <view
+         	    closeable="true"
+                minimized="true"
+                relative="com.fimet.view.EnviromentsView"
+                relationship="stack"
+          		id="org.eclipse.pde.runtime.LogView">
+		  </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="com.fimet.import.DataBase">
+      <importer
+            class="com.fimet.core.impl.swt.database.ImporterSqlDeveloper"
+            name="Sql Developer">
+      </importer>
+   </extension>
+   
+      <extension
+         point="com.fimet.manager">
+		<manager
+			extension="com.fimet.core.IUseCaseManager"
+			class="com.fimet.core.impl.UseCaseManager" />
+		<manager
+			extension="com.fimet.core.IReportManager"
+			class="com.fimet.core.impl.ReportManager" />
+		<manager
+			extension="com.fimet.core.IUseCaseReportManager"
+			class="com.fimet.core.impl.UseCaseReportManager" />
+		<manager
+			extension="com.fimet.core.IPreferencesManager"
+			class="com.fimet.core.impl.PreferencesManager" />
+		<manager
+			replace="false"
+			extension="com.fimet.core.IEnviromentManager"
+			class="com.fimet.core.impl.EnviromentManager" />
+		<manager
+			extension="com.fimet.core.IBindingManager"
+			class="com.fimet.core.impl.BindingManager" />
+		<manager
+			extension="com.fimet.core.IRuleManager"
+			class="com.fimet.core.impl.RuleManager" />
+		<manager
+			replace="false"
+			extension="com.fimet.core.IMachineManager"
+			class="com.fimet.core.impl.MachineManager" />
+		<manager
+			replace="false"
+			extension="com.fimet.core.ISocketManager"
+			class="com.fimet.core.impl.SocketManager" />
+		<manager
+			replace="false"
+			extension="com.fimet.core.IDataBaseManager"
+			class="com.fimet.core.impl.DataBaseManager" />
+		<manager
+			extension="com.fimet.core.IMessageIsoManager"
+			class="com.fimet.core.impl.MessageIsoManager" />
+	</extension>
+</plugin>

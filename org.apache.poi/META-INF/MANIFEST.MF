@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: poi
+Bundle-SymbolicName: org.apache.poi
+Bundle-Version: 4.1.0
+Bundle-ClassPath: .
+Bundle-Vendor: apache
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.apache.poi
+Export-Package: org.apache.commons.compress.utils,
+ org.apache.poi.hssf.usermodel,
+ org.apache.poi.hssf.util,
+ org.apache.poi.ooxml,
+ org.apache.poi.ss.usermodel,
+ org.apache.poi.ss.util,
+ org.apache.poi.xssf.usermodel
