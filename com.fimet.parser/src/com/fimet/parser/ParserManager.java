@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.fimet.commons.exception.ParserException;
+import com.fimet.commons.history.History;
 import com.fimet.core.IBindingManager;
 import com.fimet.core.IFieldParserManager;
 import com.fimet.core.IParserManager;
@@ -242,5 +243,18 @@ public class ParserManager implements IParserManager {
 	@Override
 	public Parser getEntity(Integer id) {
 		return ParserDAO.getInstance().findById(id);
+	}
+
+	@Override
+	public void commit(History<Parser> history) {
+		for (Parser m : history.getDeletes()) {
+			delete(m);
+		}
+		for (Parser m : history.getUpdates()) {
+			update(m);
+		}
+		for (Parser m : history.getInserts()) {
+			insert(m);
+		}		
 	}
 }

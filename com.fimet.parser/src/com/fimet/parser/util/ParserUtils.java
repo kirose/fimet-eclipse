@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 import org.eclipse.core.resources.IResource;
 
 import com.fimet.commons.exception.AdapterException;
+import com.fimet.commons.utils.FileUtils;
 import com.google.gson.reflect.TypeToken;
-import com.fimet.commons.io.FileUtils;
 import com.fimet.core.IParserManager;
 import com.fimet.core.Manager;
 import com.fimet.core.ISO8583.adapter.IAdapterManager;

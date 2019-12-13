@@ -25,6 +25,7 @@ public class FieldFormatManager implements IFieldFormatManager {
 			return cache.get(idGroup);
 		} else {
 			FieldFormatGroup group = dao.findById(idGroup);
+			if (group == null) return null;
 			FieldFormatGroup parent, child = group;
 			while (child.getIdParent() != null) {
 				child.setParent(parent = getGroup(child.getIdParent()));
@@ -36,9 +37,13 @@ public class FieldFormatManager implements IFieldFormatManager {
 	}
 
 	public List<FieldFormat> getFieldsFormat(Integer idGroup) {
-		List<FieldFormat> formats = getFieldsFormat(getGroup(idGroup), new ArrayList<>());
-		Collections.sort(formats, (FieldFormat f1, FieldFormat f2) ->{return f1.getIdOrder().compareTo(f2.getIdOrder());});
-		return formats;
+		if (getGroup(idGroup) != null) {
+			List<FieldFormat> formats = getFieldsFormat(getGroup(idGroup), new ArrayList<>());
+			Collections.sort(formats, (FieldFormat f1, FieldFormat f2) ->{return f1.getIdOrder().compareTo(f2.getIdOrder());});
+			return formats;
+		} else {
+			return null;
+		}
 	}
 	private List<FieldFormat> getFieldsFormat(FieldFormatGroup group, List<Integer> exclude){
 		List<FieldFormat> formats = daoFieldFormat.findByGroup(group.getId(), exclude);
@@ -109,7 +114,7 @@ public class FieldFormatManager implements IFieldFormatManager {
 	}
 	public FieldFormatGroup deleteGroup(FieldFormatGroup group) {
 		FieldFormatGroupDAO.getInstance().delete(group);
-		FieldFormatDAO.getInstance().deleteByIdGroup(group);
+		FieldFormatDAO.getInstance().deleteByIdGroup(group.getId());
 		return group;
 	}
 	public FieldFormat saveField(FieldFormat field) {
