@@ -18,7 +18,9 @@ The project is aimed at those who work with ISO8583
 
 **Report:** for display the results of use cases execution
 
-Just download the jar added to the plugins folder of eclipse 2018-12
+Just download the jars and add to the plugins folder of eclipse 2018-12
+
+You can download eclipse 2018-12 [**here**](https://www.eclipse.org/downloads/packages/release/2018-12/r)
 
 I will appreciate if you tell me how to upload the project to the eclipse marketplace.
 
