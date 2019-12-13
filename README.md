@@ -12,6 +12,8 @@ The project is aimed at those who work with ISO8583
 
 **Sockets:** creation of sockets and connection
 
+**Simulators:** for acquirers and issuers
+
 **Use Cases:** abstraction of an ISO8583 message for automated test
 
 **Converters:** convertion between ASCII, EBCDIC, HEX, Binary
