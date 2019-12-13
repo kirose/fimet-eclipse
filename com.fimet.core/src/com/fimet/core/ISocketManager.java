@@ -2,6 +2,7 @@ package com.fimet.core;
 
 import java.util.List;
 
+import com.fimet.commons.history.History;
 import com.fimet.core.entity.sqlite.Socket;
 import com.fimet.core.listener.ISocketListener;
 import com.fimet.core.net.ISocket;
@@ -17,12 +18,13 @@ public interface ISocketManager extends IManager {
 	void refresh(Integer idField);
 	Integer getNextIdSocket();
 	Integer getPrevIdSocket();
-	void free(List<Integer> ids);
-	void save(ISocket socket);
+	void insert(ISocket socket);
+	void update(ISocket socket);
 	void delete(ISocket socket);
 	void deleteByIdEnviroment(Integer id);
 	
 	public void addFirstListener(int type, ISocketListener listener);
 	public void addListener(int type, ISocketListener listener);
 	public void removeListener(int type, ISocketListener listener);
+	void commit(History<Socket> history);
 }

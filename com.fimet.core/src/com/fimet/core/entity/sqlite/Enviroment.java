@@ -55,9 +55,9 @@ public class Enviroment {
 		this.id = id;
 		this.idType = idType;
 		this.name = name;
-		this.isLocal = false;
 		this.path = path;
 		this.idDataBase = idDbConnection;
+		this.isLocal = idFtpConnection == null;
 		this.idFtp = idFtpConnection;
 		this.statusConnection = DISCONNECTED;
 		this.address = address;

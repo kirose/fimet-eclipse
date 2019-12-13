@@ -35,7 +35,6 @@ import com.fimet.core.ILogManager;
 import com.fimet.core.IPreferencesManager;
 import com.fimet.core.IReportManager;
 import com.fimet.core.ITransactionLogManager;
-import com.fimet.core.IUseCaseExecutorManager;
 import com.fimet.core.IUseCaseManager;
 import com.fimet.core.IUseCaseReportManager;
 import com.fimet.core.Manager;
@@ -226,13 +225,15 @@ public class UseCaseExecutor implements
 		}
 	}
 	protected void removeListeners() {
-		acquirerConnection.removeListener(IMessengerListener.ON_CONNECTED, this);
-		acquirerConnection.removeListener(IMessengerListener.ON_SIMULATE_ACQ_REQUEST, this);
-		acquirerConnection.removeListener(IMessengerListener.ON_WRITE_ACQ_REQUEST, this);
-		acquirerConnection.removeListener(IMessengerListener.ON_READ_ACQ_RESPONSE, this);
-		acquirerConnection.removeListener(IMessengerListener.ON_PARSE_ACQ_RESPONSE, this);
-		acquirerConnection.removeListener(IMessengerListener.ON_COMPLETE, this);
-		acquirerConnection.removeListener(IMessengerListener.ON_DISCONNECTED, this);
+		if (acquirerConnection != null) {
+			acquirerConnection.removeListener(IMessengerListener.ON_CONNECTED, this);
+			acquirerConnection.removeListener(IMessengerListener.ON_SIMULATE_ACQ_REQUEST, this);
+			acquirerConnection.removeListener(IMessengerListener.ON_WRITE_ACQ_REQUEST, this);
+			acquirerConnection.removeListener(IMessengerListener.ON_READ_ACQ_RESPONSE, this);
+			acquirerConnection.removeListener(IMessengerListener.ON_PARSE_ACQ_RESPONSE, this);
+			acquirerConnection.removeListener(IMessengerListener.ON_COMPLETE, this);
+			acquirerConnection.removeListener(IMessengerListener.ON_DISCONNECTED, this);
+		}
 		if (issuerConnection != null) {
 			issuerConnection.removeListener(IMessengerListener.ON_CONNECTED, this);
 			issuerConnection.removeListener(IMessengerListener.ON_READ_ISS_REQUEST, this);
@@ -360,10 +361,10 @@ public class UseCaseExecutor implements
 	}
 	protected void createEvidences(UseCase useCase) {
 		if (useCase != null) {
-			if (extractorManager != null) {
+			if (extractorManager != null && preferencesManager.getBoolean(IPreferencesManager.EXTRACTOR_ENABLE, false)) {
 				extractorManager.manage(useCase);
 			}
-			if (logManager != null) {
+			if (logManager != null && preferencesManager.getBoolean(IPreferencesManager.LOG_ENABLE, false)) {
 				logManager.manage(useCase);
 			}
 		}
@@ -429,7 +430,7 @@ public class UseCaseExecutor implements
 	}
 	@Override
 	public void onMessangerWriteIssuerResponse(IMessenger conn, byte[] msg) {
-		if (!isStoped() && preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ISSUER)) {
+		if (!isStoped() && preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ISSUER, true)) {
 			//Console.getInstance().debug(UseCaseExecutor.class.getName(), "Write issuer response sim_queue");
 			if (conn.getConnection().getAdapter() instanceof IByteArrayAdapter) {
 				IByteArrayAdapter adapter = (IByteArrayAdapter)conn.getConnection().getAdapter();
@@ -441,7 +442,7 @@ public class UseCaseExecutor implements
 	}
 	@Override
 	public void onMessangerReadIssuerRequest(IMessenger conn, byte[] msg) {
-		if (!isStoped() && preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_READ_ISSUER)) {
+		if (!isStoped() && preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_READ_ISSUER, true)) {
 			//Console.getInstance().debug(UseCaseExecutor.class.getName(), "Write issuer request sim_queue");
 			if (conn.getConnection().getAdapter() instanceof IByteArrayAdapter) {
 				IByteArrayAdapter adapter = (IByteArrayAdapter)conn.getConnection().getAdapter();
@@ -482,7 +483,7 @@ public class UseCaseExecutor implements
 	}
 	@Override
 	public void onMessangerWriteAcquirerRequest(IMessenger conn, byte[] msg) {
-		if (preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ACQUIRER)) {
+		if (preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ACQUIRER, true)) {
 			if (conn.getConnection().getAdapter() instanceof IByteArrayAdapter) {
 				IByteArrayAdapter adapter = (IByteArrayAdapter)conn.getConnection().getAdapter();
 				createSimQueue(Messages.UseCase_AcquirerRequest, adapter.writeByteArray(msg));
@@ -495,7 +496,7 @@ public class UseCaseExecutor implements
 	public void onMessangerReadAcquirerResponse(IMessenger conn, byte[] msg) {
 		if (!isStoped()) {
 			setStatus(COMPLETING);
-			if (preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_READ_ACQUIRER)) {
+			if (preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_READ_ACQUIRER, true)) {
 				if (conn.getConnection().getAdapter() instanceof IByteArrayAdapter) {
 					IByteArrayAdapter adapter = (IByteArrayAdapter)conn.getConnection().getAdapter();
 					createSimQueue(Messages.UseCase_AcquirerResponse, adapter.writeByteArray(msg));

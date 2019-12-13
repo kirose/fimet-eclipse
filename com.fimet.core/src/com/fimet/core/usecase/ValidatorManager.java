@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IProject;
 import com.fimet.commons.Activator;
 import com.fimet.commons.console.Console;
 import com.fimet.commons.exception.FimetException;
-import com.fimet.commons.io.FileUtils;
+import com.fimet.commons.utils.FileUtils;
 import com.fimet.core.IClassLoaderManager;
 import com.fimet.core.IExtract;
 import com.fimet.core.IValidator;

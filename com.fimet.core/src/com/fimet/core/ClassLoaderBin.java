@@ -3,7 +3,7 @@ package com.fimet.core;
 import java.io.File;
 
 import com.fimet.commons.exception.ClassLoaderException;
-import com.fimet.commons.io.FileUtils;
+import com.fimet.commons.utils.FileUtils;
 import com.fimet.commons.utils.RuteUtils;
 
 public class ClassLoaderBin extends ClassLoader {

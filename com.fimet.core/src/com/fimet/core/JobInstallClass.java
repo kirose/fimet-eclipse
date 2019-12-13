@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import com.fimet.commons.console.Console;
-import com.fimet.commons.io.FileUtils;
+import com.fimet.commons.utils.FileUtils;
 import com.fimet.core.IClassLoaderManager;
 import com.fimet.core.Manager;
 

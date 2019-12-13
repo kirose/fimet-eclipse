@@ -2,6 +2,7 @@ package com.fimet.core;
 
 import java.util.List;
 
+import com.fimet.commons.history.History;
 import com.fimet.core.ISO8583.parser.IParser;
 import com.fimet.core.entity.sqlite.Parser;
 
@@ -20,4 +21,5 @@ public interface IParserManager extends IManager, ISocketFieldMapper {
 	public Integer getNextIdParser();
 	public Integer getPrevIdParser();
 	Parser getEntity(Integer id);
+	void commit(History<Parser> history);
 }

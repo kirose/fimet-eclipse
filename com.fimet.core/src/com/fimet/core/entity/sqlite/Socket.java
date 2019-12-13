@@ -43,6 +43,24 @@ public class Socket implements IRuleValue, ISocket {
 	private ISimulator simulator;
 	@DatabaseField(persisterClass=AdapterType.class,canBeNull = false)
 	private IAdapter adapter;
+	
+	public Socket(Integer id, Enviroment enviroment, String name, String address, Integer port, boolean isActive,
+			boolean isServer, boolean isAcquirer, String process, IParser parser, ISimulator simulator,
+			IAdapter adapter) {
+		super();
+		this.id = id;
+		this.enviroment = enviroment;
+		this.name = name;
+		this.address = address;
+		this.port = port;
+		this.isActive = isActive;
+		this.isServer = isServer;
+		this.isAcquirer = isAcquirer;
+		this.process = process;
+		this.parser = parser;
+		this.simulator = simulator;
+		this.adapter = adapter;
+	}
 	public Socket() {}
 	public Integer getId() {
 		return id;
