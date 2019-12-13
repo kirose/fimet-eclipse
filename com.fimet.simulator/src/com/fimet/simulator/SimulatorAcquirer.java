@@ -52,7 +52,7 @@ public class SimulatorAcquirer implements ISimulator {
 		SimulatorMessageAcquirer simulator = this.getSimulatorMessage(message.getMti());
 		if (simulator == null) {
 			Activator.getInstance().error("Simulator Acquirer "+name+" not configured for message: "+message.getMti());
-			return null;
+			return message;
 		} else {
 			return simulator.simulateResponse(message);
 		}
