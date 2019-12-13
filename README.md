@@ -14,7 +14,7 @@ FIMET is a project developed in eclipse and implemented on eclipse 2018-12 for a
 
 **Use Cases:** abstraction of an ISO8583 message for automated test
 
-**Converters:** convertion between ASCII, EBCDIC, HEX, Binary
+**Converters:** conversion between ASCII, EBCDIC, HEX, Binary
 
 **Report:** for display the results of use cases execution
 
