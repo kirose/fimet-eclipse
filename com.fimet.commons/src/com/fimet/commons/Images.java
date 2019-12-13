@@ -41,6 +41,9 @@ public final class Images {
 	public static final ImageDescriptor RUN_USECASE = getImageDescriptor("run_usecase.png");
 	public static final ImageDescriptor VALIDATION_ICON = getImageDescriptor("validation.png");
 	public static final ImageDescriptor DATABASE_ICON = getImageDescriptor("database_view.gif");	
+	public static final ImageDescriptor SAVE_ICON = getImageDescriptor("save_edit.png");
+	public static final ImageDescriptor ARROW_UP_ICON = getImageDescriptor("arrow_up.png");
+	public static final ImageDescriptor ARROW_DOWN_ICON = getImageDescriptor("arrow_down.png");
 	
 	private static ImageDescriptor getImageDescriptor(String file) {
 	    Bundle bundle = FrameworkUtil.getBundle(Images.class);

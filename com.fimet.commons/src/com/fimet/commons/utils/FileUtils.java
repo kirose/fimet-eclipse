@@ -1,4 +1,4 @@
-package com.fimet.commons.io;
+package com.fimet.commons.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,6 +82,22 @@ public final class FileUtils {
 		java.io.OutputStreamWriter out = null;
 		try {
 			out = new java.io.FileWriter(file);
+			out.write(contents == null ? "" : contents);
+		} catch (IOException e) {
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {}
+			}
+		}
+	}
+	public static void appendContents(File file, String contents) {
+		if (file == null || file.isDirectory())
+			return;
+		java.io.OutputStreamWriter out = null;
+		try {
+			out = new java.io.FileWriter(file, true);
 			out.write(contents == null ? "" : contents);
 		} catch (IOException e) {
 		} finally {

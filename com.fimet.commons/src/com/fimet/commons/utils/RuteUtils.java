@@ -4,11 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
 
 import com.fimet.commons.exception.FimetException;
 
@@ -78,7 +75,9 @@ public class RuteUtils {
 		if (ruteEclipsePlugins != null) {
 			return ruteEclipsePlugins;
 		}
-		return ruteEclipsePlugins = getEclipse()+"plugins/";
+		ruteEclipsePlugins = getEclipse()+"plugins/";
+		validateFimetStructure();
+		return ruteEclipsePlugins;
 	}
 	public static String getEclipse() {
 		if (ruteEclipse != null) {
@@ -114,7 +113,26 @@ public class RuteUtils {
 			pluginsInstall = pluginsInstall + "/";
 		}
 		return ruteEclipse = pluginsInstall;
-
+	}
+	private static void validateFimetStructure() {
+		if (createRuteIfNotExists(ruteEclipsePlugins+"com.fimet/")) {
+			createRuteIfNotExists(getSrcPath());
+			createRuteIfNotExists(getBinPath());
+			createRuteIfNotExists(getLibPath());
+			createRuteIfNotExists(getLogsPath());
+			createRuteIfNotExists(getExtractPath());
+			createRuteIfNotExists(getCommandsPath());
+			createRuteIfNotExists(getPersistencePath());
+		}
+	}
+	private static boolean createRuteIfNotExists(String directory) {
+		File file = new File(directory);
+		if (!file.exists()) {
+			String path = file.getAbsolutePath().replace('\\', '/');
+			new File(path).mkdirs();
+			return true;
+		}
+		return false;
 	}
 	public static String getSrcPath() {
 		if (ruteSrc == null) {

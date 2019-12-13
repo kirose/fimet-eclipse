@@ -1,5 +1,11 @@
 package com.fimet.commons.utils;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -145,5 +151,18 @@ public class ViewUtils {
                 window.getShell().getDisplay().asyncExec(() -> finalTarget.selectReveal(selection));
             }
         }
+    }
+    public static void setToClipboard(String value) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection selection = new StringSelection(value);
+        clipboard.setContents(selection, selection);
+    }
+    public static String getFromClipboard() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        try {
+			return (String)clipboard.getData(DataFlavor.stringFlavor);
+		} catch (UnsupportedFlavorException|IOException e) {
+			return null;
+		}
     }
 }

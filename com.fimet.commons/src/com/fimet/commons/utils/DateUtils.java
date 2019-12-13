@@ -12,7 +12,8 @@ import com.fimet.commons.exception.ParserException;
 
 public final class DateUtils {
 	public static final SimpleDateFormat MMddhhmmss_FMT = new SimpleDateFormat("MMddkkmmss");
-	public static final SimpleDateFormat hhmmss_FMT = new SimpleDateFormat("hhmmss");
+	//public static final SimpleDateFormat kkmmss_FMT = new SimpleDateFormat("kkmmss");
+	public static final SimpleDateFormat hhmmss_FMT = new SimpleDateFormat("kkmmss");
 	public static final SimpleDateFormat yyyyMMdd_FMT = new SimpleDateFormat("yyyyMMdd");
 	public static final SimpleDateFormat hh_mm_ss_FMT = new SimpleDateFormat("hh:mm:ss");
 	public static final SimpleDateFormat hhmmss000_FMT = new SimpleDateFormat("hh:mm:ss.000");
