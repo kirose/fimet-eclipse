@@ -2,7 +2,7 @@
 
 ## Finantial Message Transfer
 
-FIMET is an project developed in eclipse and implemented on eclipse 2018-12 for automate tests with ISO8583
+FIMET is a project developed in eclipse and implemented on eclipse 2018-12 for automate tests with ISO8583
 
 ## Some features:
 
