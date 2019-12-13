@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
 import com.fimet.commons.converter.Converter;
+import com.fimet.commons.history.History;
 import com.fimet.commons.preference.IPreference;
 import com.fimet.commons.utils.StringUtils;
 import com.fimet.core.IEnviromentManager;
@@ -31,7 +32,6 @@ import com.fimet.core.ISO8583.parser.Message;
 import com.fimet.core.entity.sqlite.MessageIso;
 import com.fimet.core.entity.sqlite.pojo.MessageIsoParameters;
 import com.fimet.core.impl.Activator;
-import com.fimet.core.impl.preferences.History;
 import com.fimet.core.impl.swt.EnviromentTypeCombo;
 import com.fimet.core.impl.swt.ParserCombo;
 import com.fimet.core.impl.swt.msg.MessageViewer;
@@ -97,7 +97,7 @@ public class MessageIsoViewer extends Composite implements IMessageIsoMonitor {
 			cboEnviroment = new EnviromentTypeCombo(groupSearch);
 			cboEnviroment.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 			if (Manager.get(IEnviromentManager.class).getActive() != null) {
-				cboEnviroment.select(Manager.get(IEnviromentManager.class).getActive().getId());
+				cboEnviroment.select(Manager.get(IEnviromentManager.class).getActive().getIdType());
 			}
 		}
 		if (inputParams == null || inputParams.getIdParser() == null) {
@@ -237,7 +237,8 @@ public class MessageIsoViewer extends Composite implements IMessageIsoMonitor {
 			table = new MessageIsoTable(this, editable, composite, SWT.SINGLE | SWT.H_SCROLL| SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		}
 		
-		
+		getShell().setDefaultButton(btnSearch);
+		txtName.setFocus();
     	hookListeners(editable);
 	}
 	private void hookListeners(boolean editable) {

@@ -26,14 +26,15 @@ import org.eclipse.ui.PlatformUI;
 
 import com.fimet.commons.Color;
 import com.fimet.commons.DefaultStyler;
+import com.fimet.commons.Images;
 import com.fimet.commons.exception.FieldFormatException;
+import com.fimet.commons.history.History;
 import com.fimet.commons.preference.IPreference;
 import com.fimet.core.IRuleManager;
 import com.fimet.core.Manager;
 import com.fimet.core.entity.sqlite.IRuleValue;
 import com.fimet.core.entity.sqlite.Rule;
 import com.fimet.core.impl.Activator;
-import com.fimet.core.impl.preferences.History;
 import com.fimet.core.impl.swt.EnviromentTypeCombo;
 import com.fimet.core.impl.swt.FieldMapperCombo;
 
@@ -60,6 +61,8 @@ public class RulePage extends PreferencePage implements IWorkbenchPreferencePage
 	private FieldMapperCombo cboFieldMapper;
 	private History<Rule> historyRules;
 	private List<IRuleValue> values;
+	Button btnUp;
+	Button btnDown;
 	Button btnApply;
     public RulePage() {
         noDefaultAndApplyButton();
@@ -89,7 +92,7 @@ public class RulePage extends PreferencePage implements IWorkbenchPreferencePage
 		composite.setLayoutData(gd);
 		
         gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
-        layout = new GridLayout(8,true);
+        layout = new GridLayout(16,true);
         layout.marginWidth = 0;
         layout.marginHeight = 0;
         Composite header = new Composite(composite, SWT.NONE);
@@ -107,20 +110,33 @@ public class RulePage extends PreferencePage implements IWorkbenchPreferencePage
 		Label label;
 
 		label = new Label(header, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		label.setText("Enviroment Type:");
 		//label.setBackground(Color.WHITE);
 		label.setToolTipText("The enviroment type");
 		
 		cboEnviromentType = new EnviromentTypeCombo(header);
-
+		cboEnviromentType.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		
 		label = new Label(header, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		label.setText("Field:");
 		//label.setBackground(Color.WHITE);
 		label.setToolTipText("The field to be configured");
 		
 		cboFieldMapper = new FieldMapperCombo(header);
+		cboFieldMapper.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		
+		btnUp = new Button(header, SWT.NONE);
+		btnUp.setImage(Images.ARROW_UP_ICON.createImage());
+		btnUp.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		
+		btnDown = new Button(header, SWT.NONE);
+		btnDown.setImage(Images.ARROW_DOWN_ICON.createImage());
+		btnDown.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		
+		label = new Label(header, SWT.NONE);
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		
 		
         GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
@@ -166,7 +182,23 @@ public class RulePage extends PreferencePage implements IWorkbenchPreferencePage
 		tree.addDoubleClickListener((DoubleClickEvent event)->{
 			onEditRule();
 		});
-        return composite;
+		btnUp.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onUpRule();
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		btnDown.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onDownRule();
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		return composite;
     }
 	public void onNewRule() {
 		RuleDialog dialog = new RuleDialog(
@@ -179,32 +211,41 @@ public class RulePage extends PreferencePage implements IWorkbenchPreferencePage
 			SWT.NONE
 		);
 		dialog.open();
-		Rule sm = dialog.getRule();
-		if (sm != null) {
-			tree.add(null, sm);
-			historyRules.insert(sm);
+		Rule rule = dialog.getRule();
+		if (rule != null) {
+			tree.add(new RuleNode(rule));
+			historyRules.insert(rule);
 		}
 	}
 	public void onNewChildRule() {
-		if (tree.getSelectedNode() == null) {
-			onNewRule();
-		} else {
+		if (tree.getSelectedNode() != null) {
 			RuleNode parent = tree.getSelectedNode();
+			String order;
+			int idOrder;
+			if (parent.hasChildren()) {
+				order = parent.children.get(parent.children.size()-1).rule.getOrder();
+				if (order.indexOf('.') != -1) order = order.substring(order.lastIndexOf('.')+1);
+				idOrder = Integer.parseInt(order)+1;
+			} else {
+				idOrder = 0;
+			}
+			order = parent.rule.getOrder()+"."+String.format("%02d", idOrder);
 			RuleDialog dialog = new RuleDialog(
 				null,
 				cboEnviromentType.getSelected(),
 				cboFieldMapper.getSelected(),
-				tree.getSelectedNode().getRule().getOrder()+"."+
-					String.format("%02d",parent.hasChildren() ? parent.getChildren().length : 0),
+				order,
 				getShell(),
 				values,
 				SWT.NONE
 			);
 			dialog.open();
-			Rule sm = dialog.getRule();
-			if (sm != null) {
-				tree.add(tree.getSelectedNode(), sm);
-				historyRules.insert(sm);
+			Rule rule = dialog.getRule();
+			if (rule != null) {
+				RuleNode node = new RuleNode(rule);
+				parent.add(node);
+				tree.add(node);
+				historyRules.insert(rule);
 			}
 		}
 	}
@@ -222,11 +263,9 @@ public class RulePage extends PreferencePage implements IWorkbenchPreferencePage
 			dialog.open();
 			Rule sm = dialog.getRule();
 			if (sm != null) {
-				tree.update(tree.getSelectedParentNode(), sm);
+				tree.update(tree.getSelectedNode());
 				historyRules.update(sm);
 			}
-		} else {
-			onNewRule();
 		}
 	}
 	public void onDeleteRule() {
@@ -235,6 +274,24 @@ public class RulePage extends PreferencePage implements IWorkbenchPreferencePage
 			if (askDeleteRule(p)) {
 				delete(tree.getSelectedNode());
 				tree.delete(tree.getSelectedParentNode(), tree.getSelectedNode());
+			}
+		}
+	}
+	public void onUpRule() {
+		if (tree.getSelected() != null) {
+			Rule[] rules = tree.up(tree.getSelectedNode());
+			if (rules != null) {
+				historyRules.update(rules[0]);
+				historyRules.update(rules[1]);
+			}
+		}
+	}
+	public void onDownRule() {
+		if (tree.getSelected() != null) {
+			Rule[] rules = tree.down(tree.getSelectedNode());
+			if (rules != null) {
+				historyRules.update(rules[0]);
+				historyRules.update(rules[1]);
 			}
 		}
 	}
@@ -261,7 +318,7 @@ public class RulePage extends PreferencePage implements IWorkbenchPreferencePage
 		}
     }
 	public void commit() {
-		ruleManager.commit(historyRules.getDeletes(), historyRules.getSaves());
+		ruleManager.commit(historyRules);
 		historyRules = new History<Rule>();
 	}
 	private boolean askDeleteRule(Rule node) {

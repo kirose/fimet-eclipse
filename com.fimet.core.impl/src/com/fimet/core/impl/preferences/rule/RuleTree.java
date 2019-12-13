@@ -165,6 +165,18 @@ class RuleTree extends TreeViewer {
             	page.onDeleteRule();
             }
         });
+        contextMenu.add(new Action("Up Rule") {
+            @Override
+            public void run() {
+            	page.onUpRule();
+            }
+        });
+        contextMenu.add(new Action("Down Rule") {
+            @Override
+            public void run() {
+            	page.onDownRule();
+            }
+        });
     }
     public TreeItem getTreeItem(RuleNode node) {
     	if (node == null) {
@@ -276,41 +288,23 @@ class RuleTree extends TreeViewer {
     	}
     	return null;
     }
-	public int indexOf(Rule rule) {
-		int i = 0;
-		for (RuleNode node : roots) {
-			if (node.rule.equals(rule)) {
-				return i;
+    public void add(RuleNode rule) {
+		if (rule.parent == null) {
+			if (!roots.contains(rule)) {
+				roots.add(rule);
 			}
-			i++;
-		}
-		return -1;
-	}
-    public void add(RuleNode parent, Rule v) {
-    	RuleNode node;
-		if (parent == null) {
-			int index = indexOf(v);
-			if (index == -1) {
-				roots.add(node = new RuleNode(v));
-				setInput(roots);
-			} else {
-				node = roots.get(index);
-			}
-		} else {
-			node = parent.add(new RuleNode(v));
 		}
 		refresh();
 		getTree().deselectAll();
-		TreeItem item = getTreeItem(node);
+		TreeItem item = getTreeItem(rule);
 		if (item != null)
 			getTree().select(item);
 	}
-    public void update(RuleNode parent, Rule v) {
-    	RuleNode node = parent != null ? parent.getNode(v) : null;
-    	node.updateLabels();
+    public void update(RuleNode rule) {
+    	rule.updateLabels();
 		refresh();
 		getTree().deselectAll();
-		TreeItem item = getTreeItem(node);
+		TreeItem item = getTreeItem(rule);
 		if (item != null)
 			getTree().select(item);
 	}
@@ -328,5 +322,73 @@ class RuleTree extends TreeViewer {
 	}
 	public List<RuleNode> getRoots(){
 		return roots;
+	}
+	public Rule[] up(RuleNode rule) {
+		TreeItem[] items = findLevel(getTree().getItems(), rule);
+		int i;
+		if (items != null && (i = contains(items, rule)) != -1 && i > 0) {
+			Rule[] rules = permute(items, i, i-1);
+			refresh();
+			getTree().deselectAll();
+			TreeItem item = getTreeItem(rule);
+			if (item != null)
+				getTree().select(item);
+			return rules;
+		}
+		return null;
+	}
+	public Rule[] down(RuleNode rule) {
+		TreeItem[] items = findLevel(getTree().getItems(), rule);
+		int i;
+		if (items != null && (i = contains(items, rule)) != -1 && i <= items.length) {
+			Rule[] rules = permute(items, i, i+1);
+			refresh();
+			getTree().deselectAll();
+			TreeItem item = getTreeItem(rule);
+			if (item != null)
+				getTree().select(item);
+			return rules;
+		}
+		return null;
+	}
+	private TreeItem[] findLevel(TreeItem[] items, RuleNode rule) {
+		if (contains(items, rule) != -1) {
+			return items;
+		}
+		TreeItem[] found;
+		for (TreeItem item : items) {
+			if (item.getItemCount() > 0 && (found = findLevel(item.getItems(), rule)) != null) {
+				return found;
+			}
+		}
+		return null;
+	}
+	private Rule[] permute(TreeItem[] items, int i, int j) {
+		if (items != null && items.length > 0 && i != j && i >= 0 && i < items.length && j >= 0 && j < items.length) {
+			RuleNode rule1 = (RuleNode)items[i].getData();
+			String order1 = rule1.rule.getOrder();
+			RuleNode rule2 = (RuleNode)items[j].getData();
+			rule1.rule.setOrder(rule2.rule.getOrder());
+			rule2.rule.setOrder(order1);
+			items[j].setData(rule1);
+			items[i].setData(rule2);
+			if (rule1.parent == null) {
+				roots.set(i, rule2);
+				roots.set(j, rule1);
+			} else {
+				rule1.parent.children.set(i, rule2);
+				rule1.parent.children.set(j, rule1);
+			}
+			return new Rule[] {rule1.rule, rule2.rule};
+		}
+		return null;
+	}
+	private int contains(TreeItem[] items, RuleNode rule) {
+		int i = 0;
+		for (TreeItem item : items) {
+			if (item.getData() == rule) return i;
+			i++;
+		}
+		return -1;
 	}
 }

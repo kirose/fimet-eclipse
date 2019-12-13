@@ -103,14 +103,13 @@ public class MessageIsoSearchDialog extends TrayDialog {
         
 		btnOk = new Button(compositeBtns, SWT.NONE);
 		btnOk.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		btnOk.setText("OK");
-		btnOk.setFocus();
+		btnOk.setText("Select");
 		
 		btnCancel = new Button(compositeBtns, SWT.NONE);
 		btnCancel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		btnCancel.setText("Cancel");
 		
-		shell.setDefaultButton(btnOk);
+		//shell.setDefaultButton(btnOk);
 		
 		btnOk.addSelectionListener(new SelectionListener() {
 			@Override

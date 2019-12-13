@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import com.fimet.commons.Color;
 import com.fimet.commons.Images;
 import com.fimet.commons.utils.StringUtils;
 import com.fimet.core.IEnviromentManager;
@@ -98,18 +99,21 @@ public class EnviromentDialog extends Dialog implements DisposeListener {
 	
     private void createControls(Composite parent) {
 
+    	parent.setBackground(Color.WHITE);
 		GridLayout layout = new GridLayout(3,true);
         layout.horizontalSpacing = 10;
         layout.marginWidth = 10;
         
         Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(layout);
+		composite.setBackground(parent.getBackground());
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		Label label;
 
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(composite.getBackground());
 		label.setText("Id:");
 
 		txtId = new TextDecorate(composite, SWT.NONE | SWT.BORDER);
@@ -120,6 +124,7 @@ public class EnviromentDialog extends Dialog implements DisposeListener {
 		
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(composite.getBackground());
 		label.setText("Name:");
 
 		txtName = new TextDecorate(composite, SWT.NONE | SWT.BORDER);
@@ -133,6 +138,7 @@ public class EnviromentDialog extends Dialog implements DisposeListener {
 
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(composite.getBackground());
 		label.setText("Enviroment Type:");
 		label.setToolTipText("Select the enviroment, POS, ATM, ...");
 		
@@ -146,10 +152,11 @@ public class EnviromentDialog extends Dialog implements DisposeListener {
 
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(composite.getBackground());
 		label.setText("Data Base:");
 		label.setToolTipText("Select the database");
 		
-    	cboDataBase = new DataBaseCombo(composite);
+    	cboDataBase = new DataBaseCombo(composite, true);
     	cboDataBase.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
     	cboDataBase.getCombo().addModifyListener((ModifyEvent e) -> {
 			handleButtons();
@@ -157,6 +164,7 @@ public class EnviromentDialog extends Dialog implements DisposeListener {
     	
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(composite.getBackground());
 		label.setText("Application Path:");
 
 		txtPath = new TextDecorate(composite, SWT.NONE | SWT.BORDER);
@@ -172,15 +180,18 @@ public class EnviromentDialog extends Dialog implements DisposeListener {
     	layout.marginWidth = 0;
         Composite cmpFtp = new Composite(composite, SWT.NONE);
 		cmpFtp.setLayout(layout);
+		cmpFtp.setBackground(composite.getBackground());
 		cmpFtp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
     	
 		label = new Label(cmpFtp, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		label.setBackground(composite.getBackground());
 		label.setText("FTP:");
 		label.setToolTipText("Select the FTP connection");
 		
     	btnIsLocal = new Button(cmpFtp, SWT.CHECK);
     	btnIsLocal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+    	btnIsLocal.setBackground(composite.getBackground());
     	btnIsLocal.setText("Local");
     	btnIsLocal.addSelectionListener(new SelectionListener() {
 			@Override
@@ -198,6 +209,7 @@ public class EnviromentDialog extends Dialog implements DisposeListener {
 		});
     	
     	btnAutoconnect = new Button(composite, SWT.CHECK);
+    	btnAutoconnect.setBackground(composite.getBackground());
     	btnAutoconnect.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
     	btnAutoconnect.setText("Autostart");
     	btnAutoconnect.addSelectionListener(new SelectionListener() {
@@ -218,6 +230,7 @@ public class EnviromentDialog extends Dialog implements DisposeListener {
         layout.marginWidth = 10;
         
         Composite compositeBtns = new Composite(composite, SWT.NONE);
+        compositeBtns.setBackground(composite.getBackground());
         compositeBtns.setLayout(layout);
         compositeBtns.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
     	

@@ -21,8 +21,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 
-import com.fimet.commons.io.FileUtils;
 import com.fimet.commons.utils.ByteUtils;
+import com.fimet.commons.utils.FileUtils;
 import com.fimet.core.Manager;
 import com.fimet.core.ISO8583.parser.IMessage;
 import com.fimet.core.impl.swt.AcquirerCombo;
@@ -62,7 +62,7 @@ public class SimQueueView extends ViewPart implements IMessengerConnected, IMess
 		Label lbl;
 		GridLayout layout;
         Composite composite = new Composite(parent, SWT.NONE);
-        composite.setLayout(new GridLayout(4,true));
+        composite.setLayout(new GridLayout(4,false));
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         composite.setBackground(Color.WHITE);
         
@@ -75,7 +75,7 @@ public class SimQueueView extends ViewPart implements IMessengerConnected, IMess
 
 		
         cboAcquirer = new AcquirerCombo(composite);
-        cboAcquirer.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+        cboAcquirer.getCombo().setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, true, false, 2, 1));
 
         Composite compositeTree = new Composite(composite, SWT.NONE);
         compositeTree.setBackground(Color.WHITE);

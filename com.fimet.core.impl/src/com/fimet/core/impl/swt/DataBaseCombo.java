@@ -1,5 +1,6 @@
 package com.fimet.core.impl.swt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -13,15 +14,15 @@ import com.fimet.core.entity.sqlite.DataBase;
 public class DataBaseCombo extends VCombo {
 	private static final DataBase NONE = new DataBase(-1,"None");
 	private List<DataBase> items;  
-	public DataBaseCombo(Composite parent, int style) {
+	public DataBaseCombo(Composite parent, boolean enableDeselect, int style) {
 		super(parent, style);
-		init();
+		init(enableDeselect);
 	}
-	public DataBaseCombo(Composite parent) {
+	public DataBaseCombo(Composite parent, boolean enableDeselect) {
 		super(parent);
-		init();
+		init(enableDeselect);
 	}
-	private void init() {
+	private void init(boolean enableDeselect) {
 		getCombo().setText("Select Data Base");
 		setContentProvider(ArrayContentProvider.getInstance());
 		setLabelProvider(new LabelProvider() {
@@ -35,10 +36,8 @@ public class DataBaseCombo extends VCombo {
 		    }
 		});
 		items = findItems();
-		if (items == null) {
-			items = new java.util.ArrayList<>();
-		}
-		items.add(0,NONE);
+		if (items == null) items = new ArrayList<>();
+		if (enableDeselect) items.add(0,NONE);
 		setInput(items);
 	}
 	protected List<DataBase> findItems(){

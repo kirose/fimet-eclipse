@@ -1,7 +1,5 @@
 package com.fimet.core.impl.preferences.socket;
 
-import java.util.List;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -22,12 +20,12 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 
 import com.fimet.commons.exception.FieldFormatException;
+import com.fimet.commons.history.History;
 import com.fimet.commons.preference.IPreference;
 import com.fimet.core.ISocketManager;
 import com.fimet.core.Manager;
 import com.fimet.core.entity.sqlite.Socket;
 import com.fimet.core.impl.Activator;
-import com.fimet.core.impl.preferences.HistoryGroup;
 /**
  * 
  * @author Marco A. Salazar
@@ -38,11 +36,11 @@ public class SocketPage extends PreferencePage implements IWorkbenchPreferencePa
 	public static final String ID = "com.fimet.preferences.SocketPage";
 	private SocketTable table;
 	private ISocketManager socketManager = Manager.get(ISocketManager.class);
-	private HistoryGroup<Socket> historySocket;
+	private History<Socket> historySocket;
 	Button btnApply;
     public SocketPage() {
         noDefaultAndApplyButton();
-        historySocket = new HistoryGroup<Socket>();
+        historySocket = new History<Socket>();
     }
 
     @Override
@@ -102,7 +100,7 @@ public class SocketPage extends PreferencePage implements IWorkbenchPreferencePa
 		Socket sm = dialog.getSocket();
 		if (sm != null) {
 			table.add(sm);
-			historySocket.insert(sm.getId(), sm);
+			historySocket.insert(sm);
 		}
 	}
 	public void onEdit() {
@@ -112,7 +110,7 @@ public class SocketPage extends PreferencePage implements IWorkbenchPreferencePa
 			Socket sm = dialog.getSocket();
 			if (sm != null) {
 				table.update(sm);
-				historySocket.update(sm.getId(), sm);
+				historySocket.update(sm);
 			}
 		} else {
 			onNew();
@@ -123,7 +121,7 @@ public class SocketPage extends PreferencePage implements IWorkbenchPreferencePa
 			Socket p = table.getSelected();
 			if (askDeleteSocket(p)) {
 				table.delete(p);
-				historySocket.delete(p.getId(), p);
+				historySocket.delete(p);
 			}
 		}
 	}
@@ -142,17 +140,8 @@ public class SocketPage extends PreferencePage implements IWorkbenchPreferencePa
 		}
     }
 	public void commit() {
-		List<Socket> deletesMessages = historySocket.getDeletes();
-		for (Socket m : deletesMessages) {
-			socketManager.delete(m);
-		}
-		List<Socket> savesMessages = historySocket.getSaves();
-		for (Socket m : savesMessages) {
-			socketManager.save(m);
-		}
-		List<Integer> ids = historySocket.getIds();
-		socketManager.free(ids);
-		historySocket = new HistoryGroup<Socket>();
+		socketManager.commit(historySocket);
+		historySocket = new History<Socket>();
 	}
 	private boolean askDeleteSocket(Socket node) {
 		//IPreferenceStore store = IDEWorkbenchPlugin.getDefault().getPreferenceStore();

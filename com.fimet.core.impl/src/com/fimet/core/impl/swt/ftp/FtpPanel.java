@@ -14,10 +14,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
+import com.fimet.commons.history.History;
 import com.fimet.commons.utils.ThreadUtils;
 import com.fimet.core.Manager;
 import com.fimet.core.entity.sqlite.Ftp;
-import com.fimet.core.impl.preferences.History;
 import com.fimet.core.listener.IFtpConnected;
 import com.fimet.core.listener.IFtpConnecting;
 import com.fimet.core.listener.IFtpDeleted;

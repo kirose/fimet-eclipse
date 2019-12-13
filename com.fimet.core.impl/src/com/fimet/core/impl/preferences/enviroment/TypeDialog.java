@@ -104,7 +104,7 @@ class TypeDialog extends TrayDialog implements DisposeListener {
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		label.setText("Name:");
 		label.setBackground(Color.WHITE);
-		label.setToolTipText("The input name. It will be included in the FIMET report.");
+		label.setToolTipText("The name of the enviroment type");
 
 		txtName = new VText(composite, SWT.BORDER);
 		txtName.setBackground(Color.WHITE);

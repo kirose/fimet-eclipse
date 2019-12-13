@@ -36,8 +36,8 @@ public class SimulatorCombo extends VCombo {
 		simulators = SimulatorDAO.getInstance().findAll();
 		acquirers = new ArrayList<>();
 		issuers = new ArrayList<>();
-		if (simulators != null) {
-			for (Simulator simulator : acquirers) {
+		if (simulators != null && !simulators.isEmpty()) {
+			for (Simulator simulator : simulators) {
 				if (simulator.getType() == Simulator.ACQUIRER) {
 					acquirers.add(simulator);
 				} else {
@@ -45,7 +45,7 @@ public class SimulatorCombo extends VCombo {
 				}
 			}
 		}
-		setInput(simulators);
+		setInput(acquirers);
 	}
 	public Simulator getSelected() {
 		if (getStructuredSelection() != null) {
@@ -69,9 +69,9 @@ public class SimulatorCombo extends VCombo {
 		}
 	}
 	public void loadAcquirers() {
-		setInput(acquirers);
+		setInput(simulators = acquirers);
 	}
 	public void loadIssuers() {
-		setInput(issuers);
+		setInput(simulators = issuers);
 	}
 }

@@ -58,7 +58,7 @@ public class SocketView extends ViewPart implements IMessengerMonitor, ISocketIn
 	private MachineAction machineAction;
 	private IContextService contextService;
     private IContextActivation activeContext;
-    private static IMessengerManager messengerManager = Manager.get(IMessengerManager.class);
+    private IMessengerManager messengerManager = Manager.get(IMessengerManager.class);
     
 	public SocketView() {
 		super();
@@ -237,7 +237,7 @@ public class SocketView extends ViewPart implements IMessengerMonitor, ISocketIn
 			SocketDialog dialog = new SocketDialog(table.getSelectedSocket(), this.getSite().getShell(), SWT.NONE);
 			dialog.open();
 			if (dialog.getSocket() != null) {
-				Manager.get(ISocketManager.class).save(dialog.getSocket());
+				Manager.get(ISocketManager.class).update(dialog.getSocket());
 			}
 		}
 	}

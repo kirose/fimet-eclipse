@@ -110,7 +110,7 @@ class FieldDialog extends TrayDialog {
 		label.setText("Value*:");
 		label.setBackground(Color.WHITE);
 		// label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setToolTipText("The input name. It will be included in the FIMET report.");
+		label.setToolTipText("The field value");
 
 		cboType = new KeyValueCombo<Character>(composite);
 		cboType.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));

@@ -8,7 +8,7 @@ import org.eclipse.core.resources.IResource;
 import com.fimet.commons.console.Console;
 import com.fimet.commons.exception.ParserException;
 import com.fimet.commons.exception.UseCaseException;
-import com.fimet.commons.io.FileUtils;
+import com.fimet.commons.utils.FileUtils;
 import com.fimet.core.IUseCaseManager;
 import com.fimet.core.IValidatorManager;
 import com.fimet.core.Manager;

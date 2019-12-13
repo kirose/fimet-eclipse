@@ -37,7 +37,7 @@ public class KeyValueCombo<T> extends VCombo {
 	}
 	@SuppressWarnings("unchecked")
 	public T getSelected() {
-		if (getStructuredSelection() != null) {
+		if (getStructuredSelection() != null && getStructuredSelection().getFirstElement() != null) {
 			return ((Option)getStructuredSelection().getFirstElement()).value;
 		} else {
 			return null;

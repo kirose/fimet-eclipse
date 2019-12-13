@@ -21,13 +21,13 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.fimet.commons.Color;
+import com.fimet.commons.history.HistoryGroup;
 import com.fimet.commons.preference.IPreference;
 import com.fimet.core.ISimulatorManager;
 import com.fimet.core.Manager;
 import com.fimet.core.entity.sqlite.Simulator;
 import com.fimet.core.entity.sqlite.SimulatorMessage;
 import com.fimet.core.impl.Activator;
-import com.fimet.core.impl.preferences.HistoryGroup;
 import com.fimet.persistence.sqlite.dao.SimulatorMessageDAO;
 
 public class SimulatorPage extends PreferencePage implements IWorkbenchPreferencePage {

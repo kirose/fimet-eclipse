@@ -15,7 +15,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 //import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 
-import com.fimet.core.impl.swt.field.FieldDefinitionPanel;
+import com.fimet.core.impl.swt.format.FieldDefinitionPanel;
 
 public class FieldDefinitionPage extends PreferencePage implements IWorkbenchPreferencePage {
 	public static final String ID = "com.fimet.preferences.FieldDefinitionPage";

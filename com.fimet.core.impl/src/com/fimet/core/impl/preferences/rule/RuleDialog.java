@@ -124,7 +124,7 @@ class RuleDialog extends TrayDialog implements DisposeListener {
 		label.setText("Property*:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setToolTipText("The input name. It will be included in the FIMET report.");
+		label.setToolTipText("Enter the name of a socket property like address, port, name");
 		
 		txtProperty = new TextDecorate(composite, SWT.BORDER);
 		txtProperty.setBackground(Color.WHITE);
@@ -136,7 +136,6 @@ class RuleDialog extends TrayDialog implements DisposeListener {
 		label.setText("Operator*:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setToolTipText("The field format group");
 		
 		cboOperator = new KeyValueCombo<Character>(composite);
 		cboOperator.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -149,7 +148,7 @@ class RuleDialog extends TrayDialog implements DisposeListener {
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		label.setText("Pattern*:");
 		label.setBackground(Color.WHITE);
-		label.setToolTipText("The pattern expected");
+		label.setToolTipText("The pattern or value expected");
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		
 		txtPattern = new TextDecorate(composite, SWT.BORDER);
@@ -173,7 +172,7 @@ class RuleDialog extends TrayDialog implements DisposeListener {
 		label.setText("Value*:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setToolTipText("The value");
+		label.setToolTipText("The value that will be assigned");
 		
 		cboValues = new RuleValueCombo(composite);
 		cboValues.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));

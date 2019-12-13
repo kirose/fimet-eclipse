@@ -308,9 +308,9 @@ public class ReportXlsx implements IReport {
 	private void createSheetSummary(XSSFSheet sheet) {
 
 		try {
-			InputStream in = ReportXlsx.class.getResourceAsStream("/icons/EGlobal.png");
+			InputStream in = ReportXlsx.class.getResourceAsStream("/icons/fimet_logo.png");
 			if (in == null) {
-				in = new FileInputStream("icons/EGlobal.png");
+				in = new FileInputStream("icons/fimet_logo.png");
 			}
 			if (in != null) {
 				CreationHelper helper = workbook.getCreationHelper();
@@ -320,7 +320,7 @@ public class ReportXlsx implements IReport {
 				//anchor.setAnchorType(AnchorType.MOVE_AND_RESIZE);
 				anchor.setAnchorType(AnchorType.MOVE_DONT_RESIZE);
 				anchor.setCol1(1);
-				anchor.setRow1(1);
+				anchor.setRow1(2);
 				//anchor.setRow2(1);
 				//anchor.setCol2(1);
 				Picture pict = drawing.createPicture(anchor, pictureIndex);
@@ -334,7 +334,7 @@ public class ReportXlsx implements IReport {
         XSSFRow row;
         XSSFCell cell;
         
-        int numRow = 9;
+        int numRow = 4;
         int colOffset = 1;
 
         //sheet.setColumnWidth(colOffset+0, 30*256);

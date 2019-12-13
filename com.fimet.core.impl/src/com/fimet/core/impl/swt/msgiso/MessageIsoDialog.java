@@ -27,7 +27,7 @@ import com.fimet.core.entity.sqlite.pojo.MessageIsoType;
 import com.fimet.core.impl.swt.EnviromentTypeCombo;
 import com.fimet.core.impl.swt.ParserCombo;
 import com.fimet.core.impl.swt.TextDecorate;
-import com.fimet.core.impl.swt.msg.IMessageMonitor;
+import com.fimet.core.impl.swt.msg.IMessageContainer;
 import com.fimet.core.impl.swt.msg.MessageViewer;
 import com.fimet.core.net.ISocket;
 import com.fimet.parser.util.ParserUtils;
@@ -40,7 +40,7 @@ import com.fimet.parser.util.ParserUtils;
  * @email marcoasb99@ciencias.unam.mx
  *
  */
-public class MessageIsoDialog extends TrayDialog implements IMessageMonitor {
+public class MessageIsoDialog extends TrayDialog implements IMessageContainer {
 	public MessageIsoDialog(MessageIso iso, Shell shell,  int style) {
 		super(shell);
 		this.input = iso;

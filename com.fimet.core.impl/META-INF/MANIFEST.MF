@@ -38,7 +38,8 @@ Require-Bundle: org.eclipse.ui,
  com.ibm.icu,
  org.eclipse.equinox.registry,
  com.google.gson,
- org.eclipse.ui.workbench
+ org.eclipse.ui.workbench,
+ org.sqlite.persistence;bundle-version="1.0.0"
 Export-Package: com.fimet.core.impl,
  com.fimet.core.impl.commands,
  com.fimet.core.impl.commands.parser,

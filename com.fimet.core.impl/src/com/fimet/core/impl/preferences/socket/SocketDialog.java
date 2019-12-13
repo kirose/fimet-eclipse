@@ -106,8 +106,8 @@ class SocketDialog extends TrayDialog implements DisposeListener {
 		Label label;
 
 		label = new Label(composite, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		label.setText("Socket id*:");
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setText("Id*:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(Color.WHITE);
 		label.setToolTipText("The socket id");
@@ -115,124 +115,130 @@ class SocketDialog extends TrayDialog implements DisposeListener {
 		txtId = new TextDecorate(composite, SWT.BORDER);
 		txtId.setBackground(Color.WHITE);
 		txtId.setEnabled(false);
-		txtId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		txtId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 		label = new Label(composite, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		label.setText("Enviroment*:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(Color.WHITE);
 		label.setToolTipText("The enviroment owner");
 		
 		cboEnviroment = new EnviromentCombo(composite);
-		cboEnviroment.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		cboEnviroment.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		
 		label = new Label(composite, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		label.setText("Socket Name*:");
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setText("Name*:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		label.setToolTipText("The socket name.");
 		
 		txtName = new TextDecorate(composite, SWT.BORDER);
 		txtName.setBackground(Color.WHITE);
-		txtName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		txtName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		txtName.setValidator((String text)->{return text.trim().length() > 0;});
 
 		label = new Label(composite, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		label.setText("Socket Address*:");
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setText("Address*:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		label.setToolTipText("The socket address.");
 		
 		txtAddress = new TextDecorate(composite, SWT.BORDER);
 		txtAddress.setBackground(Color.WHITE);
-		txtAddress.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		txtAddress.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		txtAddress.setValidator((String text)->{return text.trim().length() > 0;});
 		
 		label = new Label(composite, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		label.setText("Socket Port*:");
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setText("Port*:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		label.setToolTipText("The socket port.");
 		
 		txtPort = new TextDecorate(composite, SWT.BORDER);
 		txtPort.setBackground(Color.WHITE);
-		txtPort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		txtPort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		txtPort.setValidator((String text)->{return text.trim().length() > 0;});
 		
 		label = new Label(composite, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		label.setText("Socket Process*:");
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setText("Process*:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		label.setToolTipText("The socket process.");
 		
 		txtProcess = new TextDecorate(composite, SWT.BORDER);
 		txtProcess.setBackground(Color.WHITE);
-		txtProcess.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		txtProcess.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		txtProcess.setValidator((String text)->{return text.trim().length() > 0;});
 
 		label = new Label(composite,SWT.NONE);
 		label.setText("Adapter:");
 		label.setBackground(Color.WHITE);
-		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 2, 1));
+		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 1, 1));
 		
 		cboAdapter = new AdapterStreamCombo(composite);
-		cboAdapter.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		cboAdapter.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		
 		label = new Label(composite,SWT.NONE);
 		label.setText("Parser:");
 		label.setBackground(Color.WHITE);
-		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 2, 1));
+		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 1, 1));
 		
 		cboParser = new ParserCombo(composite, IParser.ISO8583);
-		cboParser.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		cboParser.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		
 		label = new Label(composite,SWT.NONE);
 		label.setText("Simulator:");
 		label.setBackground(Color.WHITE);
-		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 2, 1));
+		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 1, 1));
 		
-		cboSimulator = new SimulatorCombo(composite);
-		cboSimulator.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+        Composite cmpSim = new Composite(composite, SWT.NONE);
+        GridLayout layout = new GridLayout(9,true);
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+		cmpSim.setLayout(layout);
+		cmpSim.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+		cmpSim.setBackground(Color.WHITE);
 		
+		btnIsAcquirer = new Button(cmpSim, SWT.CHECK);
+		btnIsAcquirer.setText("Acquirer");
+		btnIsAcquirer.setSelection(false);
+		btnIsAcquirer.setBackground(Color.WHITE);
+		btnIsAcquirer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		
+		cboSimulator = new SimulatorCombo(cmpSim);
+		cboSimulator.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));
 		
 		label = new Label(composite,SWT.NONE);
 		label.setText("");
 		label.setBackground(Color.WHITE);
-		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 2, 1));
+		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 1, 1));
 		
 		btnIsActive = new Button(composite, SWT.CHECK);
 		btnIsActive.setText("Is Active?");
 		btnIsActive.setSelection(false);
 		btnIsActive.setBackground(Color.WHITE);
-		btnIsActive.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		btnIsActive.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 		label = new Label(composite,SWT.NONE);
 		label.setText("");
 		label.setBackground(Color.WHITE);
-		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 2, 1));
-		
-		btnIsAcquirer = new Button(composite, SWT.CHECK);
-		btnIsAcquirer.setText("Is Acquirer?");
-		btnIsAcquirer.setSelection(false);
-		btnIsAcquirer.setBackground(Color.WHITE);
-		btnIsAcquirer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		
-		label = new Label(composite,SWT.NONE);
-		label.setText("");
-		label.setBackground(Color.WHITE);
-		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 2, 1));
+		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 1, 1));
 		
 		btnIsServer = new Button(composite, SWT.CHECK);
 		btnIsServer.setText("Is Server?");
 		btnIsServer.setSelection(false);
 		btnIsServer.setBackground(Color.WHITE);
-		btnIsServer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		btnIsServer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		
+		label = new Label(composite,SWT.NONE);
+		label.setText("");
+		label.setBackground(Color.WHITE);
+		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 4, 1));
 		
 		btnOk = new Button(composite, SWT.NONE);
 		btnOk.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -263,8 +269,8 @@ class SocketDialog extends TrayDialog implements DisposeListener {
 				output.setIsServer(btnIsServer.getSelection());
 				output.setIsAcquirer(btnIsAcquirer.getSelection());
 				output.setAdapter(cboAdapter.getSelected());
-				output.setParser(Manager.get(IParserManager.class).getParser(cboParser.getSelected().getId()));
-				output.setSimulator(Manager.get(ISimulatorManager.class).getSimulator(cboSimulator.getSelected().getId()));
+				output.setParser(Manager.get(IParserManager.class).getParser(cboParser.getSelected()));
+				output.setSimulator(Manager.get(ISimulatorManager.class).getSimulator(cboSimulator.getSelected()));
 				shell.close();
 				shell.dispose();
 			}
@@ -357,7 +363,7 @@ class SocketDialog extends TrayDialog implements DisposeListener {
     		cboParser.invalid();
     		cboSimulator.invalid();
     		btnOk.setEnabled(false);
-    	}		
+    	}
 	}
     private boolean isValid() {
     	return  txtId.isValid() &&

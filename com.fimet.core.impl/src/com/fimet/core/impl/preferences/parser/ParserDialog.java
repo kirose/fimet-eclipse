@@ -119,7 +119,7 @@ class ParserDialog extends TrayDialog implements DisposeListener {
 		label.setText("Parser Name*:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setToolTipText("The input name. It will be included in the FIMET report.");
+		label.setToolTipText("The parser name");
 		
 		txtName = new TextDecorate(composite, SWT.BORDER);
 		txtName.setBackground(Color.WHITE);
@@ -154,7 +154,7 @@ class ParserDialog extends TrayDialog implements DisposeListener {
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		label.setToolTipText("The field format group");
 		
-		cboFieldGroup = new FieldFormatGroupCombo(composite);
+		cboFieldGroup = new FieldFormatGroupCombo(composite, false);
 		cboFieldGroup.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		
 		label = new Label(composite, SWT.NONE);

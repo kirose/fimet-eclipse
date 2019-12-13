@@ -4,6 +4,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,7 +31,7 @@ import com.fimet.core.impl.swt.TextDecorate;
  *
  */
 public class FimetPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
-	private static IPreferencesManager preferencesManager = Manager.get(IPreferencesManager.class);
+	private IPreferencesManager preferencesManager = Manager.get(IPreferencesManager.class);
 	public static final String ID = "com.fimet.preferences.FimetPreferences";
 	private TextDecorate txtBdk;
 	private Button btnLevelInfo;
@@ -49,6 +51,7 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
 	private Button btnExtractorEnable;
 	private TextDecorate txtExtractorGarbageCycle;
 	private TextDecorate txtExtractorReacerCycle;
+	private Button btnApply;
 	
     public FimetPreferencePage() {
         noDefaultAndApplyButton();
@@ -72,7 +75,7 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
         
 		layout = new GridLayout();
         layout.numColumns = 1;
-        gd = new GridData(SWT.FILL, SWT.CENTER, true, true);
+        gd = new GridData(SWT.FILL, SWT.FILL, true, true);
         gd.heightHint = 300;
         Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(layout);
@@ -93,7 +96,7 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
 		label.setText("BDK:");
 
 		txtBdk = new TextDecorate(groupEncrypt, SWT.BORDER);
-		txtBdk.setText(preferencesManager.getString(IPreferencesManager.BDK));
+		txtBdk.setText(preferencesManager.getString(IPreferencesManager.BDK, "0123456789ABCDEFFEDCBA9876543210"));
 		txtBdk.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		txtBdk.setValidator((String value)->{return value != null && value.length() > 0;});
 		txtBdk.addModifyListener((ModifyEvent e) -> {txtBdk.validateAndMark();});
@@ -106,28 +109,24 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
         groupConsole.setText("Trace Level");
         groupConsole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         groupConsole.setLayout(layout);
-        int level = preferencesManager.getInt(IPreferencesManager.CONSOLE_LEVEL);
+        int level = preferencesManager.getInt(IPreferencesManager.CONSOLE_LEVEL, Console.INFO | Console.WARNING | Console.ERROR);
         btnLevelInfo = new Button(groupConsole, SWT.CHECK);
         btnLevelInfo.setText("INFO");
-        btnLevelInfo.setSelection(preferencesManager.getBoolean(IPreferencesManager.VALIDATE_TYPES_FIELD_FORMAT));
         btnLevelInfo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         btnLevelInfo.setSelection((level & Console.INFO) > 0);
 
         btnLevelWarning = new Button(groupConsole, SWT.CHECK);
         btnLevelWarning.setText("WARNING");
-        btnLevelWarning.setSelection(preferencesManager.getBoolean(IPreferencesManager.VALIDATE_TYPES_FIELD_FORMAT));
         btnLevelWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         btnLevelWarning.setSelection((level & Console.WARNING) > 0);
         
         btnLevelError = new Button(groupConsole, SWT.CHECK);
         btnLevelError.setText("ERROR");
-        btnLevelError.setSelection(preferencesManager.getBoolean(IPreferencesManager.VALIDATE_TYPES_FIELD_FORMAT));
         btnLevelError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         btnLevelError.setSelection((level & Console.ERROR) > 0);
         
         btnLevelDebug = new Button(groupConsole, SWT.CHECK);
         btnLevelDebug.setText("DEBUG");
-        btnLevelDebug.setSelection(preferencesManager.getBoolean(IPreferencesManager.VALIDATE_TYPES_FIELD_FORMAT));
         btnLevelDebug.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         btnLevelDebug.setSelection((level & Console.DEBUG) > 0);
         
@@ -144,26 +143,26 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
 		
 		btnSimQueueWriteAcquirer = new Button(groupDates, SWT.CHECK);
 		btnSimQueueWriteAcquirer.setText("Generate On Write Acqurier");
-		btnSimQueueWriteAcquirer.setSelection(preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ACQUIRER));
+		btnSimQueueWriteAcquirer.setSelection(preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ACQUIRER, Boolean.TRUE));
 		btnSimQueueWriteAcquirer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		new Label(groupDates, SWT.NONE).setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		btnSimQueueReadAcquirer = new Button(groupDates, SWT.CHECK);
 		btnSimQueueReadAcquirer.setText("Generate On Read Acqurier");
-		btnSimQueueReadAcquirer.setSelection(preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_READ_ACQUIRER));
+		btnSimQueueReadAcquirer.setSelection(preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_READ_ACQUIRER, Boolean.TRUE));
 		btnSimQueueReadAcquirer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		btnSimQueueWriteIssuer = new Button(groupDates, SWT.CHECK);
 		btnSimQueueWriteIssuer.setText("Generate On Write Issuer");
-		btnSimQueueWriteIssuer.setSelection(preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ISSUER));
+		btnSimQueueWriteIssuer.setSelection(preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ISSUER, Boolean.TRUE));
 		btnSimQueueWriteIssuer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		new Label(groupDates, SWT.NONE).setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		btnSimQueueReadIssuer = new Button(groupDates, SWT.CHECK);
 		btnSimQueueReadIssuer.setText("Generate On Read Issuer");
-		btnSimQueueReadIssuer.setSelection(preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_READ_ISSUER));
+		btnSimQueueReadIssuer.setSelection(preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_READ_ISSUER, Boolean.TRUE));
 		btnSimQueueReadIssuer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		layout = new GridLayout(3, true);
@@ -177,7 +176,7 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
 		
 		btnValidateTypesField = new Button(groupParsers, SWT.CHECK);
 		btnValidateTypesField.setText("Validate Types");
-		btnValidateTypesField.setSelection(preferencesManager.getBoolean(IPreferencesManager.VALIDATE_TYPES_FIELD_FORMAT));
+		btnValidateTypesField.setSelection(preferencesManager.getBoolean(IPreferencesManager.VALIDATE_TYPES_FIELD_FORMAT, Boolean.TRUE));
 		btnValidateTypesField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		new Label(groupParsers, SWT.NONE).setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -259,6 +258,30 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
 			txtExtractorReacerCycle.addModifyListener((ModifyEvent e) -> {txtExtractorGarbageCycle.validateAndMark();});
 			txtExtractorReacerCycle.valid();
 		}
+		
+		
+    	Composite cmpButtons = new Composite(parent, SWT.NONE);
+    	layout = new GridLayout(2,false);
+    	layout.marginHeight = 0;
+    	layout.marginWidth = 0;
+    	cmpButtons.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,1,1));
+    	cmpButtons.setLayout(layout);
+    	new Label(cmpButtons, SWT.NONE).setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		btnApply = new Button(cmpButtons, SWT.NONE);
+		btnApply.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		btnApply.setText("    Apply    ");
+		btnApply.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+		    	if (isValid()) {
+					updateLevelTrace();
+					updatePreferences();
+		    	}
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
         return composite;
     }
     private void updateLevelTrace() {
@@ -290,18 +313,17 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
     	preferencesManager.save(IPreferencesManager.CREATE_SIMQUEUE_READ_ISSUER, btnSimQueueReadIssuer.getSelection());
     	preferencesManager.save(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ISSUER, btnSimQueueWriteIssuer.getSelection());
     	preferencesManager.save(IPreferencesManager.VALIDATE_TYPES_FIELD_FORMAT, btnValidateTypesField.getSelection());
-    	preferencesManager.save(IPreferencesManager.LOG_ENABLE, btnLogEnable.getSelection());
-    	preferencesManager.save(IPreferencesManager.LOG_GARBAGE_CYCLE_TIME_SEC, Integer.parseInt(txtLogGarbageCycle.getText()));
-    	preferencesManager.save(IPreferencesManager.LOG_READER_CYCLE_TIME_SEC, Integer.parseInt(txtLogReaderCycle.getText()));
-    	preferencesManager.save(IPreferencesManager.EXTRACTOR_ENABLE, btnExtractorEnable.getSelection());
-    	preferencesManager.save(IPreferencesManager.EXTRACTOR_GARBAGE_CYCLE_TIME_SEC, Integer.parseInt(txtExtractorGarbageCycle.getText()));
-    	preferencesManager.save(IPreferencesManager.EXTRACTOR_READER_CYCLE_TIME_SEC, Integer.parseInt(txtExtractorReacerCycle.getText()));
-
     	if (Manager.isManaged(ILogManager.class)) {
+    		preferencesManager.save(IPreferencesManager.LOG_ENABLE, btnLogEnable.getSelection());
+    		preferencesManager.save(IPreferencesManager.LOG_GARBAGE_CYCLE_TIME_SEC, Integer.parseInt(txtLogGarbageCycle.getText()));
+    		preferencesManager.save(IPreferencesManager.LOG_READER_CYCLE_TIME_SEC, Integer.parseInt(txtLogReaderCycle.getText()));
 	    	Manager.get(ILogManager.class).setReaderCycleTime(Integer.parseInt(txtLogReaderCycle.getText()));
 	    	Manager.get(ILogManager.class).setGarbageCycleTime(Integer.parseInt(txtLogGarbageCycle.getText()));
     	}    	
     	if (Manager.isManaged(IExtractorManager.class)) {
+    		preferencesManager.save(IPreferencesManager.EXTRACTOR_ENABLE, btnExtractorEnable.getSelection());
+    		preferencesManager.save(IPreferencesManager.EXTRACTOR_GARBAGE_CYCLE_TIME_SEC, Integer.parseInt(txtExtractorGarbageCycle.getText()));
+    		preferencesManager.save(IPreferencesManager.EXTRACTOR_READER_CYCLE_TIME_SEC, Integer.parseInt(txtExtractorReacerCycle.getText()));
 	    	Manager.get(IExtractorManager.class).setReaderCycleTime(Integer.parseInt(txtExtractorReacerCycle.getText()));
 	    	Manager.get(IExtractorManager.class).setGarbageCycleTime(Integer.parseInt(txtExtractorGarbageCycle.getText()));
     	}

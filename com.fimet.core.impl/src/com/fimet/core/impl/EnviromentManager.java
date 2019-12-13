@@ -31,7 +31,7 @@ import com.fimet.persistence.sqlite.dao.RuleDAO;
 public class EnviromentManager implements IEnviromentManager {
 
 	private LinkedBlockingDeque<Listener> listeners = new LinkedBlockingDeque<>();
-	private static IPreferencesManager preferencesManager = Manager.get(IPreferencesManager.class);
+	private IPreferencesManager preferencesManager = Manager.get(IPreferencesManager.class);
 	private IDataBaseManager dataBaseManager = Manager.get(IDataBaseManager.class);
 	private IFtpManager ftpManager = Manager.get(IFtpManager.class);
 	private Enviroment active;
@@ -49,15 +49,11 @@ public class EnviromentManager implements IEnviromentManager {
 			if (dataBaseManager != null) {
 				if (e.getIdDataBase() != null) {
 					e.setDataBase(dataBaseManager.get(e.getIdDataBase()));
-				} else {
-					Activator.getInstance().error("Id DataBase Connection is null for enviroment "+e.getName());
 				}
 			}
 			if (!e.getIsLocal()) {
 				if (e.getIdFtp() != null) {
 					e.setFtp(ftpManager.get(e.getIdFtp()));
-				} else {
-					Activator.getInstance().error("Id FTP Connection is null for enviroment "+e.getName());
 				}
 			}
 		}
@@ -73,8 +69,6 @@ public class EnviromentManager implements IEnviromentManager {
 			} else {
 				Activator.getInstance().warning("Cannot found Enviroment for id "+id);	
 			}
-		} else {
-			Activator.getInstance().info("There is not exists Enviroment configured for autostart");
 		}
 	}
 	@Override

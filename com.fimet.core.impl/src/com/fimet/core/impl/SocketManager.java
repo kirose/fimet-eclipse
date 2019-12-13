@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import com.fimet.commons.history.History;
 import com.fimet.commons.utils.ReflectUtils;
 import com.fimet.core.IEnviromentManager;
 import com.fimet.core.IRuleManager;
@@ -25,14 +26,15 @@ import com.fimet.core.listener.ISocketInserted;
 import com.fimet.core.listener.ISocketListener;
 import com.fimet.core.listener.ISocketUpdateAll;
 import com.fimet.core.listener.ISocketUpdated;
+import com.fimet.core.net.IMessengerManager;
 import com.fimet.core.net.ISocket;
 import com.fimet.persistence.sqlite.dao.SocketDAO;
 
 public class SocketManager implements ISocketManager, IEnviromentConnected, IEnviromentDisconnected {
 	
 	protected Map<String, List<ISocket>> socketByMachine = new HashMap<>();
-	private Map<Integer, Ruler> rulers = new HashMap<Integer, Ruler>();
 	private LinkedBlockingDeque<Listener> listeners = new LinkedBlockingDeque<>();
+	private IEnviromentManager enviromentManager = Manager.get(IEnviromentManager.class);
 	public SocketManager() {
 		Enviroment active = Manager.get(IEnviromentManager.class).getActive();
 		if (active != null) {
@@ -50,11 +52,6 @@ public class SocketManager implements ISocketManager, IEnviromentConnected, IEnv
 	@Override
 	public void onEnviromentDisconnected(Enviroment e) {
 		socketByMachine.clear();
-		rulers.clear();
-	}
-	@Override
-	public void free() {
-		
 	}
 	private int indexOf(List<ISocket> list, String name, String address, Integer port) {
 		if (list != null && !list.isEmpty()) {
@@ -104,8 +101,10 @@ public class SocketManager implements ISocketManager, IEnviromentConnected, IEnv
 		}
 		List<Socket> stored = SocketDAO.getInstance().findByAddress(address);
 		List<ISocket> sockets = new ArrayList<ISocket>();
-		for (Socket socket : stored) {
-			sockets.add(socket);
+		if (stored != null && !stored.isEmpty()) {
+			for (Socket socket : stored) {
+				sockets.add(socket);
+			}
 		}
 		socketByMachine.put(address, sockets);
 		return sockets;
@@ -135,21 +134,17 @@ public class SocketManager implements ISocketManager, IEnviromentConnected, IEnv
 		return acquirers;
 	}
 	protected List<ISocket> configure(List<ISocket> connections) {
-		List<FieldMapper> fieldMappers = Manager.get(IRuleManager.class).getFieldMappers();
-		for (FieldMapper fieldMapper : fieldMappers) {
-			configure(fieldMapper, connections);
+		if (connections != null && !connections.isEmpty()) {
+			List<FieldMapper> fieldMappers = Manager.get(IRuleManager.class).getFieldMappers();
+			for (FieldMapper fieldMapper : fieldMappers) {
+				Ruler ruler = enviromentManager.getActive() != null ? new Ruler(enviromentManager.getActive(), fieldMapper.getId()) : null;
+				configure(ruler, fieldMapper, connections);
+			}
 		}
 		return connections;
 	}
-	private List<ISocket> configure(FieldMapper fieldMapper, List<ISocket> connections) {
+	private List<ISocket> configure(Ruler ruler, FieldMapper fieldMapper, List<ISocket> connections) {
 		try {
-			if (!rulers.containsKey(fieldMapper.getId())) {
-				Enviroment active = Manager.get(IEnviromentManager.class).getActive();
-				if (active != null) {
-					rulers.put(fieldMapper.getId(), new Ruler(active, fieldMapper.getId()));
-				}
-			}
-			Ruler ruler =  rulers.get(fieldMapper.getId());
 			Class<?> typeBinded = Class.forName(fieldMapper.getFieldClass());
 			ISocketFieldMapper binder = (ISocketFieldMapper)Manager.get(Class.forName(fieldMapper.getMapperClass()));
 			Method method = ReflectUtils.getSetterFromField(ISocket.class, fieldMapper.getField(), typeBinded);
@@ -186,15 +181,21 @@ public class SocketManager implements ISocketManager, IEnviromentConnected, IEnv
 		fireUpdateAll();
 	}
 	public void refresh(FieldMapper fieldMapper) {
-		for(Map.Entry<String, List<ISocket>> e : socketByMachine.entrySet()) {
-			configure(fieldMapper, e.getValue());
+		if (!socketByMachine.isEmpty()) {
+			Ruler ruler = enviromentManager.getActive() != null ? new Ruler(enviromentManager.getActive(), fieldMapper.getId()) : null;
+			for(Map.Entry<String, List<ISocket>> e : socketByMachine.entrySet()) {
+				configure(ruler, fieldMapper, e.getValue());
+			}
 		}
 	}
 	public void refresh() {
 		List<FieldMapper> fields = Manager.get(IRuleManager.class).getFieldMappers();
-		for (FieldMapper field : fields) {
-			for(Map.Entry<String, List<ISocket>> e : socketByMachine.entrySet()) {
-				configure(field, e.getValue());
+		if (!socketByMachine.isEmpty()) {
+			for (FieldMapper field : fields) {
+				Ruler ruler = enviromentManager.getActive() != null ? new Ruler(enviromentManager.getActive(), field.getId()) : null;
+				for(Map.Entry<String, List<ISocket>> e : socketByMachine.entrySet()) {
+					configure(ruler, field, e.getValue());
+				}
 			}
 		}
 		fireUpdateAll();
@@ -218,17 +219,18 @@ public class SocketManager implements ISocketManager, IEnviromentConnected, IEnv
 		socketByMachine.get(socket.getAddress()).add(0,socket);
 		return socket;
 	}
-
-	private void saveEntity(Socket socket) {
-		SocketDAO.getInstance().insertOrUpdate(socket);
+	private void insertEntity(Socket socket) {
+		SocketDAO.getInstance().insert(socket);
+		ISocket find = saveIntoCache(socket);
+		fireInserted(find);
+	}
+	private void updateEntity(Socket socket) {
+		SocketDAO.getInstance().update(socket);
 		ISocket find = find(socket.getName(), socket.getAddress(), socket.getPort());
 		if (find != null) {
 			if (find != socket)
 				ReflectUtils.copy(socket, find);
 			fireUpdated(find);
-		} else {
-			find = saveIntoCache(socket);
-			fireInserted(find);
 		}
 	}
 	private void deleteEntity(Socket socket) {
@@ -250,13 +252,9 @@ public class SocketManager implements ISocketManager, IEnviromentConnected, IEnv
 	}
 
 	@Override
-	public void free(List<Integer> ids) {
-	}
-
-	@Override
-	public void save(ISocket socket) {
+	public void update(ISocket socket) {
 		if (socket instanceof Socket) {
-			saveEntity((Socket)socket);
+			updateEntity((Socket)socket);
 		} else {
 			ISocket find = find(socket.getName(), socket.getAddress(), socket.getPort());
 			if (find != null) {
@@ -266,10 +264,25 @@ public class SocketManager implements ISocketManager, IEnviromentConnected, IEnv
 			}
 		}
 	}
-
+	@Override
+	public void insert(ISocket socket) {
+		if (socket instanceof Socket) {
+			insertEntity((Socket)socket);
+		} else {
+			ISocket find = find(socket.getName(), socket.getAddress(), socket.getPort());
+			if (find != null) {
+				if (find != socket)
+					ReflectUtils.copy(socket, find);
+				fireUpdated(find);
+			}
+		}
+	}
 	@Override
 	public void delete(ISocket socket) {
 		if (socket instanceof Socket) {
+			if (Manager.get(IMessengerManager.class).isConnected(socket)) {
+				Manager.get(IMessengerManager.class).disconnect(socket);
+			}
 			deleteEntity((Socket)socket);
 			fireDeleted((Socket)socket);
 		} else {
@@ -353,5 +366,21 @@ public class SocketManager implements ISocketManager, IEnviromentConnected, IEnv
 				try {((ISocketUpdateAll)l.listener).onSocketUpdateAll();}
 				catch (Exception ex) {Activator.getInstance().warning("Error on update all event: "+ex.getMessage(), ex);}
 		}
+	}
+	@Override
+	public void commit(History<Socket> historySocket) {
+		for (Socket m : historySocket.getDeletes()) {
+			deleteEntity(m);
+		}
+		for (Socket m : historySocket.getUpdates()) {
+			updateEntity(m);
+		}
+		for (Socket m : historySocket.getDeletes()) {
+			deleteEntity(m);
+		}
+	}
+	@Override
+	public void free() {
+		
 	}
 }

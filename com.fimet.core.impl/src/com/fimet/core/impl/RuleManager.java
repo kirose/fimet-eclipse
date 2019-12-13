@@ -3,6 +3,7 @@ package com.fimet.core.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fimet.commons.history.History;
 import com.fimet.core.IEnviromentManager;
 import com.fimet.core.IRuleManager;
 import com.fimet.core.ISocketManager;
@@ -70,20 +71,26 @@ public class RuleManager implements IRuleManager {
 	}
 
 	@Override
-	public void commit(List<Rule> deletes, List<Rule> save) {
+	public void commit(History<Rule> history) {
 		List<Integer> reload = new ArrayList<>();
 		Integer idEnviromentType = enviromentManager.getActive() != null ? enviromentManager.getActive().getIdType() : null;
-		for (Rule rule : deletes) {
-			if (idEnviromentType != rule.getIdTypeEnviroment() && !reload.contains(rule.getIdField())) {
+		for (Rule rule : history.getDeletes()) {
+			if (idEnviromentType == rule.getIdTypeEnviroment() && !reload.contains(rule.getIdField())) {
 				reload.add(rule.getIdField());
 			}
 			RuleDAO.getInstance().delete(rule);
 		}
-		for (Rule rule : save) {
-			if (idEnviromentType != rule.getIdTypeEnviroment() && !reload.contains(rule.getIdField())) {
+		for (Rule rule : history.getInserts()) {
+			if (idEnviromentType == rule.getIdTypeEnviroment() && !reload.contains(rule.getIdField())) {
 				reload.add(rule.getIdField());
 			}
-			RuleDAO.getInstance().insertOrUpdate(rule);
+			RuleDAO.getInstance().insert(rule);
+		}
+		for (Rule rule : history.getUpdates()) {
+			if (idEnviromentType == rule.getIdTypeEnviroment() && !reload.contains(rule.getIdField())) {
+				reload.add(rule.getIdField());
+			}
+			RuleDAO.getInstance().update(rule);
 		}
 		Manager.get(ISocketManager.class).refresh(reload);
 	}

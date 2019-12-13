@@ -42,7 +42,6 @@ public class SocketPanel extends ScrolledComposite {
         tabFolder = new TabFolder(this, SWT.NONE);
         createTabs(tabFolder);
         setContent(tabFolder);
-        setMinSize(300, 420);//this.setMinSize(tabFolder.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		hookListeners();
 	}
 	
@@ -64,6 +63,9 @@ public class SocketPanel extends ScrolledComposite {
 		}
 		if (tabFolder.getItemCount() == 0) {
 			new SocketTabOverview(tabFolder);
+			setMinSize(300, 210);
+		} else {
+			setMinSize(300, 420);//this.setMinSize(tabFolder.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		}
 	}
 	private IConfigurationElement[] getTabsConfigurationElement() {

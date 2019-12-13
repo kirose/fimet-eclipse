@@ -121,7 +121,7 @@ class SimulatorDialog extends TrayDialog implements DisposeListener {
 		label.setText("Simulator Name:");
 		label.setBackground(Color.WHITE);
 		//label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setToolTipText("The input name. It will be included in the FIMET report.");
+		label.setToolTipText("the simulator name");
 		
 		txtName = new VText(composite, SWT.BORDER);
 		txtName.setBackground(Color.WHITE);

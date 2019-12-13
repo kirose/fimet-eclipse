@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 
+import com.fimet.commons.history.HistoryGroup;
 import com.fimet.commons.preference.IPreference;
 import com.fimet.commons.utils.ThreadUtils;
 import com.fimet.core.IEnviromentManager;
@@ -25,7 +26,6 @@ import com.fimet.core.Manager;
 import com.fimet.core.entity.sqlite.Enviroment;
 import com.fimet.core.entity.sqlite.EnviromentType;
 import com.fimet.core.impl.Activator;
-import com.fimet.core.impl.preferences.HistoryGroup;
 import com.fimet.core.listener.IEnviromentConnected;
 import com.fimet.core.listener.IEnviromentConnecting;
 import com.fimet.core.listener.IEnviromentDeleted;

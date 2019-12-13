@@ -44,6 +44,7 @@ import com.fimet.commons.DefaultStyler;
 import com.fimet.commons.Images;
 import com.fimet.commons.console.Console;
 import com.fimet.commons.data.reader.impl.ByteArrayReader;
+import com.fimet.commons.utils.ViewUtils;
 import com.fimet.core.IFieldParserManager;
 import com.fimet.core.Manager;
 import com.fimet.core.ISO8583.parser.Field;
@@ -74,13 +75,12 @@ public class FieldTree extends TreeViewer {
     static Styler stylerName;
     static Styler stylerLength;
     static Styler stylerValue;
-    private boolean editable;
     IContextService contextService;
     IContextActivation contextActive;
+
 	public FieldTree(MessageViewer viewer, Composite parent, boolean editable, int style) {
 		super(parent, style);
 		this.viewer = viewer;
-		this.editable = editable;
 		header = new FieldNode();
 		header.idField = "header";
 		header.name = "Header";
@@ -88,8 +88,8 @@ public class FieldTree extends TreeViewer {
 		mti.idField = "mti";
 		mti.name = "Message Type Indicator";
 		init();
-		createContents();
-		handleContext();
+		createContents(editable);
+		//handleContext();
 	}
 	private IContextService getContextService() {
 		return PlatformUI.getWorkbench() != null &&
@@ -104,7 +104,7 @@ public class FieldTree extends TreeViewer {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					FieldNode field = getSelected();
-					ISelectionProvider selectionProvider = viewer.getMessageMonitor().getSelectionProvider();
+					ISelectionProvider selectionProvider = viewer.getMessageContainer().getSelectionProvider();
 					if (selectionProvider != null) {
 						selectionProvider.setSelection(field != null ? new StructuredSelection(field) : null);
 					}
@@ -148,13 +148,13 @@ public class FieldTree extends TreeViewer {
 		buildTree(message);
 		expandAll();
 	}
-	public void createContents() {
+	public void createContents(boolean editable) {
 		init();
         setContentProvider(new ViewContentProvider());
         setLabelProvider(new DelegatingStyledCellLabelProvider(new ViewLabelProvider()));
         getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+        createContextMenu(editable);
         if (editable) {
-        	createContextMenu();
 	        addDoubleClickListener(new IDoubleClickListener() {
 	            @Override
 	            public void doubleClick(DoubleClickEvent event) {
@@ -183,7 +183,7 @@ public class FieldTree extends TreeViewer {
 	}
     
     public int remove(FieldNode parent, FieldNode node) {
-    	if (node == header && node == mti) {
+    	if (node == header || node == mti) {
     		return -1;
     	}
     	message.remove(node.idField);
@@ -343,16 +343,17 @@ public class FieldTree extends TreeViewer {
 	}
 	/**
 	 * Creates the context menu
+	 * @param editable 
 	 *
 	 * @param viewer
 	 */
-	private void createContextMenu() {
+	private void createContextMenu(boolean editable) {
 	    MenuManager contextMenu = new MenuManager("#FieldTreeViewerMenu",ID); //$NON-NLS-1$
 	    contextMenu.setRemoveAllWhenShown(true);
 	    contextMenu.addMenuListener(new IMenuListener() {
 	        @Override
 	        public void menuAboutToShow(IMenuManager mgr) {
-	            fillContextMenu(mgr);
+	            fillContextMenu(mgr, editable);
 	        }
 	    });
 	    Menu menu = contextMenu.createContextMenu(this.getControl());
@@ -363,30 +364,72 @@ public class FieldTree extends TreeViewer {
 	 * Fill dynamic context menu
 	 *
 	 * @param contextMenu
+	 * @param editable 
 	 */
-	private void fillContextMenu(IMenuManager contextMenu) {
+	private void fillContextMenu(IMenuManager contextMenu, boolean editable) {
 	    contextMenu.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
-	    contextMenu.add(new Action("New") {
+	    if (editable) {
+		    contextMenu.add(new Action("New") {
+		        @Override
+		        public void run() {
+		        	viewer.onNewField();
+		        }
+		    });
+		    contextMenu.add(new Action("Edit") {
+		        @Override
+		        public void run() {
+		        	viewer.onEditField();
+		        }
+		    });
+		    contextMenu.add(new Action("Delete") {
+		        @Override
+		        public void run() {
+		        	viewer.onDeleteField();
+		        }
+		    });
+	    }
+	    contextMenu.add(new Action("Copy") {
 	        @Override
 	        public void run() {
-	        	viewer.onNewField();
+	        	FieldTree.this.onCopy();
 	        }
 	    });
-	    contextMenu.add(new Action("Edit") {
+	    if (editable) {
+		    contextMenu.add(new Action("Paste") {
+		        @Override
+		        public void run() {
+		        	viewer.onPasteFieldValue();
+		        }
+		    });
+	    }
+	    contextMenu.add(new Action("Expand All") {
 	        @Override
 	        public void run() {
-	        	viewer.onEditField();
+	        	FieldTree.this.expandAll();
 	        }
 	    });
-	    contextMenu.add(new Action("Delete") {
+	    contextMenu.add(new Action("Collapse All") {
 	        @Override
 	        public void run() {
-	        	viewer.onDeleteField();
+	        	FieldTree.this.collapseAll();
 	        }
 	    });
 	}
-    
-    class ViewContentProvider implements ITreeContentProvider {
+	protected void onCopy() {
+		FieldNode field = getSelected();
+		if (field != null) {
+			ViewUtils.setToClipboard(field.getValue());
+		}
+	}
+	protected void onPaste() {
+		FieldNode field = getSelected();
+		String clipboard = ViewUtils.getFromClipboard();
+		if (field != null && clipboard != null) {
+			field.setValue(clipboard);
+			update(field);
+		}
+	}
+	class ViewContentProvider implements ITreeContentProvider {
         public void inputChanged(Viewer v, Object oldInput, Object newInput) {
         }
         @Override

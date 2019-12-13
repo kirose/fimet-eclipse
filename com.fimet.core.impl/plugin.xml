@@ -9,7 +9,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
       		icon="icons/fimet_perspective.png"
-            name="FIMET Perspective"
+            name="FIMET"
             class="com.fimet.core.impl.FimetPerspective"
             id="com.fimet.perspective">
       </perspective>
@@ -678,7 +678,7 @@
       		category="com.fimet.views"
       		icon="icons/types.png"
             name="Fields"
-            class="com.fimet.core.impl.view.field.FieldDefinitionView"
+            class="com.fimet.core.impl.view.format.FieldDefinitionView"
             id="com.fimet.view.FieldDefinitionView">
       </view>
 	</extension>
@@ -819,4 +819,8 @@
 			extension="com.fimet.core.IMessageIsoManager"
 			class="com.fimet.core.impl.MessageIsoManager" />
 	</extension>
+	<extension
+         point="com.fimet.database.creator">
+         <creator class="com.fimet.core.impl.sqlite.SQLiteCreator" />
+    </extension>
 </plugin>

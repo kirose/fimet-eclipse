@@ -23,12 +23,12 @@ import org.eclipse.ui.PlatformUI;
 //import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 
 import com.fimet.commons.exception.FieldFormatException;
+import com.fimet.commons.history.History;
 import com.fimet.commons.preference.IPreference;
 import com.fimet.core.IParserManager;
 import com.fimet.core.Manager;
 import com.fimet.core.entity.sqlite.Parser;
 import com.fimet.core.impl.Activator;
-import com.fimet.core.impl.preferences.History;
 
 public class ParserPage extends PreferencePage implements IWorkbenchPreferencePage {
 	public static final String ID = "com.fimet.preferences.ParsersPage";
@@ -135,18 +135,7 @@ public class ParserPage extends PreferencePage implements IWorkbenchPreferencePa
 		}
     }
 	public void commit() {
-		List<Parser> deletes = history.getDeletes();
-		for (Parser m : deletes) {
-			parserManager.delete(m);
-		}
-		List<Parser> updates = history.getUpdates();
-		for (Parser m : updates) {
-			parserManager.update(m);
-		}
-		List<Parser> inserts = history.getInserts();
-		for (Parser m : inserts) {
-			parserManager.insert(m);
-		}
+		parserManager.commit(history);
 		history = new History<Parser>();
 	}
 	private boolean askDeleteParser(Parser node) {

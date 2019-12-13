@@ -86,4 +86,7 @@ public class MatcherRule {
 		children.add(rule);
 		return rule;
 	}
+	public String toString() {
+		return getterName+" "+operator+" "+pattern + " = "+idResult;
+	}
 }

@@ -22,12 +22,12 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 
 import com.fimet.commons.Color;
+import com.fimet.commons.history.HistoryGroup;
 import com.fimet.commons.preference.IPreference;
 import com.fimet.core.IEnviromentManager;
 import com.fimet.core.Manager;
 import com.fimet.core.entity.sqlite.EnviromentType;
 import com.fimet.core.impl.Activator;
-import com.fimet.core.impl.preferences.HistoryGroup;
 import com.fimet.core.impl.swt.enviroment.EnviromentPanel;
 
 public class EnviromentPage extends PreferencePage implements IWorkbenchPreferencePage {

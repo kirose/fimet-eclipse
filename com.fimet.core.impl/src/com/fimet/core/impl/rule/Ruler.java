@@ -57,9 +57,9 @@ public class Ruler {
 			});
     	}
     }
-	private List<Rule> getRules(Enviroment enviroment, Integer type) {
-		if (enviroment != null && type != null) {
-			return RuleDAO.getInstance().findByIdTypeAndField(enviroment.getIdType(), type);
+	private List<Rule> getRules(Enviroment enviroment, Integer idField) {
+		if (enviroment != null && idField != null) {
+			return RuleDAO.getInstance().findByIdTypeAndField(enviroment.getIdType(), idField);
 		} else {
 			return null;
 		}
@@ -76,5 +76,8 @@ public class Ruler {
 			return matcher.getIdResult();
 		}
 		return null;// NO MATCHES
+	}
+	public String toString() {
+		return roots != null ? roots.toString() : "";
 	}
 }

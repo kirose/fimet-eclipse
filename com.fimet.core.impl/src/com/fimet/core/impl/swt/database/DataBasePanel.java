@@ -14,11 +14,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
+import com.fimet.commons.history.History;
 import com.fimet.commons.utils.ThreadUtils;
 import com.fimet.core.IDataBaseManager;
 import com.fimet.core.Manager;
 import com.fimet.core.entity.sqlite.DataBase;
-import com.fimet.core.impl.preferences.History;
 import com.fimet.core.listener.IDataBaseConnected;
 import com.fimet.core.listener.IDataBaseConnecting;
 import com.fimet.core.listener.IDataBaseDeleted;

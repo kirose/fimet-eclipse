@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import com.fimet.commons.Color;
 import com.fimet.commons.Images;
 import com.fimet.commons.exception.FtpException;
 import com.fimet.commons.utils.StringUtils;
@@ -97,6 +98,7 @@ public class FtpDialog extends Dialog implements DisposeListener {
 	
     private void createControls(Composite parent) {
 
+    	parent.setBackground(Color.WHITE);
 		GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         layout.horizontalSpacing = 10;
@@ -105,11 +107,13 @@ public class FtpDialog extends Dialog implements DisposeListener {
         Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
+		composite.setBackground(parent.getBackground());
+		
 		Label label;
 
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(parent.getBackground());
 		label.setText("id:");
 
 		txtId = new TextDecorate(composite, SWT.NONE | SWT.BORDER);
@@ -118,6 +122,7 @@ public class FtpDialog extends Dialog implements DisposeListener {
 		
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(parent.getBackground());
 		label.setText("Name:");
 
 		txtName = new TextDecorate(composite, SWT.NONE | SWT.BORDER);
@@ -131,6 +136,7 @@ public class FtpDialog extends Dialog implements DisposeListener {
 
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(parent.getBackground());
 		label.setText("Address*:");
 
 		txtAddress = new TextDecorate(composite, SWT.NONE | SWT.BORDER);
@@ -147,6 +153,7 @@ public class FtpDialog extends Dialog implements DisposeListener {
 
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(parent.getBackground());
 		label.setText("Port*:");
 
 		txtPort = new TextDecorate(composite, SWT.NONE | SWT.BORDER);
@@ -161,6 +168,7 @@ public class FtpDialog extends Dialog implements DisposeListener {
     	
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(parent.getBackground());
 		label.setText("User:");
 
 		txtUser = new TextDecorate(composite, SWT.NONE | SWT.BORDER);
@@ -175,6 +183,7 @@ public class FtpDialog extends Dialog implements DisposeListener {
     	
 		label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setBackground(parent.getBackground());
 		label.setText("Password*:");
 
 		txtPassword = new TextDecorate(composite, SWT.PASSWORD | SWT.BORDER);
@@ -198,6 +207,7 @@ public class FtpDialog extends Dialog implements DisposeListener {
         
         Composite compositeBtns = new Composite(composite, SWT.NONE);
         compositeBtns.setLayout(layout);
+        compositeBtns.setBackground(composite.getBackground());
         compositeBtns.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
     	
 		btnTest = new Button(compositeBtns, SWT.NONE);
