@@ -10,12 +10,12 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-import com.fimet.core.impl.swt.msg.IMessageMonitor;
+import com.fimet.core.impl.swt.msg.IMessageContainer;
 import com.fimet.core.impl.swt.msg.MessageViewer;
 import com.fimet.core.net.ISocket;
 import com.fimet.editor.usecase.UseCaseEditor;
 
-public class SectionAcquirerMessage extends SectionPart implements IMessageMonitor {
+public class SectionAcquirerMessage extends SectionPart implements IMessageContainer {
 
 	private UseCaseEditor editor;
 	private MessageViewer messageViewer;

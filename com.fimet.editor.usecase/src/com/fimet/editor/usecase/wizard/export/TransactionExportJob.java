@@ -26,9 +26,9 @@ import org.eclipse.pde.internal.core.exports.WorkspaceExportHelper;
 import org.eclipse.swt.graphics.Path;
 
 import com.fimet.commons.exception.ParserException;
-import com.fimet.commons.io.FileUtils;
 import com.fimet.commons.messages.Messages;
 import com.fimet.commons.utils.ByteUtils;
+import com.fimet.commons.utils.FileUtils;
 import com.fimet.core.IUseCaseManager;
 import com.fimet.core.Manager;
 import com.fimet.core.ISO8583.parser.Message;

@@ -11,13 +11,13 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import com.fimet.core.ISO8583.parser.Message;
-import com.fimet.core.impl.swt.msg.IMessageMonitor;
+import com.fimet.core.impl.swt.msg.IMessageContainer;
 import com.fimet.core.impl.swt.msg.MessageViewer;
 import com.fimet.core.net.ISocket;
 import com.fimet.editor.usecase.UseCaseEditor;
 import com.fimet.editor.usecase.page.AuthorizationPage;
 
-public class SectionAcquirerAuthorizationMessage extends SectionPart implements IMessageMonitor {
+public class SectionAcquirerAuthorizationMessage extends SectionPart implements IMessageContainer {
 
 	private UseCaseEditor editor;
 	private MessageViewer messageFieldsViewer;

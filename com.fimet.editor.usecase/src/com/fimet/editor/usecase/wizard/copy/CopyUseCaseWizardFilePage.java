@@ -92,9 +92,9 @@ import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.internal.ide.IIDEHelpContextIds;
 import org.eclipse.ui.internal.ide.dialogs.CreateLinkedResourceGroup;
 
-import com.fimet.commons.io.FileUtils;
 import com.fimet.commons.messages.Messages;
 import com.fimet.commons.preference.IPreference;
+import com.fimet.commons.utils.FileUtils;
 import com.fimet.core.IUseCaseManager;
 import com.fimet.core.Manager;
 import com.fimet.core.ISO8583.parser.Field;

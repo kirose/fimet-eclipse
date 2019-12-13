@@ -57,6 +57,7 @@ import com.fimet.core.IEnviromentManager;
 import com.fimet.core.Manager;
 import com.fimet.core.ISO8583.adapter.IAdapter;
 import com.fimet.core.ISO8583.parser.IMessage;
+import com.fimet.core.ISO8583.parser.Message;
 import com.fimet.core.entity.sqlite.pojo.MessageIsoParameters;
 import com.fimet.core.entity.sqlite.pojo.MessageIsoType;
 import com.fimet.core.impl.swt.AcquirerCombo;
@@ -467,23 +468,16 @@ public class NewFimetProjectWizardPage2 extends WizardPage {
 				filePath);
 	}
 	public void onParse() {
-		com.fimet.core.impl.swt.MessageDialog dialog = new com.fimet.core.impl.swt.MessageDialog(getShell(), SWT.NONE);
+		ISocket socket = cvAcquirer.getSelected();
+		if (socket == null || socket.getParser() == null) {
+			throw new FimetException("Select an Acquirer");
+		}
+		com.fimet.core.impl.swt.msg.MessageParseDialog dialog = new com.fimet.core.impl.swt.msg.MessageParseDialog(getShell(),socket.getParser(), SWT.NONE);
 		dialog.open();
-		String msg = dialog.getMessage();
-		if (msg != null && msg.trim().length() > 0) {
+		Message msg = dialog.getMessage();
+		if (msg != null) {
 			try {
-				ISocket iap = cvAcquirer.getSelected();
-				if (iap == null) {
-					throw new FimetException("Select an Acquirer");
-				}
-				byte[] bytes;
-				if (msg.matches("[0-9A-Fa-f]+")) {
-					bytes = Converter.hexToAscii(msg.getBytes());
-				} else {
-					bytes = msg.getBytes();
-				}
-				IMessage message = ParserUtils.parseMessage(bytes, iap.getParser());
-				txtMsg.getDocument().set(message.toJson());
+				txtMsg.getDocument().set(msg.toJson());
 			} catch (Exception ex) {
 				Activator.getInstance().error("Error parsing message", ex);
 			}					

@@ -26,6 +26,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.ide.IIDEHelpContextIds;
 
 import com.fimet.commons.converter.Converter;
+import com.fimet.commons.exception.FimetException;
 import com.fimet.commons.exception.ParserException;
 import com.fimet.commons.messages.Messages;
 import com.fimet.core.IEnviromentManager;
@@ -38,9 +39,9 @@ import com.fimet.core.ISO8583.parser.Message;
 import com.fimet.core.entity.sqlite.pojo.MessageIsoParameters;
 import com.fimet.core.entity.sqlite.pojo.MessageIsoType;
 import com.fimet.core.impl.Activator;
-import com.fimet.core.impl.swt.MessageDialog;
 import com.fimet.core.impl.swt.VText;
 import com.fimet.core.impl.swt.VTextDocument;
+import com.fimet.core.impl.swt.msg.MessageParseDialog;
 import com.fimet.core.impl.swt.msgiso.MessageIsoSearchDialog;
 import com.fimet.core.net.ISocket;
 import com.fimet.core.usecase.UseCase;
@@ -237,21 +238,17 @@ public class NewUseCaseWizardMsgPage extends WizardPage implements Listener {
 		txtMsg.setDocument(new Document(template));
 	}
 	public void onParse() {
-		MessageDialog dialog = new MessageDialog(getShell(), SWT.NONE);
+		if (wizard.getMainPage().getAcquirer() == null || wizard.getMainPage().getAcquirer().getParser() == null) {
+			throw new FimetException("Select an Acquirer");
+		}
+		MessageParseDialog dialog = new MessageParseDialog(getShell(),wizard.getMainPage().getAcquirer().getParser(), SWT.NONE);
 		dialog.open();
-		String txt = dialog.getMessage();
-		if (txt != null && txt.trim().length() > 0) {
+		Message message = dialog.getMessage();
+		if (message != null) {
 			if (wizard.getMainPage().getAcquirer() != null) {
 				try {
-					byte[] bytes;
-					if (txt.matches("[0-9A-Fa-f]+")) {
-						bytes = Converter.hexToAscii(txt.getBytes());
-					} else {
-						bytes = txt.getBytes();
-					}
-					Message msg = (Message)ParserUtils.parseMessage(bytes, wizard.getMainPage().getAcquirer().getParser());
-					useCase.getAcquirer().getRequest().setMessage(msg);
-					txtMsg.getDocument().set(msg.toJson());
+					useCase.getAcquirer().getRequest().setMessage(message);
+					txtMsg.getDocument().set(message.toJson());
 				} catch (Exception e) {
 					Activator.getInstance().warning("Error parsing message",e);
 					StatusInfo status = new StatusInfo();

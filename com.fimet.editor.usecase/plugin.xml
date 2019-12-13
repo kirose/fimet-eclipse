@@ -223,29 +223,46 @@
 	            nameFilter="*.uc"
 	            id="com.fimet.menu.popup.editor.TestEnvironmentContribution">
 	         <menu
-	         	   icon="icons/run_exc.png"
+	         	   icon="icons/usecase.png"
 	               label="FIMET Options"
 	               path="additions"
-	               id="com.fimet.menu.popup.editor.TestEnvironment">
+	               id="com.fimet.menu.popup.editor.UseCaseOptions">
 	            <separator
 	                  name="group1">
 	            </separator>
 	         </menu>
 	         <action
 	         	   definitionId="com.fimet.commands.SaveUseCaseCmd"
-	         	   icon="icons/usecase.png"
+	         	   icon="icons/save_edit.png"
 	               label="Save Message"
-	               class="com.fimet.editor.usecase.popup.action.RunUseCaseAction"
-	               menubarPath="com.fimet.menu.popup.editor.TestEnvironment/group1"
+	               class="com.fimet.editor.usecase.popup.action.SaveUseCaseAction"
+	               menubarPath="com.fimet.menu.popup.editor.UseCaseOptions/group1"
 	               enablesFor="1"
 	               id="com.fimet.action.SaveUseCase">
 	         </action>
 	         <action
+	         	   definitionId="com.fimet.commands.VarUseCaseCmd"
+	         	   icon="icons/types.png"
+	               label="Variate Use Case"
+	               class="com.fimet.editor.usecase.popup.action.RunVaryUseCaseAction"
+	               menubarPath="com.fimet.menu.popup.editor.UseCaseOptions/group1"
+	               enablesFor="1"
+	               id="com.fimet.action.RunVarUseCase">
+	         </action>
+	         <action
+	         	   definitionId="com.fimet.commands.CopyUseCaseCmd"
+	         	   icon="icons/types.png"
+	               label="Copy Use Case"
+	               class="com.fimet.editor.usecase.popup.action.RunCopyUseCaseAction"
+	               menubarPath="com.fimet.menu.popup.editor.UseCaseOptions/group1"
+	               id="com.fimet.action.RunCopyUseCase">
+	         </action>
+	         <action
 	         	   definitionId="com.fimet.commands.RunUseCaseCmd"
-	         	   icon="icons/usecase.png"
+	         	   icon="icons/run_exc.png"
 	               label="Run Use Case"
 	               class="com.fimet.editor.usecase.popup.action.RunUseCaseAction"
-	               menubarPath="com.fimet.menu.popup.editor.TestEnvironment/group1"
+	               menubarPath="com.fimet.menu.popup.editor.UseCaseOptions/group1"
 	               id="com.fimet.action.RunUseCase">
 	         </action>
           </objectContribution>
@@ -302,7 +319,7 @@
 	            nameFilter="*.uc"
 	            id="com.fimet.menu.popup.resource.UseCaseOptionsContribution">
 	         <menu
-	         	   icon="icons/run_exc.png"
+	         	   icon="icons/usecase.png"
 	               label="Use Case Options"
 	               path="additions"
 	               id="com.fimet.menu.popup.resource.UseCaseOptions">
@@ -312,7 +329,7 @@
 	         </menu>
  	         <action
 	         	   definitionId="com.fimet.commands.SaveUseCaseCmd"
-	         	   icon="icons/run_exc.png"
+	         	   icon="icons/save_edit.png"
 	               label="Save Message"
 	               class="com.fimet.editor.usecase.popup.action.SaveUseCaseAction"
 	               menubarPath="com.fimet.menu.popup.resource.UseCaseOptions/additions"
@@ -342,7 +359,6 @@
 	               label="Run Use Case"
 	               class="com.fimet.editor.usecase.popup.action.RunUseCaseAction"
 	               menubarPath="com.fimet.menu.popup.resource.UseCaseOptions/additions"
-	               enablesFor="1"
 	               id="com.fimet.action.RunUseCase">
 	         </action>
 	    </objectContribution>

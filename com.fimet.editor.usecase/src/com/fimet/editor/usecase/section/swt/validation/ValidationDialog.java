@@ -98,7 +98,7 @@ public class ValidationDialog extends TrayDialog {
 		label.setText("Validation Name*:");
 		label.setBackground(Color.WHITE);
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setToolTipText("The input name. It will be included in the FIMET report.");
+		label.setToolTipText("The validation name, this name will be present in the FIMET report.");
 		
 		txtValidationName = new VText(composite, SWT.BORDER);
 		txtValidationName.setBackground(Color.WHITE);
