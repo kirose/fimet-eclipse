@@ -18,7 +18,7 @@ FIMET is an project developed in eclipse and implemented on eclipse 2018-12 for 
 
 **Report:** for display the results of use cases execution
 
-Just download the jars and add to the plugins folder of eclipse 2018-12
+Just download the jars (FIMET-eclipse-plugins-2018-12.rar) and put it inside "plugins" folder of eclipse 2018-12
 
 You can download eclipse 2018-12 [**here**](https://www.eclipse.org/downloads/packages/release/2018-12/r)
 
