@@ -22,7 +22,7 @@ Just download the jars (FIMET-eclipse-plugins-2018-12.rar) and put it inside "pl
 
 You can download eclipse 2018-12 [**here**](https://www.eclipse.org/downloads/packages/release/2018-12/r)
 
-I will appreciate if you tell me how to upload the project to the eclipse marketplace.
+I will appreciate it if you tell me how to upload the project to the eclipse marketplace.
 
 
 ![OverviewFimet](https://user-images.githubusercontent.com/6531429/70770950-1457ec00-1d35-11ea-8463-d72a38c05b8e.PNG)
