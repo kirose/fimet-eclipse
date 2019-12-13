@@ -112,13 +112,13 @@ public final class FieldFormatDAO extends AbstractDAO<FieldFormat,Integer> {
 			throw new PersistenceException(e);
 		}
 	}
-	public int deleteByIdGroup(FieldFormatGroup idGroup) {
+	public int deleteByIdGroup(Integer idGroup) {
 		try {
 			DeleteBuilder<FieldFormat, Integer> db = getDAO().deleteBuilder();
 			db.setWhere(db.where().eq("idGroup", idGroup));
 			return db.delete();
 		} catch (SQLException e) {
-			throw new DBException("Cannot delete FieldFormats",e);
+			throw new DBException("Cannot delete FieldFormatGroup "+idGroup,e);
 		}
 	}
 }

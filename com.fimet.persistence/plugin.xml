@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="com.fimet.database.creator" name="SQLite Data Base Creator" schema="schema/com.fimet.database.creator.exsd"/>
 
    <extension
        point="com.fimet.manager">

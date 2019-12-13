@@ -55,7 +55,7 @@ public class Activator extends AbstractActivator {
 				for (UseCaseReport task : tasks) {
 					file = new File(task.getPath());
 					if (!file.exists()) {
-						dao.deleteSync(task);
+						dao.delete(task);
 					}
 				}
 			}

@@ -126,11 +126,8 @@ public class AbstractDAO<E, T> {
 	public static interface OnResult<O> {
 		public void onResult(O object);
 	}
-	public void insert(E entity) {
-		insert(entity,null);
-	}
 	public void insert(E entity, OnSave<E> listener) {
-		//ThreadUtils.runAcync(()->{
+		ThreadUtils.runAcync(()->{
 			try {
 				AbstractDAO.this.getDAO().create(entity);
 				if (listener != null) {
@@ -141,18 +138,15 @@ public class AbstractDAO<E, T> {
 			} catch (SQLException e) {
 				throw new PersistenceException(e);
 			}	
-		//});
+		});
 	}
-	public E insertSync(E entity) {
+	public E insert(E entity) {
 		try {
 			AbstractDAO.this.getDAO().create(entity);
 		} catch (SQLException e) {
 			throw new PersistenceException(e);
 		}
 		return entity;
-	}
-	public void delete(E entity) {
-		delete(entity, null);
 	}
 	public void delete(E entity , OnDelete<E> listener) {
 		ThreadUtils.runAcync(()->{
@@ -168,16 +162,13 @@ public class AbstractDAO<E, T> {
 			}	
 		});
 	}
-	public E deleteSync(E entity) {
+	public E delete(E entity) {
 		try {
 			AbstractDAO.this.getDAO().delete(entity);
 		} catch (SQLException e) {
 			throw new PersistenceException(e);
 		}
 		return entity;
-	}
-	public void update(E entity) {
-		update(entity, null);
 	}
 	public void update(E entity , OnSave<E> listener) {
 		ThreadUtils.runAcync(()->{
@@ -193,7 +184,7 @@ public class AbstractDAO<E, T> {
 			}	
 		});
 	}
-	public E updateSync(E entity) {
+	public E update(E entity) {
 		try {
 			AbstractDAO.this.getDAO().update(entity);
 		} catch (SQLException e) {
@@ -223,7 +214,7 @@ public class AbstractDAO<E, T> {
 			}	
 		});
 	}
-	public void query(PreparedQuery<E> pq,OnQuery<E> listener) {
+	public void queryAsync(PreparedQuery<E> pq,OnQuery<E> listener) {
 		ThreadUtils.runAcync(()->{
 			try {
 				List<E> results = AbstractDAO.this.getDAO().query(pq);
@@ -237,30 +228,16 @@ public class AbstractDAO<E, T> {
 			}	
 		});		
 	}
-	public List<E> querySync(PreparedQuery<E> pq,OnQuery<E> listener) {
+	public List<E> query(PreparedQuery<E> pq,OnQuery<E> listener) {
 		try {
-			return AbstractDAO.this.getDAO().query(pq);
+			return getDAO().query(pq);
 		} catch (SQLException e) {
 			throw new PersistenceException(e);
 		}
 	}
-	/*public void findById(T id, OnFindEntity<E> listener) {
-		ThreadUtils.runAcync(()->{
-			try {
-				E entity = AbstractDAO.this.getDAO().queryForId(id);
-				if (listener != null) {
-					ThreadUtils.runOnMainThread(()->{
-						listener.onFindEntity(entity);
-					});
-				}
-			} catch (SQLException e) {
-				throw new PersistenceException(e);
-			}	
-		});		
-	}*/
 	public E findById(T id) {
 		try {
-			return AbstractDAO.this.getDAO().queryForId(id);
+			return getDAO().queryForId(id);
 		} catch (SQLException e) {
 			throw new PersistenceException(e);
 		}	
