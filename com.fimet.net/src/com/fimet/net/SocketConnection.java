@@ -102,14 +102,11 @@ public abstract class SocketConnection extends Thread implements ISocketConnecti
 	@SuppressWarnings("deprecation")
 	public void disconnect() {
 		if (socket != null) {
+			close();
 			try {
-				this.stop();
+				if (this.isAlive()) this.stop();
 			} catch (ThreadDeath e) {}
-			try {
-				socket.close();
-			} catch (IOException e) {}
 			listener.onSocketDisconnected();
-			socket = null;
 			//Console.getInstance().info("Disconnected from "+ sourceConnection.getAddress()+" " +sourceConnection.getPort()+ " for "+sourceConnection.getName());
 		} else if (status == CONNECTING) {
 			listener.onSocketDisconnected();
@@ -117,6 +114,7 @@ public abstract class SocketConnection extends Thread implements ISocketConnecti
 		status = DISCONNECTED;
 		sentDisconnected = true;
 	}
+	abstract void close();
 	private void reconnect() {
 		while (!sentDisconnected && socket == null) {
 			try {

@@ -20,4 +20,11 @@ public class SocketConnectionClient extends SocketConnection {
 	protected Socket newSocket() throws IOException {
 		return new Socket(iSocket.getAddress(), iSocket.getPort());
 	}
+	@Override
+	void close() {
+		try {
+			if (socket != null) socket.close();
+		} catch (IOException e) {}		
+		socket = null;
+	}
 }

@@ -26,6 +26,15 @@ public class SocketConnectionServer extends SocketConnection {
 		return serverSocket.accept();
 	}
 	@Override
+	void close() {
+		try {
+			if (serverSocket != null) serverSocket.close();
+			if (socket != null) socket.close();
+		} catch (IOException e) {}
+		serverSocket = null;
+		socket = null;
+	}
+	@Override
 	public boolean isClient() {
 		return false;
 	}

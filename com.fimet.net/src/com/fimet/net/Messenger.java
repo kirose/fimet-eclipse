@@ -145,7 +145,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_CONNECTED) {
 				try{((IMessengerConnected)l.listener).onMessangerConnected(this);}
-				catch(Exception ex) {Activator.getInstance().warning("Error on connected listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on connected listener: "+ex.getMessage(), ex);}
 			}
 		}
 	}
@@ -153,7 +153,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_DISCONNECTED) {
 				try{ ((IMessengerDisconnected)l.listener).onMessangerDisconnected(this);}
-				catch(Exception ex) {Activator.getInstance().warning("Error on disconnected listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on disconnected listener: "+ex.getMessage(), ex);}
 			}
 		}
 	}
@@ -161,7 +161,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_CONNECTING) {
 				try{((IMessengerConnecting)l.listener).onMessangerConnecting(this);}
-				catch(Exception ex) {Activator.getInstance().warning("Error on connecting listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on connecting listener: "+ex.getMessage(), ex);}
 			}
 		}
 	}
@@ -169,7 +169,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_COMPLETE) {
 				try{((IMessengerComplete)l.listener).onMessengerComplete();}
-				catch(Exception ex) {Activator.getInstance().warning("Error on complete listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on complete listener: "+ex.getMessage(), ex);}
 			}
 		}
 	}
@@ -177,7 +177,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_PARSE_ACQ_RESPONSE) {
 				try{((IMessengerParseAcquirerResponse)l.listener).onMessangerParseAcquirerResponse(message);}
-				catch(Exception ex) {Activator.getInstance().warning("Error on parse aquirer response listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on parse aquirer response listener: "+ex.getMessage(), ex);}
 			}
 		}
 	}
@@ -185,7 +185,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_PARSE_ISS_REQUEST) {
 				try {((IMessengerParseIssuerRequest)l.listener).onMessangerParseIssuerRequest(message);}
-				catch(Exception ex) {Activator.getInstance().warning("Error on parse issuer request listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on parse issuer request listener: "+ex.getMessage(), ex);}
 			}
 		}
 	}
@@ -193,7 +193,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_READ_ACQ_RESPONSE) {
 				try {((IMessengerReadAcquirerResponse)l.listener).onMessangerReadAcquirerResponse(this, message);}
-				catch(Exception ex) {Activator.getInstance().warning("Error on read aquirer response listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on read aquirer response listener: "+ex.getMessage(), ex);}
 			}
 		}
 	}
@@ -201,7 +201,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_READ_ISS_REQUEST) {
 				try {((IMessengerReadIssuerRequest)l.listener).onMessangerReadIssuerRequest(this, message);}
-				catch(Exception ex) {Activator.getInstance().warning("Error on read issuer request listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on read issuer request listener: "+ex.getMessage(), ex);}
 			}
 		}
 	}
@@ -210,7 +210,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_SIMULATE_ISS_RESPONSE) {
 				try {delay = ((IMessengerSimulateResponse)l.listener).onMessangerSimulateResponse(message);}
-				catch(Exception ex) {Activator.getInstance().warning("Error on simulate issuer response listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on simulate issuer response listener: "+ex.getMessage(), ex);}
 			}
 		}
 		return delay;
@@ -219,7 +219,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_WRITE_ACQ_REQUEST) {
 				try {((IMessengerWriteAcquirerRequest)l.listener).onMessangerWriteAcquirerRequest(this, message);}
-				catch(Exception ex) {Activator.getInstance().warning("Error on write aquirer request listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on write aquirer request listener: "+ex.getMessage(), ex);}
 			}
 		}
 	}
@@ -227,7 +227,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_WRITE_ISS_RESPONSE) {
 				try {((IMessengerWriteIssuerResponse)l.listener).onMessangerWriteIssuerResponse(this, message);}
-				catch(Exception ex) {Activator.getInstance().warning("Error on write issuer response listener: "+ex.getMessage(), ex);}
+				catch(Throwable ex) {Activator.getInstance().warning("Error on write issuer response listener: "+ex.getMessage(), ex);}
 			}
 		}
 	}
