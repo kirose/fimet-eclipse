@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JSON Editor
+Bundle-SymbolicName: jsonedit-editor;singleton:=true
+Bundle-Version: 1.1.2
+Bundle-Activator: com.boothen.jsonedit.editor.Activator
+Require-Bundle: jsonedit-core,
+ jsonedit-folding,
+ jsonedit-model,
+ jsonedit-preferences,
+ jsonedit-text,
+ jsonedit-outline,
+ org.eclipse.ui.editors,
+ org.eclipse.text,
+ org.eclipse.core.runtime,
+ org.eclipse.jface,
+ org.eclipse.jface.text,
+ org.eclipse.ui,
+ org.eclipse.core.resources,
+ org.eclipse.ui.views,
+ org.eclipse.equinox.preferences,
+ org.eclipse.ui.workbench,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.workbench.texteditor,
+ org.antlr.antlr4-runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Boothen Technology
+Export-Package: com.boothen.jsonedit.editor

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.7"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.boothen.jsonedit.editor.JsonTextEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="json"
+            icon="icons/json.png"
+            id="com.boothen.jsonedit.core.editors.JsonTextEditor"
+            name="JSON Editor"
+            symbolicFontName="com.boothen.jsonedit.fonts.textfont">
+         <contentTypeBinding
+               contentTypeId="com.boothen.jsonedit.core.jsonsource">
+         </contentTypeBinding>
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.ui.category.edit"
+            id="com.boothen.jsonedit.format"
+            name="Format JSON">
+      </command>
+      <command
+            categoryId="org.eclipse.ui.category.navigate"
+            name="Quick Outline"
+            id="com.boothen.jsonedit.quickOutline">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:#JsonTextEditorContext?after=additions">
+         <command
+               commandId="com.boothen.jsonedit.format"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeEditorId">
+                  <equals
+                        value="com.boothen.jsonedit.core.editors.JsonTextEditor">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:edit?after=additions">
+         <command
+               commandId="com.boothen.jsonedit.format"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeEditorId">
+                  <equals
+                        value="com.boothen.jsonedit.core.editors.JsonTextEditor">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         id="com.boothen.jsonedit.validation.marker"
+         name="JSON Validation"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+    <extension point="org.eclipse.ui.newWizards">
+        <category
+            id="com.boothen.jsonedit.editor.new.category"
+            name="JSON">
+        </category>
+        <wizard
+              category="com.boothen.jsonedit.editor.new.category"
+              class="com.boothen.jsonedit.editor.JsonNewFileWizard"
+              icon="icons/json.png"
+              id="com.boothen.jsonedit.editor.new"
+              name="JSON File">
+            <selection class="org.eclipse.core.resources.IResource" />
+        </wizard>
+    </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="json"
+            id="com.boothen.jsonedit.core.jsonsource"
+            name="JSON Source"
+            priority="high"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+        <key
+              commandId="com.boothen.jsonedit.format"
+              contextId="com.boothen.jsonedit.jsonEditorScope"
+              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+              sequence="M1+M2+F"/>
+        <key
+              sequence="M1+O"
+              contextId="com.boothen.jsonedit.jsonEditorScope"
+              commandId="com.boothen.jsonedit.quickOutline"
+              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+    </extension>
+    <extension point="org.eclipse.ui.contexts">
+        <context
+            name="JSON editor"
+            parentId="org.eclipse.ui.textEditorScope"
+            id="com.boothen.jsonedit.jsonEditorScope">
+        </context>
+    </extension>
+    <extension
+         point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+            class="com.boothen.jsonedit.editor.DocumentSetup"
+            contentTypeId="com.boothen.jsonedit.core.jsonsource">
+      </participant>
+   </extension>
+</plugin>
