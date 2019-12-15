@@ -1,8 +1,8 @@
 # FIMET
 
-## Finantial Message Transfer
+## Financial Message Transfer
 
-FIMET is an project developed in eclipse and implemented on eclipse 2018-12 for automate tests with ISO8583
+FIMET is a project developed in eclipse and implemented on eclipse 2018-12 for automate tests with ISO8583
 
 ## Some features:
 
@@ -14,15 +14,15 @@ FIMET is an project developed in eclipse and implemented on eclipse 2018-12 for 
 
 **Use Cases:** abstraction of an ISO8583 message for automated test
 
-**Converters:** convertion between ASCII, EBCDIC, HEX, Binary
+**Converters:** conversion between ASCII, EBCDIC, HEX, Binary
 
 **Report:** for display the results of use cases execution
 
-Just download the jars and add to the plugins folder of eclipse 2018-12
+Just download the jars (FIMET-eclipse-plugins-2018-12.rar) and put it inside "plugins" folder of eclipse 2018-12
 
 You can download eclipse 2018-12 [**here**](https://www.eclipse.org/downloads/packages/release/2018-12/r)
 
-I will appreciate if you tell me how to upload the project to the eclipse marketplace.
+I would appreciate if you could tell me how to upload the project to the eclipse marketplace.
 
 
 ![OverviewFimet](https://user-images.githubusercontent.com/6531429/70770950-1457ec00-1d35-11ea-8463-d72a38c05b8e.PNG)
