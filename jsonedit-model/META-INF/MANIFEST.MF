@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JSON Editor Model Generator
+Bundle-SymbolicName: jsonedit-model
+Bundle-Version: 1.1.2
+Bundle-Vendor: Boothen Technology
+Export-Package: com.boothen.jsonedit.antlr,
+ com.boothen.jsonedit.model,
+ com.boothen.jsonedit.problems
+Require-Bundle: org.eclipse.jface.text,
+ org.antlr.antlr4-runtime,
+ jsonedit-core,
+ org.eclipse.swt,
+ org.eclipse.core.resources
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: jsonedit-model
