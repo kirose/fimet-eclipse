@@ -11,5 +11,5 @@ public interface IMessengerReadAcquirerResponse extends IMessengerListener {
 	 * @param msg
 	 * @return boolean true: if must response false: not respond to socket
 	 */
-	void onMessangerReadAcquirerResponse(IMessenger conn, byte[] message);
+	void onMessengerReadAcquirerResponse(IMessenger conn, byte[] message);
 }

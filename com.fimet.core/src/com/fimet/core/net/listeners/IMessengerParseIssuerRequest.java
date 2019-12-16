@@ -7,5 +7,5 @@ public interface IMessengerParseIssuerRequest extends IMessengerListener {
 	 * Invoked after the message is parsed
 	 * @param request
 	 */
-	void onMessangerParseIssuerRequest(Message request);
+	void onMessengerParseIssuerRequest(Message request);
 }

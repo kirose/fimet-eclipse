@@ -10,5 +10,5 @@ public interface IMessengerWriteAcquirerRequest extends IMessengerListener {
 	 * @param conn
 	 * @param msg
 	 */
-	void onMessangerWriteAcquirerRequest(IMessenger conn, byte[] message);
+	void onMessengerWriteAcquirerRequest(IMessenger conn, byte[] message);
 }

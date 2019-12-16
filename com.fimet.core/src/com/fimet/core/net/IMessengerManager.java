@@ -22,4 +22,5 @@ public interface IMessengerManager extends IManager {
 	 * @param listener
 	 */
 	void removeListener(int type, IMessengerListener listener);
+	void setSocketTimeReconnect(int sec);
 }

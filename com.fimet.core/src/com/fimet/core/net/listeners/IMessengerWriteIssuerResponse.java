@@ -10,5 +10,5 @@ public interface IMessengerWriteIssuerResponse extends IMessengerListener {
 	 * @param conn
 	 * @param msg
 	 */
-	void onMessangerWriteIssuerResponse(IMessenger conn, byte[] message);
+	void onMessengerWriteIssuerResponse(IMessenger conn, byte[] message);
 }

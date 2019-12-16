@@ -30,6 +30,8 @@ public interface IPreferencesManager extends IManager {
 	public static final String LOG_POSITION_STATE = "LogPosition";
 	public static final String LOG_FTP_STATE = "LogFtpState";
 	
+	public static final String SOCKET_RECONNECT_TIME_SEC = "SocketReconnectTime";
+	
 	
 	public String getString(String name, String defaultValue);
 	public String getString(String name);

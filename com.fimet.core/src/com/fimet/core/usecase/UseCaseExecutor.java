@@ -155,27 +155,23 @@ public class UseCaseExecutor implements
 			issuerConnection = messengerManager.getConnection(useCase.getIssuer().getConnection());
 			issuerConnection.addListener(IMessengerListener.ON_DISCONNECTED, this);
 		}
-		if (acquirerConnection.isConnected() && (issuerConnection == null || (issuerConnection != null && issuerConnection.isConnected()))) {
+		acquirerConnected = acquirerConnection.isConnected();
+		issuerConnected = issuerConnection == null || issuerConnection.isConnected();
+		if (acquirerConnected && issuerConnected) {
 			UseCaseExecutor.this._run();
 		} else {
-			if (!acquirerConnection.isConnected()) {
+			if (!acquirerConnected) {
 				acquirerConnection.addListener(IMessengerListener.ON_CONNECTED, this);
-			} else {
-				this.issuerConnected = true;
 			}
-			if (issuerConnection != null) {
-				if (!issuerConnection.isConnected()) {
-					issuerConnection.addListener(IMessengerListener.ON_CONNECTED, this);
-				} else {
-					this.issuerConnected = true;
-				}
+			if (!issuerConnected) {
+				issuerConnection.addListener(IMessengerListener.ON_CONNECTED, this);
 				issuerConnection.connect();
 			}
 			acquirerConnection.connect();
 		}
 	}
 	@Override
-	public void onMessangerConnected(IMessenger connection) {
+	public void onMessengerConnected(IMessenger connection) {
 		if (connection == acquirerConnection) {
 			acquirerConnected = true;
 		} else if (connection == issuerConnection) {
@@ -186,7 +182,7 @@ public class UseCaseExecutor implements
 		}
 	}
 	@Override
-	public void onMessangerDisconnected(IMessenger connection) {
+	public void onMessengerDisconnected(IMessenger connection) {
 		stop();
 	}
 	private void _run() {
@@ -429,7 +425,7 @@ public class UseCaseExecutor implements
 		return resource.getProject();
 	}
 	@Override
-	public void onMessangerWriteIssuerResponse(IMessenger conn, byte[] msg) {
+	public void onMessengerWriteIssuerResponse(IMessenger conn, byte[] msg) {
 		if (!isStoped() && preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ISSUER, true)) {
 			//Console.getInstance().debug(UseCaseExecutor.class.getName(), "Write issuer response sim_queue");
 			if (conn.getConnection().getAdapter() instanceof IByteArrayAdapter) {
@@ -441,7 +437,7 @@ public class UseCaseExecutor implements
 		}
 	}
 	@Override
-	public void onMessangerReadIssuerRequest(IMessenger conn, byte[] msg) {
+	public void onMessengerReadIssuerRequest(IMessenger conn, byte[] msg) {
 		if (!isStoped() && preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_READ_ISSUER, true)) {
 			//Console.getInstance().debug(UseCaseExecutor.class.getName(), "Write issuer request sim_queue");
 			if (conn.getConnection().getAdapter() instanceof IByteArrayAdapter) {
@@ -453,7 +449,7 @@ public class UseCaseExecutor implements
 		}
 	}
 	@Override
-	public void onMessangerParseIssuerRequest(Message request) {
+	public void onMessengerParseIssuerRequest(Message request) {
 		if (useCase.getIssuer() != null && useCase.getIssuer().getRequest() != null && useCase.getIssuer().getRequest().getMessage() == null) {
 			useCase.getIssuer().getRequest().setMessage(request);
 			try {
@@ -465,7 +461,7 @@ public class UseCaseExecutor implements
 		}
 	}
 	@Override
-	public Integer onMessangerSimulateResponse(Message response) {
+	public Integer onMessengerSimulateResponse(Message response) {
 		useCase.getIssuer().getResponse().setMessage(response);
 		try {
 			useCase.getValidator().onIssuerResponse(response);
@@ -482,7 +478,7 @@ public class UseCaseExecutor implements
 		return 0;
 	}
 	@Override
-	public void onMessangerWriteAcquirerRequest(IMessenger conn, byte[] msg) {
+	public void onMessengerWriteAcquirerRequest(IMessenger conn, byte[] msg) {
 		if (preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ACQUIRER, true)) {
 			if (conn.getConnection().getAdapter() instanceof IByteArrayAdapter) {
 				IByteArrayAdapter adapter = (IByteArrayAdapter)conn.getConnection().getAdapter();
@@ -493,7 +489,7 @@ public class UseCaseExecutor implements
 		}
 	}
 	@Override
-	public void onMessangerReadAcquirerResponse(IMessenger conn, byte[] msg) {
+	public void onMessengerReadAcquirerResponse(IMessenger conn, byte[] msg) {
 		if (!isStoped()) {
 			setStatus(COMPLETING);
 			if (preferencesManager.getBoolean(IPreferencesManager.CREATE_SIMQUEUE_READ_ACQUIRER, true)) {
@@ -507,7 +503,7 @@ public class UseCaseExecutor implements
 		}
 	}
 	@Override
-	public void onMessangerParseAcquirerResponse(Message response) {
+	public void onMessengerParseAcquirerResponse(Message response) {
 		useCase.getAcquirer().getResponse().setMessage(response);
 		try {
 			useCase.getValidator().onAcquirerResponse(response);

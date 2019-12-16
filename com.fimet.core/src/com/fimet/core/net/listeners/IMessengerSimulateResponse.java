@@ -8,5 +8,5 @@ public interface IMessengerSimulateResponse extends IMessengerListener {
 	 * @param response
 	 * @return timeout if -1 not respond, if timeout > 0 sleep for timeout seconds then respond 
 	 */
-	Integer onMessangerSimulateResponse(Message response);
+	Integer onMessengerSimulateResponse(Message response);
 }
