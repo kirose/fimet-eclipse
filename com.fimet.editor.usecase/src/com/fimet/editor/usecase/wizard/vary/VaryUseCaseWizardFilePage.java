@@ -172,12 +172,11 @@ public class VaryUseCaseWizardFilePage extends WizardPage implements Listener {
 			resourceGroup.setResource("");
 			return;
 		}
-		
 		StringBuilder sb = new StringBuilder();
 		String fileName = useCaseSrc.getLocation().toString().replace('\\', '/');
 		fileName = fileName.substring(fileName.lastIndexOf('/')+1);
 		sb.append(fileName);
-		resourceGroup.setResource(sb.toString());
+		resourceGroup.setResource(getSuggestFileNameAndParameters(sb.toString()));
 	}
 
 	protected void createTransactionNameControls(Composite composite, int nColumns) {
@@ -535,7 +534,7 @@ public class VaryUseCaseWizardFilePage extends WizardPage implements Listener {
 	 *         component group
 	 */
 	protected String getNewFileLabel() {
-		return "Files Names:";
+		return "File Names And Parameters (NAME:{json-parameters}):";
 	}
 
 	/**
@@ -614,13 +613,20 @@ public class VaryUseCaseWizardFilePage extends WizardPage implements Listener {
 	 *            new file name
 	 */
 	public void setFileName(String value) {
+		value = getSuggestFileNameAndParameters(value);
 		if (resourceGroup == null) {
 			initialFileName = value;
 		} else {
 			resourceGroup.setResource(value);
 		}
 	}
-
+	private String getSuggestFileNameAndParameters(String name) {
+		if (name == null || name.length() == 0) return "";
+		if (name!= null && name.indexOf('.') != -1) name = name.substring(0,name.lastIndexOf('.'));
+		name = name+"1:{\"2\":\"4000000000000001\"}\n"+
+				name+"2:{\"2\":\"4000000000000002\"}";		
+		return name;
+	}
 	/**
 	 * Set the only file extension allowed for this page's file name field. If
 	 * this page's controls do not exist yet, store it for future use. <br>
@@ -678,7 +684,7 @@ public class VaryUseCaseWizardFilePage extends WizardPage implements Listener {
 		boolean validRes = true;
 		int i;
 		for (String resource : resources) {
-			i = resource.indexOf('{');
+			i = resource.indexOf(":{");
 			if (i >= 0)
 				resource = resource.substring(0,i);
 			IStatus result = workspace.validateName(resource, IResource.FILE);

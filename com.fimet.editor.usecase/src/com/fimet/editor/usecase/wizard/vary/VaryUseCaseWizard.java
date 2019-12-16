@@ -106,10 +106,16 @@ public class VaryUseCaseWizard extends BasicNewResourceWizard {
     	int i = 0;
     	String params = null;
     	for (String resource : resources) {
-    		i = resource.indexOf('{');
+    		i = resource.indexOf(":{");
     		if (i > 0) {
-    			params = resource.substring(i);
+    			params = resource.substring(i+1);
     			resource = resource.substring(0,i);
+    			if (params.endsWith("."+Messages.NewTransactionWizard_UseCaseFileExtension)) {
+    				params = params.substring(0,params.length()-Messages.NewTransactionWizard_UseCaseFileExtension.length()-1);
+    			}
+    		}
+    		if (!resource.endsWith(Messages.NewTransactionWizard_UseCaseFileExtension)) {
+    			resource += "."+Messages.NewTransactionWizard_UseCaseFileExtension;
     		}
 	        IFile file = mainPage.createNewFile(useCaseResource, resource, createParams(params));
 	        if (file != null) {
