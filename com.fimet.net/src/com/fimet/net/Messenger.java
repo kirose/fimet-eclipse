@@ -3,15 +3,12 @@ package com.fimet.net;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import com.fimet.commons.console.Console;
 import com.fimet.commons.exception.SocketException;
-import com.fimet.commons.utils.ThreadUtils;
-import com.fimet.core.Manager;
 import com.fimet.core.ISO8583.parser.Message;
 import com.fimet.core.net.ISocketConnection;
 import com.fimet.core.net.ISocketConnectionListener;
 import com.fimet.core.net.listeners.IMessengerListener;
 import com.fimet.core.net.listeners.*;
 import com.fimet.core.net.IMessenger;
-import com.fimet.core.net.IMessengerManager;
 import com.fimet.core.net.ISocket;
 
 /**
@@ -22,10 +19,6 @@ import com.fimet.core.net.ISocket;
 	
 public abstract class Messenger implements IMessenger, ISocketConnectionListener {
 	
-	static final int DISCONNECTED = 0;
-	static final int CONNECTING = 1;
-	static final int CONNECTED = 2;
-	
 	SocketConnection socket;
 	ConcurrentLinkedQueue<Listener> listeners = new ConcurrentLinkedQueue<>();
 	ISocket iSocket;
@@ -35,12 +28,13 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	public Messenger(ISocket iSocket) {
 		super();
 		this.iSocket = iSocket;
+	}
+	private SocketConnection newSocketConnection() {
 		if (iSocket.isServer()) {
-			socket = new SocketConnectionServer(iSocket, this);
+			return socket = new SocketConnectionServer(iSocket, this);
 		} else {
-			socket = new SocketConnectionClient(iSocket, this);
-		}
-		status = DISCONNECTED;
+			return  socket = new SocketConnectionClient(iSocket, this);
+		} 
 	}
 	abstract public void wirteMessage(Message message);
 
@@ -48,30 +42,18 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	 * Attempt to connect the iSocket
 	 */
 	public void connect() {
-		if (isDisconnected()) {
+		if (isDisconnected()) {// Maybe socket is in CONNECTING status
 			if (!iSocket.isActive()) {
 				Console.getInstance().error(Messenger.class, "Inactive socket "+iSocket+", select a socket Active.");
 				throw new SocketException("Inactive socket: '"+iSocket+"' ");
 			}
-			checkSocket();
-			ThreadUtils.runAcync(()->{
-				try {
-					socket.connect();
-				} catch (IllegalThreadStateException e) {
-					Manager.get(IMessengerManager.class).disconnect(iSocket);
-					Manager.get(IMessengerManager.class).connect(iSocket);
-				}
-			});
-		}
-	}
-	private void checkSocket() {
-		if (socket instanceof SocketConnectionClient && !socket.isAlive()) {
-			socket = new SocketConnectionClient(iSocket,this);
+			newSocketConnection().connect();
 		}
 	}
 	public void disconnect() {
-		if (!isDisconnected()) {
+		if (socket != null) {
 			socket.disconnect();
+			socket = null;
 		}
 	}
 	public ISocketConnection getSocket() {
@@ -85,28 +67,25 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		return iSocket;
 	}
 	public synchronized boolean isConnected() {
-		return status == CONNECTED;
+		return socket != null && socket.isConncted();
 	}
 	public synchronized boolean isDisconnected() {
-		return status == DISCONNECTED;
+		return socket == null || socket.isDisconnected();
 	}
 	public synchronized boolean isConnecting() {
-		return status == CONNECTING;
+		return socket != null && socket.isConnecting();
 	}
 	
 	@Override
 	public void onSocketConnecting() {
-		status = CONNECTING;
 		fireOnConnecting();
 	}
 	@Override
 	public void onSocketConnected() {
-		status = CONNECTED;
 		fireOnConnect();
 	}
 	@Override
 	public void onSocketDisconnected() {
-		status = DISCONNECTED;
 		fireOnDisconnect();
 	}
 	@Override

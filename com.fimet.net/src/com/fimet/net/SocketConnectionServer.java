@@ -19,20 +19,32 @@ public class SocketConnectionServer extends SocketConnection {
 	public SocketConnectionServer(ISocket iSocket, ISocketConnectionListener listener) {
 		super(iSocket, listener);
 	}
-
+	
 	@Override
 	protected Socket newSocket() throws IOException {
 		serverSocket = new java.net.ServerSocket(iSocket.getPort());
-		return serverSocket.accept();
+		return socket = serverSocket.accept();
 	}
 	@Override
 	void close() {
-		try {
-			if (serverSocket != null) serverSocket.close();
-			if (socket != null) socket.close();
-		} catch (IOException e) {}
-		serverSocket = null;
-		socket = null;
+		if (socket != null)  {
+			try {
+				socket.getInputStream().close();
+			} catch (Throwable e) {/*Activator.getInstance().warning("socket.getInputStream().close()", e);*/}
+			try {
+				socket.getOutputStream().close();
+			} catch (Throwable e) {/*Activator.getInstance().warning("socket.getOutputStream().close()", e);*/}
+			try {
+				socket.close();
+			} catch (Throwable e) {/*Activator.getInstance().warning("socket.close()", e);*/}
+			socket = null;
+		}
+		if (serverSocket != null) {
+			try {
+				serverSocket.close();
+			} catch (Throwable e) {/*Activator.getInstance().warning("serverSocket.close()", e);*/}
+			serverSocket = null;
+		}
 	}
 	@Override
 	public boolean isClient() {

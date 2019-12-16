@@ -18,13 +18,21 @@ public class SocketConnectionClient extends SocketConnection {
 	}
 	@Override
 	protected Socket newSocket() throws IOException {
-		return new Socket(iSocket.getAddress(), iSocket.getPort());
+		return socket = new Socket(iSocket.getAddress(), iSocket.getPort());
 	}
 	@Override
 	void close() {
-		try {
-			if (socket != null) socket.close();
-		} catch (IOException e) {}		
-		socket = null;
+		if (socket != null)  {
+			try {
+				socket.getInputStream().close();
+			} catch (Throwable e) {/*Activator.getInstance().warning("socket.getInputStream().close()", e);*/}
+			try {
+				socket.getOutputStream().close();
+			} catch (Throwable e) {/*Activator.getInstance().warning("socket.getOutputStream().close()", e);*/}
+			try {
+				socket.close();
+			} catch (Throwable e) {/*Activator.getInstance().warning("socket.close()", e);*/}
+			socket = null;
+		}
 	}
 }
