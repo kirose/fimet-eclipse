@@ -29,12 +29,6 @@ public class SocketConnectionServer extends SocketConnection {
 	void close() {
 		if (socket != null)  {
 			try {
-				socket.getInputStream().close();
-			} catch (Throwable e) {/*Activator.getInstance().warning("socket.getInputStream().close()", e);*/}
-			try {
-				socket.getOutputStream().close();
-			} catch (Throwable e) {/*Activator.getInstance().warning("socket.getOutputStream().close()", e);*/}
-			try {
 				socket.close();
 			} catch (Throwable e) {/*Activator.getInstance().warning("socket.close()", e);*/}
 			socket = null;

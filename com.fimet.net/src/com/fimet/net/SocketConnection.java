@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.fimet.commons.console.Console;
 import com.fimet.commons.exception.SocketException;
+import com.fimet.core.IPreferencesManager;
+import com.fimet.core.Manager;
 import com.fimet.core.ISO8583.adapter.IStreamAdapter;
 import com.fimet.core.net.ISocketConnection;
 import com.fimet.core.net.ISocketConnectionListener;
@@ -28,7 +30,7 @@ public abstract class SocketConnection extends Thread implements ISocketConnecti
 	protected Socket socket;
 	protected ISocket iSocket;
 	private boolean reconnect = true;
-	private static int RECONNECTION_TIME = 2*1000;// In Miliseconds
+	static int RECONNECTION_TIME = Manager.get(IPreferencesManager.class).getInt(IPreferencesManager.SOCKET_RECONNECT_TIME_SEC,2)*1000;// In Miliseconds
 	private boolean sentDisconnected = false;
 	private IStreamAdapter adapter;
 	private ISocketConnectionListener listener;
@@ -94,10 +96,14 @@ public abstract class SocketConnection extends Thread implements ISocketConnecti
 				_connect();
 			} catch (SocketException e1) {
 				socket = null;
-			}					
-			try {
-				TimeUnit.MILLISECONDS.sleep(RECONNECTION_TIME);
-			} catch (Exception e1) {}
+			}
+			if (RECONNECTION_TIME <= 0) {
+				disconnect();
+			} else {
+				try {
+					TimeUnit.MILLISECONDS.sleep(RECONNECTION_TIME);
+				} catch (Exception e1) {}
+			}
 		}
 	}
 	@Override

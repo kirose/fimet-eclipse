@@ -112,4 +112,7 @@ public class MessengerManager implements IMessengerManager, IEnviromentDisconnec
 			for (Map.Entry<ISocket, IMessenger> e : connections.entrySet())
 				e.getValue().removeListener(type, listener);
 	}
+	public void setSocketTimeReconnect(int sec) {
+		SocketConnection.RECONNECTION_TIME = sec*1000;
+	}
 }

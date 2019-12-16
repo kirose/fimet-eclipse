@@ -1,8 +1,6 @@
 package com.fimet.net;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
-import com.fimet.commons.console.Console;
-import com.fimet.commons.exception.SocketException;
 import com.fimet.core.ISO8583.parser.Message;
 import com.fimet.core.net.ISocketConnection;
 import com.fimet.core.net.ISocketConnectionListener;
@@ -43,10 +41,6 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	 */
 	public void connect() {
 		if (isDisconnected()) {// Maybe socket is in CONNECTING status
-			if (!iSocket.isActive()) {
-				Console.getInstance().error(Messenger.class, "Inactive socket "+iSocket+", select a socket Active.");
-				throw new SocketException("Inactive socket: '"+iSocket+"' ");
-			}
 			newSocketConnection().connect();
 		}
 	}
@@ -123,7 +117,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	protected void fireOnConnect(){
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_CONNECTED) {
-				try{((IMessengerConnected)l.listener).onMessangerConnected(this);}
+				try{((IMessengerConnected)l.listener).onMessengerConnected(this);}
 				catch(Throwable ex) {Activator.getInstance().warning("Error on connected listener: "+ex.getMessage(), ex);}
 			}
 		}
@@ -131,7 +125,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	protected void fireOnDisconnect(){
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_DISCONNECTED) {
-				try{ ((IMessengerDisconnected)l.listener).onMessangerDisconnected(this);}
+				try{ ((IMessengerDisconnected)l.listener).onMessengerDisconnected(this);}
 				catch(Throwable ex) {Activator.getInstance().warning("Error on disconnected listener: "+ex.getMessage(), ex);}
 			}
 		}
@@ -139,7 +133,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	protected void fireOnConnecting(){
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_CONNECTING) {
-				try{((IMessengerConnecting)l.listener).onMessangerConnecting(this);}
+				try{((IMessengerConnecting)l.listener).onMessengerConnecting(this);}
 				catch(Throwable ex) {Activator.getInstance().warning("Error on connecting listener: "+ex.getMessage(), ex);}
 			}
 		}
@@ -155,7 +149,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	protected void fireParseAcquirerResponse(Message message){
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_PARSE_ACQ_RESPONSE) {
-				try{((IMessengerParseAcquirerResponse)l.listener).onMessangerParseAcquirerResponse(message);}
+				try{((IMessengerParseAcquirerResponse)l.listener).onMessengerParseAcquirerResponse(message);}
 				catch(Throwable ex) {Activator.getInstance().warning("Error on parse aquirer response listener: "+ex.getMessage(), ex);}
 			}
 		}
@@ -163,7 +157,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	protected void fireParseIssuerRequest(Message message){
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_PARSE_ISS_REQUEST) {
-				try {((IMessengerParseIssuerRequest)l.listener).onMessangerParseIssuerRequest(message);}
+				try {((IMessengerParseIssuerRequest)l.listener).onMessengerParseIssuerRequest(message);}
 				catch(Throwable ex) {Activator.getInstance().warning("Error on parse issuer request listener: "+ex.getMessage(), ex);}
 			}
 		}
@@ -171,7 +165,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	protected void fireReadAcquirerResponse(byte[] message){
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_READ_ACQ_RESPONSE) {
-				try {((IMessengerReadAcquirerResponse)l.listener).onMessangerReadAcquirerResponse(this, message);}
+				try {((IMessengerReadAcquirerResponse)l.listener).onMessengerReadAcquirerResponse(this, message);}
 				catch(Throwable ex) {Activator.getInstance().warning("Error on read aquirer response listener: "+ex.getMessage(), ex);}
 			}
 		}
@@ -179,7 +173,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	protected void fireReadIssuerRequest(byte[] message){
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_READ_ISS_REQUEST) {
-				try {((IMessengerReadIssuerRequest)l.listener).onMessangerReadIssuerRequest(this, message);}
+				try {((IMessengerReadIssuerRequest)l.listener).onMessengerReadIssuerRequest(this, message);}
 				catch(Throwable ex) {Activator.getInstance().warning("Error on read issuer request listener: "+ex.getMessage(), ex);}
 			}
 		}
@@ -188,7 +182,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 		Integer delay = null;
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_SIMULATE_ISS_RESPONSE) {
-				try {delay = ((IMessengerSimulateResponse)l.listener).onMessangerSimulateResponse(message);}
+				try {delay = ((IMessengerSimulateResponse)l.listener).onMessengerSimulateResponse(message);}
 				catch(Throwable ex) {Activator.getInstance().warning("Error on simulate issuer response listener: "+ex.getMessage(), ex);}
 			}
 		}
@@ -197,7 +191,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	protected void fireWriteAcquirerRequest(byte[] message){
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_WRITE_ACQ_REQUEST) {
-				try {((IMessengerWriteAcquirerRequest)l.listener).onMessangerWriteAcquirerRequest(this, message);}
+				try {((IMessengerWriteAcquirerRequest)l.listener).onMessengerWriteAcquirerRequest(this, message);}
 				catch(Throwable ex) {Activator.getInstance().warning("Error on write aquirer request listener: "+ex.getMessage(), ex);}
 			}
 		}
@@ -205,7 +199,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	protected void fireWriteIssuerResponse(byte[] message){
 		for (Listener l : listeners) {
 			if (l.type == IMessengerListener.ON_WRITE_ISS_RESPONSE) {
-				try {((IMessengerWriteIssuerResponse)l.listener).onMessangerWriteIssuerResponse(this, message);}
+				try {((IMessengerWriteIssuerResponse)l.listener).onMessengerWriteIssuerResponse(this, message);}
 				catch(Throwable ex) {Activator.getInstance().warning("Error on write issuer response listener: "+ex.getMessage(), ex);}
 			}
 		}
