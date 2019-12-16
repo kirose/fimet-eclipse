@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.fimet.commons.exception.DBException;
 import com.fimet.core.entity.sqlite.FieldFormat;
-import com.fimet.core.entity.sqlite.FieldFormatGroup;
 import com.fimet.persistence.sqlite.PersistenceException;
 import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.stmt.DeleteBuilder;
