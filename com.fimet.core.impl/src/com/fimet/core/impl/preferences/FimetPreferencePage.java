@@ -24,6 +24,7 @@ import com.fimet.core.ILogManager;
 import com.fimet.core.IPreferencesManager;
 import com.fimet.core.Manager;
 import com.fimet.core.impl.swt.TextDecorate;
+import com.fimet.core.net.IMessengerManager;
 /**
  * 
  * @author Marco A. Salazar
@@ -51,6 +52,8 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
 	private Button btnExtractorEnable;
 	private TextDecorate txtExtractorGarbageCycle;
 	private TextDecorate txtExtractorReacerCycle;
+	
+	private TextDecorate txtSocketTimeReconnect;
 	private Button btnApply;
 	
     public FimetPreferencePage() {
@@ -181,6 +184,25 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
 
 		new Label(groupParsers, SWT.NONE).setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
+		layout = new GridLayout(4, true);
+        layout.horizontalSpacing = 10;
+        layout.marginWidth = 10;
+        Group groupSocket = new Group(composite, SWT.NONE);
+        groupSocket.setText("Socket");
+        groupSocket.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        groupSocket.setLayout(layout);
+		
+		label = new Label(groupSocket, SWT.NONE);
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setText("Reconnect Time (sec)");
+
+		txtSocketTimeReconnect = new TextDecorate(groupSocket, SWT.BORDER);
+		txtSocketTimeReconnect.setText(""+preferencesManager.getInt(IPreferencesManager.SOCKET_RECONNECT_TIME_SEC,2));
+		txtSocketTimeReconnect.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtSocketTimeReconnect.setValidator((String value)->{return value != null && value.matches("-?[0-9]+");});
+		txtSocketTimeReconnect.addModifyListener((ModifyEvent e) -> {txtSocketTimeReconnect.validateAndMark();});
+		txtSocketTimeReconnect.valid();
+		
 		if (Manager.isManaged(ILogManager.class)) {
 			layout = new GridLayout(4, true);
 	        layout.horizontalSpacing = 10;
@@ -219,6 +241,7 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
 			txtLogReaderCycle.addModifyListener((ModifyEvent e) -> {txtLogReaderCycle.validateAndMark();});
 			txtLogReaderCycle.valid();
 		}
+		
 		if (Manager.isManaged(IExtractorManager.class)) {
 			layout = new GridLayout(4, true);
 	        layout.horizontalSpacing = 10;
@@ -258,7 +281,6 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
 			txtExtractorReacerCycle.addModifyListener((ModifyEvent e) -> {txtExtractorGarbageCycle.validateAndMark();});
 			txtExtractorReacerCycle.valid();
 		}
-		
 		
     	Composite cmpButtons = new Composite(parent, SWT.NONE);
     	layout = new GridLayout(2,false);
@@ -313,6 +335,9 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
     	preferencesManager.save(IPreferencesManager.CREATE_SIMQUEUE_READ_ISSUER, btnSimQueueReadIssuer.getSelection());
     	preferencesManager.save(IPreferencesManager.CREATE_SIMQUEUE_WRITE_ISSUER, btnSimQueueWriteIssuer.getSelection());
     	preferencesManager.save(IPreferencesManager.VALIDATE_TYPES_FIELD_FORMAT, btnValidateTypesField.getSelection());
+    	preferencesManager.save(IPreferencesManager.SOCKET_RECONNECT_TIME_SEC, Integer.parseInt(txtSocketTimeReconnect.getText()));
+    	Manager.get(IMessengerManager.class).setSocketTimeReconnect(Integer.parseInt(txtSocketTimeReconnect.getText()));
+
     	if (Manager.isManaged(ILogManager.class)) {
     		preferencesManager.save(IPreferencesManager.LOG_ENABLE, btnLogEnable.getSelection());
     		preferencesManager.save(IPreferencesManager.LOG_GARBAGE_CYCLE_TIME_SEC, Integer.parseInt(txtLogGarbageCycle.getText()));

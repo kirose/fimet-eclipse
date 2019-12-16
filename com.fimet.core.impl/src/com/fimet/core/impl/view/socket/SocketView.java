@@ -276,7 +276,7 @@ public class SocketView extends ViewPart implements IMessengerMonitor, ISocketIn
 		Manager.get(ISocketManager.class).removeListener(ISocketListener.ON_UPDATE_ALL, this);
 	}
 	@Override
-	public void onMessangerDisconnected(IMessenger conn) {
+	public void onMessengerDisconnected(IMessenger conn) {
 		if (PlatformUI.isWorkbenchRunning()) {
 			ThreadUtils.runOnMainThread(()->{
 				table.refresh(conn.getConnection());
@@ -284,7 +284,7 @@ public class SocketView extends ViewPart implements IMessengerMonitor, ISocketIn
 		}
 	}
 	@Override
-	public void onMessangerConnecting(IMessenger conn) {
+	public void onMessengerConnecting(IMessenger conn) {
 		if (PlatformUI.isWorkbenchRunning()) {
 			ThreadUtils.runOnMainThread(()->{
 				table.refresh(conn.getConnection());
@@ -292,7 +292,7 @@ public class SocketView extends ViewPart implements IMessengerMonitor, ISocketIn
 		}
 	}
 	@Override
-	public void onMessangerConnected(IMessenger conn) {
+	public void onMessengerConnected(IMessenger conn) {
 		if (PlatformUI.isWorkbenchRunning()) {
 			ThreadUtils.runOnMainThread(()->{
 				table.refresh(conn.getConnection());

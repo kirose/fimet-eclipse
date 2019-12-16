@@ -78,7 +78,7 @@ public abstract class CrudTable<E> extends Composite {
 	protected void createContents() {
 		
 	}
-    private void createContextMenu() {
+    protected void createContextMenu() {
         MenuManager contextMenu = new MenuManager("#CrudTableViewerMenu"+UUID.randomUUID(),null);
         contextMenu.setRemoveAllWhenShown(true);
         contextMenu.addMenuListener(new IMenuListener() {
@@ -90,7 +90,7 @@ public abstract class CrudTable<E> extends Composite {
         Menu menu = contextMenu.createContextMenu(table.getControl());
         table.getControl().setMenu(menu);
     }
-    private void fillContextMenu(IMenuManager contextMenu) {
+    protected void fillContextMenu(IMenuManager contextMenu) {
         contextMenu.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
         contextMenu.add(new Action("New") {
             public void run() {
@@ -115,6 +115,29 @@ public abstract class CrudTable<E> extends Composite {
         col.getColumn().setText(name);
         col.setLabelProvider(lblProvider);
         return col;
+	}
+	protected void down(E e) {
+		if (entities != null) {
+			int i = entities.indexOf(e);
+			if (i < entities.size()-1) {
+				E down = entities.get(i+1);
+				entities.set(i, down);
+				entities.set(i+1, e);
+				getTable().refresh();
+			}
+		}
+	}
+
+	protected void up(E e) {
+		if (entities != null) {
+			int i = entities.indexOf(e);
+			if (i > 0) {
+				E up = entities.get(i-1);
+				entities.set(i, up);
+				entities.set(i-1, e);
+				getTable().refresh();
+			}
+		}
 	}
 	public void add(E e) {
 		if (!entities.contains(e)) {

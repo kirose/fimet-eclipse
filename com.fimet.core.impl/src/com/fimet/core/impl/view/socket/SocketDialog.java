@@ -180,7 +180,6 @@ class SocketDialog extends TrayDialog {
 		cboSimulator = new SimulatorCombo(cmpSim);
 		cboSimulator.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));
 		
-		
 		label = new Label(composite,SWT.NONE);
 		label.setText("");
 		label.setBackground(Color.WHITE);
@@ -202,12 +201,12 @@ class SocketDialog extends TrayDialog {
 		btnIsServer.setSelection(false);
 		btnIsServer.setBackground(Color.WHITE);
 		btnIsServer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-
+		
 		label = new Label(composite,SWT.NONE);
 		label.setText("");
 		label.setBackground(Color.WHITE);
 		label.setLayoutData(new GridData(SWT.WRAP, SWT.CENTER, false, false, 4, 1));
-
+		
 		btnOk = new Button(composite, SWT.NONE);
 		btnOk.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		btnOk.setText("OK");

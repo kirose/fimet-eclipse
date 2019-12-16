@@ -280,6 +280,7 @@ class SocketDialog extends TrayDialog implements DisposeListener {
     	btnCancel.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				input = null;
 				shell.close();
 				shell.dispose();
 			}
@@ -349,6 +350,11 @@ class SocketDialog extends TrayDialog implements DisposeListener {
     		btnIsAcquirer.setSelection(input.isAcquirer());
     		cboAdapter.select(input.getAdapter().getId());
     		cboParser.select(input.getParser().getId());
+    		if (input.isAcquirer()) {
+    			cboSimulator.loadAcquirers();
+    		} else {
+    			cboSimulator.loadIssuers();
+    		}
     		cboSimulator.select(input.getSimulator().getId());
 			validate();
     	} else {

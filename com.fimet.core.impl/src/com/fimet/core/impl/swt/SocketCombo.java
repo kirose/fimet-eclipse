@@ -64,6 +64,8 @@ public class SocketCombo extends VCombo implements ISocketUpdateAll {
 				}
 				i++;
 			}
+		} else {
+			getCombo().deselectAll();
 		}
 	}
 	@Override

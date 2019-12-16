@@ -165,17 +165,17 @@ public class SimQueueView extends ViewPart implements IMessengerConnected, IMess
 		}
 	}
 	@Override
-	public void onMessangerConnected(IMessenger conn) {
+	public void onMessengerConnected(IMessenger conn) {
 		writeMessages(conn);
 	}
 	@Override
-	public void onMessangerDisconnected(IMessenger conn) {
+	public void onMessengerDisconnected(IMessenger conn) {
 		conn.removeListener(IMessengerListener.ON_CONNECTED, this);
 		conn.removeListener(IMessengerListener.ON_DISCONNECTED, this);
 		conn.removeListener(IMessengerListener.ON_READ_ACQ_RESPONSE, this);
 	}
 	@Override
-	public void onMessangerReadAcquirerResponse(IMessenger conn, byte[] bytes) {
+	public void onMessengerReadAcquirerResponse(IMessenger conn, byte[] bytes) {
 		try {
 			IMessage message = conn.getConnection().getParser().parseMessage(bytes);
 			message.setAdapter(conn.getConnection().getAdapter());

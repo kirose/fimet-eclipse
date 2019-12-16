@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import com.fimet.commons.utils.StringUtils;
 import com.fimet.commons.Color;
@@ -49,7 +48,7 @@ import com.fimet.commons.Images;
  */
 public class SimQueueTreeViewer extends TreeViewer {
 
-	public static final String ID = "com.fimet.preferences.IResourceTreeViewer";
+	public static final String ID = "com.fimet.preferences.SimQueueTreeViewer";
 	private static Styler NAME_COLOR = StyledString.createColorRegistryStyler(JFacePreferences.HYPERLINK_COLOR, null);
 	private static Styler STYLER_PATH = new DefaultStyler(Color.GRAY2, null);
 	private List<IResource> resources = new java.util.ArrayList<>(); 

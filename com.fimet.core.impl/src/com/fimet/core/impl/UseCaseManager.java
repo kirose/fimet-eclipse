@@ -148,7 +148,7 @@ public class UseCaseManager implements IUseCaseManager {
 				}
 			}
 		}
-		if (useCase.getIssuer() != null) {
+		if (useCase.getIssuer() != null && useCase.getIssuer().getConnect()) {
 			validateIap(useCase.getIssuer().getConnection(), useCase.getName()+".issuer.connection",fail);
 			if (useCase.hasValidationsAcquirerResponse()) {
 				List<Validation> validations = useCase.getValidationsAcquirerResponse();
@@ -200,6 +200,13 @@ public class UseCaseManager implements IUseCaseManager {
 					throw new ParserException(path+".address is required");
 				} else {
 					Console.getInstance().warning(UseCaseManager.class, path+".address is required");
+				}
+			}
+			if (!connection.isActive()) {
+				if (fail) {
+					throw new ParserException(path+" is inactive, select an active Socket");
+				} else {
+					Console.getInstance().warning(UseCaseManager.class, path+" is inactive, select an active Socket");
 				}
 			}
 		}

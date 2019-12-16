@@ -8,8 +8,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import com.fimet.commons.Images;
-
 public class SimQueueButtons extends Composite {
 	private SimQueueView view;
 	private Button btnEdit;

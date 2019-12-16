@@ -577,7 +577,7 @@
       		category="com.fimet.preferences.FimetPreferences"
             class="com.fimet.core.impl.preferences.ISO8583.CatISO8583Page"
             id="com.fimet.preferences.CatISO8583Page"
-            name="Catalog ISO8583">
+            name="Messages ISO8583">
       </page>
       <page
             category="com.fimet.preferences.FimetPreferences"

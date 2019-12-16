@@ -1,6 +1,8 @@
 package com.fimet.core.impl.preferences.simulator;
 
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.widgets.Composite;
 import com.fimet.commons.Color;
@@ -77,5 +79,18 @@ class FieldTable extends CrudTable<SimulatorField> {
 	@Override
 	protected void onDelete() {
 		dialog.onDeleteField();
+	}
+	protected void fillContextMenu(IMenuManager contextMenu) {
+		super.fillContextMenu(contextMenu);
+        contextMenu.add(new Action("Up") {
+            public void run() {
+            	FieldTable.this.up(getSelected());
+            }
+        });
+        contextMenu.add(new Action("Down") {
+            public void run() {
+            	FieldTable.this.down(getSelected());
+            }
+        });
 	}
 }
