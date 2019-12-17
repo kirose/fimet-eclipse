@@ -7,7 +7,6 @@ import java.io.InputStream;
 public interface ISocketConnection {
 	void connect();
 	void disconnect();
-	void run();
 	boolean isConncted();
 	void writeMessage(byte[] message);
 	void writeMessage(byte[] message, boolean adapt);

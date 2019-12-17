@@ -63,6 +63,8 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
     @Override
     protected final Control createContents(Composite parent) {
     	
+    	setTitle(getTitle()+" 2.0.8");
+    	
     	Label label;
     	
         Color widgetBackground = parent.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
@@ -303,7 +305,6 @@ public class FimetPreferencePage extends PreferencePage implements IWorkbenchPre
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
-		
         return composite;
     }
     private void updateLevelTrace() {

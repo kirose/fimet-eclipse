@@ -40,7 +40,7 @@ public abstract class Messenger implements IMessenger, ISocketConnectionListener
 	 * Attempt to connect the iSocket
 	 */
 	public void connect() {
-		if (isDisconnected()) {// Maybe socket is in CONNECTING status
+		if (isDisconnected()) {// Maybe socket is in CONNECTED or CONNECTING status
 			newSocketConnection().connect();
 		}
 	}

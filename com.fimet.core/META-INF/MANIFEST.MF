@@ -34,6 +34,5 @@ Export-Package: com.fimet.core,
  com.fimet.core.net.listeners,
  com.fimet.core.simulator,
  com.fimet.core.stress,
- com.fimet.core.usecase,
- com.fimet.core.util
+ com.fimet.core.usecase
 Import-Package: com.fimet.core.json.adapter

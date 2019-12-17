@@ -18,7 +18,7 @@ import com.fimet.core.net.ISocket;
  * @email marcoasb99@ciencias.unam.mx
  *
  */
-public abstract class SocketConnection extends Thread implements ISocketConnection {
+public abstract class SocketConnection implements ISocketConnection {
 
 	static final int DISCONNECTED = 0;
 	static final int CONNECTING = 1;
@@ -59,30 +59,11 @@ public abstract class SocketConnection extends Thread implements ISocketConnecti
 		adapter = (IStreamAdapter)iSocket.getAdapter();
 		reconnect = listener.getSocketReconnect();
 		status = DISCONNECTED;
-		setName(iSocket.toString());
-	}
-	private void _connect() {
-		if (socket == null) {
-			try {
-				socket = newSocket();
-				status = CONNECTED; 
-				listener.onSocketConnected();
-				if (Console.isEnabledDebug()) 
-					Console.getInstance().debug(SocketConnection.class,"Connected to "+ iSocket);
-			} catch (IOException e) {
-				throw new SocketException(e);
-				//Server: java.net.BindException
-				//e.printStackTrace();
-			}
-		}
 	}
 	public void connect() {
-		this.start();
+		if (isDisconnected()) new ThreadConnector().start();
 	}
 	abstract protected Socket newSocket() throws IOException;
-	private void disconnectSilently() {
-		close();
-	}
 	public void disconnect() {
 		status = DISCONNECTED;
 		sentDisconnected = true;
@@ -90,81 +71,16 @@ public abstract class SocketConnection extends Thread implements ISocketConnecti
 		listener.onSocketDisconnected();
 	}
 	abstract void close();
-	private void whileTryConnect() {
-		while (!sentDisconnected && socket == null) {
-			try {
-				_connect();
-			} catch (SocketException e1) {
-				socket = null;
-			}
-			if (RECONNECTION_TIME <= 0) {
-				disconnect();
-			} else {
-				try {
-					TimeUnit.MILLISECONDS.sleep(RECONNECTION_TIME);
-				} catch (Exception e1) {}
-			}
-		}
-	}
-	@Override
-	public void run(){
-		status = CONNECTING;
-		listener.onSocketConnecting();
-		this.whileTryConnect();
-
-		if (socket != null) {
-			try {
-				while(!sentDisconnected){
-					byte[] message = adapter.readStream(socket.getInputStream());
-					if (Console.isEnabledInfo()) {
-						Console.getInstance().info(SocketConnection.class,"Read message ("+(message != null ? message.length : null)+" bytes) from "+ iSocket);
-					}
-					if (message == null || message.length == 0) {
-						Console.getInstance().warning(SocketConnection.class, "Socket port ocuppied: "+iSocket);
-						disconnect();
-					} else {
-						listener.onSocketRead(message);
-					}
-				}
-			} catch (Exception e) {// Fallo la conexion
-				//Activator.getInstance().error("Dissconected!!", e);
-				disconnectSilently();// El servidor se desconecto no se puede leer del socket
-				listener.onSocketDisconnected();
-				if (!sentDisconnected && reconnect) {
-					listener.onSocketConnecting();// Reconnecting
-					whileTryConnect();
-					run();
-				}
-			}
-		}
-	}
 	public boolean isConncted() {
 		return socket != null;
 	}
 	public void writeMessage(byte[] message) {
-		try {
-			if (socket == null) {
-				throw new SocketException("SocketManager is disconnected cannot write data");
-			}
-			adapter.writeStream(socket.getOutputStream(), message);
-			if (Console.isEnabledInfo()) {
-				Console.getInstance().info(SocketConnection.class,"Written message ("+message.length+" bytes) to "+ iSocket);
-			}
-		} catch (IOException e) {
-			Activator.getInstance().warning("Fail to write msg ("+message.length+" bytes) to "+ iSocket, e);
-			disconnectSilently();
-			listener.onSocketDisconnected();
-			if (!sentDisconnected && reconnect) {
-				listener.onSocketConnecting();// Reconnecting
-				whileTryConnect();
-			}
-			throw new SocketException(e);
-		}
+		writeMessage(message, true);
 	}
 	public void writeMessage(byte[] message, boolean adapt) {
 		try {
 			if (socket == null) {
-				throw new SocketException("SocketManager is disconnected cannot write data");
+				throw new SocketException("Socket is disconnected cannot write data");
 			}
 			if (adapt) {
 				adapter.writeStream(socket.getOutputStream(), message);
@@ -176,12 +92,8 @@ public abstract class SocketConnection extends Thread implements ISocketConnecti
 			}
 		} catch (IOException e) {
 			Activator.getInstance().warning("Fail to write msg ("+message.length+" bytes) to "+ iSocket, e);
-			disconnectSilently();
+			close();
 			listener.onSocketDisconnected();
-			if (!sentDisconnected && reconnect) {
-				listener.onSocketConnecting();// Reconnecting
-				whileTryConnect();
-			}
 			throw new SocketException(e);
 		}
 	}
@@ -202,5 +114,61 @@ public abstract class SocketConnection extends Thread implements ISocketConnecti
 	}
 	public synchronized boolean isConnecting() {
 		return status == CONNECTING;
+	}
+	private class ThreadReader extends Thread {
+		ThreadReader(){
+			setName("Reader "+iSocket.toString());			
+		}
+		public void run() {
+			try {
+				while(!sentDisconnected){
+					byte[] message = adapter.readStream(socket.getInputStream());
+					if (Console.isEnabledInfo()) {
+						Console.getInstance().info(SocketConnection.class,"Read message ("+(message != null ? message.length : null)+" bytes) from "+ iSocket);
+					}
+					if (message == null || message.length == 0) {
+						//Console.getInstance().warning(SocketConnection.class, "Socket port ocuppied: "+iSocket);
+						disconnect();
+					} else {
+						listener.onSocketRead(message);
+					}
+				}
+			} catch (Exception e) {// Fallo la conexion
+				//Activator.getInstance().error("Dissconected!!", e);
+				close();// El servidor se desconecto no se puede leer del socket
+				status = DISCONNECTED;
+				listener.onSocketDisconnected();
+				if (!sentDisconnected && reconnect) {
+					new ThreadConnector().start();
+				}
+			}
+		}
+	}
+	private class ThreadConnector extends Thread {
+		ThreadConnector(){
+			setName("Connector "+iSocket.toString());			
+		}
+		public void run() {
+			status = CONNECTING;
+			listener.onSocketConnecting();
+			while (!sentDisconnected && socket == null) {
+				try {
+					socket = newSocket();
+					status = CONNECTED;
+					if (Console.isEnabledDebug()) Console.getInstance().debug(SocketConnection.class,"Connected to "+ iSocket);
+					new ThreadReader().start();
+					listener.onSocketConnected();
+				} catch (Exception e) {
+					socket = null;
+				}
+				if (RECONNECTION_TIME <= 0) {
+					disconnect();
+				} else {
+					try {
+						TimeUnit.MILLISECONDS.sleep(RECONNECTION_TIME);
+					} catch (Exception e) {}
+				}
+			}
+		}
 	}
 }

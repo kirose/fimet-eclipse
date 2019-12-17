@@ -17,6 +17,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.fimet.commons.console.Console;
 import com.fimet.commons.utils.StringUtils;
 import com.fimet.core.IUseCaseManager;
 import com.fimet.core.Manager;
@@ -59,7 +60,8 @@ public class UseCaseEditor extends FormEditor implements ITextEditor {
 			resource = (IResource)((FileEditorInput)input).getFile();
 			useCase = Manager.get(IUseCaseManager.class).parseForEditor(resource);
 		} catch (Exception e) {
-			Activator.getInstance().error("Parsing Json use case", e);
+			Activator.getInstance().error("Parsing use case "+path, e);
+			Console.getInstance().error(UseCaseEditor.class, e.getMessage());
 		}
 		modifier = new UseCaseModifier(this, useCase);
 	}

@@ -126,6 +126,7 @@ public class NewUseCaseWizardMsgPage extends WizardPage implements Listener, IMe
 	@Override
 	public void onModifyMessage() {
 		useCase.getAcquirer().getRequest().setMessage(messageViewer.getMessage());
+		setPageComplete(true);
 	}
 
 	@Override

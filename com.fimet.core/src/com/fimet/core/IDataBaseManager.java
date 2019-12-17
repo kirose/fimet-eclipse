@@ -1,6 +1,5 @@
 package com.fimet.core;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -29,7 +28,6 @@ public interface IDataBaseManager extends IManager {
 	public void disconnect(DataBase db);
 	public void disconnectSilenlty();
 	public void testConnection(DataBase db);
-	public List<DataBase> parseImport(File file, String text, Integer selected);
 	public Integer getNextIdDataBase();
 	public Integer getPrevIdDataBase();
 	

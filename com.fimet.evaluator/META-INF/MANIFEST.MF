@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Evaluator
+Bundle-SymbolicName: com.fimet.evaluator
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.atenea.evaluator.Activator
+Bundle-Vendor: ATENEA
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.fimet.commons,
+ com.fimet.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: com.atenea.evaluator
+Bundle-ActivationPolicy: lazy

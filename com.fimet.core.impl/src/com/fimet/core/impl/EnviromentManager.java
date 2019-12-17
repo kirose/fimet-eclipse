@@ -104,8 +104,8 @@ public class EnviromentManager implements IEnviromentManager {
 		}
 		if (dataBaseManager != null && enviroment.getDataBase() != null) {
 			try {
-				dataBaseManager.connect(enviroment.getDataBase());
 				active = enviroment;
+				dataBaseManager.connect(enviroment.getDataBase());
 				fireOnConnected(enviroment);
 			} catch (Exception e) {
 				Console.getInstance().error(EnviromentManager.class, "Invalid data base connection "+enviroment.getDataBase()+"");

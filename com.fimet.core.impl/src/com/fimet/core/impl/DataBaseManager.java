@@ -1,7 +1,6 @@
 
 package com.fimet.core.impl;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,7 +25,6 @@ import com.fimet.core.listener.IDataBaseDisconnected;
 import com.fimet.core.listener.IDataBaseInserted;
 import com.fimet.core.listener.IDataBaseListener;
 import com.fimet.core.listener.IDataBaseUpdated;
-import com.fimet.core.util.SQLDeveloper;
 import com.fimet.persistence.sqlite.dao.DataBaseDAO;
 /**
  * 
@@ -269,13 +267,6 @@ public class DataBaseManager implements IDataBaseManager {
 			fireDeleted(db);
 		}
 		return db;
-	}
-	@Override
-	public List<DataBase> parseImport(File file, String key, Integer type) {
-		if (type == 0) {
-			return SQLDeveloper.parse(file, key);	
-		}
-		return null;
 	}
 	private class Listener {
 		int type;
