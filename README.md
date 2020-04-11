@@ -4,7 +4,7 @@
 
 FIMET is an eclipse-plugin project for ISO8583 test automation
 
-FIMET is implemented on eclipse 2018-12
+FIMET is implemented on eclipse 2018-12 Windows 64 bit 
 
 ## Features
 * **Parsers** for ISO8583 (easy configruation)
