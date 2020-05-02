@@ -6,6 +6,8 @@ FIMET is an eclipse-plugin project for ISO8583 test automation
 
 FIMET is implemented on eclipse 2018-12 Windows 64 bit 
 
+You can download it from [here](https://drive.google.com/open?id=1-93-wQpcJpFbx2EV5Zw8L73256y4UqUR)
+
 ## Features
 * **Parsers** for ISO8583 (easy configruation)
 * **Sockets** for ISO8583 communication
@@ -13,12 +15,6 @@ FIMET is implemented on eclipse 2018-12 Windows 64 bit
 * **Use Case** is and abstraction of an ISO8583 message for atumated tests
 * **Converters** for easy editor-conversion between ASCII, EBCDIC, HEX, Binary
 * **Report** for display the results of use cases execution
-
-Just download the jars (FIMET-eclipse-plugins-2018-12.rar) and put it inside "plugins" folder of eclipse 2018-12
-
-You can download eclipse 2018-12 [**here**](https://www.eclipse.org/downloads/packages/release/2018-12/r)
-
-I would appreciate if you could tell me how to upload the project to the eclipse marketplace.
 
 
 ![OverviewFimet](https://user-images.githubusercontent.com/6531429/70770950-1457ec00-1d35-11ea-8463-d72a38c05b8e.PNG)
